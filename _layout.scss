@@ -1,0 +1,13 @@
+@import "./variables";
+body {
+    background-color: $standard-secondary-color-light;
+}
+
+.main {
+    padding-top: 64px;
+}
+
+.standard-card {
+    margin: $standard-main-margin;
+    padding: $standard-main-padding;
+}

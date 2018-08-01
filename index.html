@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Upload File to 3DOC</title>
+    <link rel="icon" sizes="192x192" href="https://material.io/static/images/simple-lp/favicons/components-192x192.png">
+    <link rel="shortcut icon" href="https://material.io/static/images/simple-lp/favicons/components-72x72.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="bundle.css">
+</head>
+
+<body>
+
+    <header class="mdc-top-app-bar">
+        <div class="mdc-top-app-bar__row">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+                <span class="mdc-top-app-bar__title">3DOC Toolbox</span>
+            </section>
+        </div>
+    </header>
+
+    <div class="main">
+        <div class="mdc-card standard-card">
+            <h2>Server</h2>
+            <div class="mdc-text-field mdc-text-field--outlined">
+                <input type="text" id="server-address" class="mdc-text-field__input">
+                <label for="server-address" class="mdc-floating-label">Server Address</label>
+                <div class="mdc-notched-outline">
+                    <svg>
+                        <path class="mdc-notched-outline__path" />
+                    </svg>
+                </div>
+                <div class="mdc-notched-outline__idle"></div>
+            </div>
+            <button id="get-documents" class="mdc-button mdc-button--raised">
+                Get Documents
+            </button>
+            <ul class="mdc-list mdc-list--two-line" aria-orientation="vertical" id="document-list-here">
+                
+            </ul>
+        </div>
+
+        <!--<div class="mdc-card standard-card">
+            <div class="mdc-text-field mdc-text-field--outlined">
+                <input type="text" id="document-id" class="mdc-text-field__input">
+                <label for="document-id" class="mdc-floating-label">Document ID</label>
+                <div class="mdc-notched-outline">
+                    <svg>
+                        <path class="mdc-notched-outline__path" />
+                    </svg>
+                </div>
+                <div class="mdc-notched-outline__idle"></div>
+            </div>
+            <div class="mdc-text-field mdc-text-field--outlined">
+                <input type="text" id="document-title" class="mdc-text-field__input">
+                <label for="document-title" class="mdc-floating-label">Document Title</label>
+                <div class="mdc-notched-outline">
+                    <svg>
+                        <path class="mdc-notched-outline__path" />
+                    </svg>
+                </div>
+                <div class="mdc-notched-outline__idle"></div>
+            </div>
+            <button class="mdc-button mdc-button--raised">
+                Upload
+            </button>
+        </div>
+    </div>-->
+
+    <script src="bundle.js" async></script>
+</body>
+
+</html>
