@@ -36,14 +36,14 @@ function getDocuments() {
                 list = list + "<li class='mdc-list-item'>" +
                     "<span class='mdc-list-item__text'>" +
                     "<span class='mdc-list-item__primary-text'>" + a.title + "</span>" +
-                    "<span class='mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
+                    "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
                     "</span>" +
                     "</li>";
             } else {
                 list = list + "<li class='mdc-list-item'>" +
                     "<span class='mdc-list-item__text'>" +
                     "<span class='mdc-list-item__primary-text'>Untitled Document</span>" +
-                    "<span class='mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
+                    "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
                     "</span>" +
                     "</li>";
             }

@@ -8,6 +8,15 @@ body {
 }
 
 .standard-card {
-    margin: $standard-main-margin;
-    padding: $standard-main-padding;
+    margin: $standard-margin;
+    padding: $standard-padding;
+}
+
+.standard-card-dense {
+    margin: 12px 0; //trbl
+    padding: 0;
+}
+
+.standard-mono {
+    font-family: 'Roboto Mono', monospace;
 }
