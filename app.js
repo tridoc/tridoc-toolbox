@@ -17,9 +17,15 @@ import {
     MDCSnackbar,
     MDCSnackbarFoundation
 } from '@material/snackbar';
+import {
+    MDCTextFieldIcon
+} from '@material/textfield/icon';
+
+const textFieldIcons = [].slice.call(document.querySelectorAll('.mdc-text-field'));
+textFieldIcons.forEach((element) => new MDCTextFieldIcon(element));
 
 const textFieldElements = [].slice.call(document.querySelectorAll('.mdc-text-field'));
-textFieldElements.forEach((textFieldEl) => new MDCTextField(textFieldEl));
+textFieldElements.forEach((element) => new MDCTextField(element));
 
 const buttonRipple = [].slice.call(document.querySelectorAll('button'));
 buttonRipple.forEach((element) => new MDCRipple(element));
@@ -35,6 +41,7 @@ const topAppBarElement = [].slice.call(document.querySelectorAll('.mdc-top-app-b
 topAppBarElement.forEach((element) => new MDCTopAppBar(element));
 
 document.getElementById("get-documents").addEventListener("click", getDocuments);
+document.getElementById("search-documents").addEventListener("click", searchDocuments);
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
 document.getElementById("upload").addEventListener("input", displayFilename);
 document.getElementById("post-document").addEventListener("click", postDocument);
@@ -71,7 +78,7 @@ function postDocument() {
     dismiss();
 
     console.log(fileList[0]);
-    
+
     if (fileList[0].type == "application/pdf") {
         fetch(server + "/doc", {
             method: "POST",
@@ -87,7 +94,9 @@ function postDocument() {
             if (r.status >= 400) {
                 return r.json();
             } else {
-                return {success: true};
+                return {
+                    success: true
+                };
             }
         }).then(json => {
             if (json.error) {
@@ -111,6 +120,30 @@ function getDocuments() {
 
     fetch(server + "/doc").then(r => r.json()).then(array => {
         let dest = document.getElementById("document-list-here");
+        let list = "";
+        array.forEach(a => {
+            let label = a.title ? a.title : "Untitled document";
+            list = list + "<li class='mdc-list-item mdc-elevation--z3 list-document'>" +
+                "<a href='" + server + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
+                "<span class='mdc-list-item__text'>" +
+                "<span class='mdc-list-item__primary-text'>" + label + "</span>" +
+                "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
+                "</span>" +
+                "</li>";
+        });
+        dest.innerHTML = list;
+        if (list != "") {
+            document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
+        }
+    });
+}
+
+function searchDocuments() {
+    let server = document.getElementById("server-address").value;
+    let query = document.getElementById("search").value;
+
+    fetch(server + "/doc?text=" + encodeURIComponent(query)).then(r => r.json()).then(array => {
+        let dest = document.getElementById("search-document-list-here");
         let list = "";
         array.forEach(a => {
             let label = a.title ? a.title : "Untitled document";
