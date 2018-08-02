@@ -3,7 +3,8 @@ body {
     background-color: $standard-secondary-color-light;
 }
 
-.main {
+.mdc-text-field {
+    //margin: $standard-margin 0;
 }
 
 .list-document {
@@ -30,8 +31,17 @@ body {
     opacity: 0;
 }
 
+.mdc-drawer__content {
+    * {
+        width: 100%;
+        border-radius: 0;
+        margin-top: $standard-margin-dense !important;
+    }
+}
+
 .standard-card {
     padding: $standard-padding;
+    height: 100%;
 }
 
 .standard-card-dense {
@@ -40,7 +50,7 @@ body {
 }
 
 .standard-button {
-    margin: $standard-margin 0;
+    margin: $standard-margin 0 0;
 }
 
 .standard-mono {
@@ -77,4 +87,9 @@ body {
 
 .hidden {
     display: none;
+}
+.no-dismiss {
+    display: block !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
 }

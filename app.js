@@ -20,6 +20,15 @@ import {
 import {
     MDCTextFieldIcon
 } from '@material/textfield/icon';
+import {
+    MDCTemporaryDrawer,
+    MDCPersistentDrawer,
+    MDCPersistentDrawerFoundation,
+    util
+} from '@material/drawer';
+
+const drawer = new MDCTemporaryDrawer(document.getElementById("drawer"));
+document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
 
 const textFieldIcons = [].slice.call(document.querySelectorAll('.mdc-text-field'));
 textFieldIcons.forEach((element) => new MDCTextFieldIcon(element));
@@ -40,7 +49,6 @@ listRipple.forEach((element) => new MDCRipple(element));
 const topAppBarElement = [].slice.call(document.querySelectorAll('.mdc-top-app-bar'));
 topAppBarElement.forEach((element) => new MDCTopAppBar(element));
 
-document.getElementById("get-documents").addEventListener("click", getDocuments);
 document.getElementById("search-documents").addEventListener("click", searchDocuments);
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
 document.getElementById("upload").addEventListener("input", displayFilename);
@@ -89,7 +97,7 @@ function postDocument() {
         }).catch(e => {
             failMsg.innerHTML = e;
             failAlert.classList.remove("hidden");
-            getDocuments();
+            searchDocuments();
         }).then(r => {
             if (r.status >= 400) {
                 return r.json();
@@ -102,40 +110,17 @@ function postDocument() {
             if (json.error) {
                 failMsg.innerHTML = "Server responded with " + json.statusCode + ": " + json.error;
                 failAlert.classList.remove("hidden");
-                getDocuments();
+                searchDocuments();
             } else {
                 successAlert.classList.remove("hidden");
-                getDocuments();
+                searchDocuments();
             }
         });
     } else {
         failMsg.innerHTML = "Please provide a pdf document";
         failAlert.classList.remove("hidden");
-        getDocuments();
+        searchDocuments();
     }
-}
-
-function getDocuments() {
-    let server = document.getElementById("server-address").value;
-
-    fetch(server + "/doc").then(r => r.json()).then(array => {
-        let dest = document.getElementById("document-list-here");
-        let list = "";
-        array.forEach(a => {
-            let label = a.title ? a.title : "Untitled document";
-            list = list + "<li class='mdc-list-item mdc-elevation--z3 list-document'>" +
-                "<a href='" + server + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
-                "<span class='mdc-list-item__text'>" +
-                "<span class='mdc-list-item__primary-text'>" + label + "</span>" +
-                "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
-                "</span>" +
-                "</li>";
-        });
-        dest.innerHTML = list;
-        if (list != "") {
-            document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
-        }
-    });
 }
 
 function searchDocuments() {
@@ -176,7 +161,7 @@ function setDocumentTitle() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-    }).then(r => getDocuments());
+    }).then(r => searchDocuments());
 }
 
 function fillout() {
@@ -200,4 +185,4 @@ function fillout() {
     }
 }
 
-getDocuments();
+searchDocuments();

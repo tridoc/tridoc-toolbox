@@ -25,26 +25,46 @@
         </div>
     </header>
 
+    <aside id="drawer" class="mdc-drawer mdc-drawer--temporary mdc-typography">
+        <nav class="mdc-drawer__drawer">
+            <div class="mdc-drawer__toolbar-spacer mdc-top-app-bar__title">Settings</div>
+            <nav class="mdc-drawer__content">
+                <div class="mdc-text-field mdc-text-field--box">
+                    <input type="text" id="server-address" class="mdc-text-field__input" value="http://localhost:8000">
+                    <label for="server-address" class="mdc-floating-label mdc-floating-label--float-above">Server Address</label>
+                    <div class="mdc-line-ripple"></div>
+                </div>
+            </nav>
+        </nav>
+    </aside>
+
     <div class="main mdc-top-app-bar--fixed-adjust">
+        <!--<div class="standard-snackbar standard-bad no-dismiss">
+            <h1 class="standard-snackbar-text">Warning: Site under Development</h1>
+            <div class="standard-snackbar-text">
+                Expect changes in UI and functionality. May not work all the time
+            </div>
+        </div>-->
         <div class="mdc-layout-grid">
             <div class="mdc-layout-grid__inner">
-                <div class="mdc-layout-grid__cell">
+                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-5-desktop">
                     <div class="mdc-card standard-card">
-                        <h2>Server</h2>
+                        <h2>Search in Documents</h2>
                         <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon">
-                            <input type="text" id="server-address" class="mdc-text-field__input" value="http://localhost:8000">
-                            <label for="server-address" class="mdc-floating-label mdc-floating-label--float-above">Server Address</label>
-                            <div class="material-icons mdc-text-field__icon">storage</div>
+                            <input type="text" id="search" class="mdc-text-field__input">
+                            <label for="search" class="mdc-floating-label">Search query</label>
+                            <div class="material-icons mdc-text-field__icon">search</div>
                             <div class="mdc-line-ripple"></div>
                         </div>
-                        <button id="get-documents" class="mdc-button mdc-button--raised standard-button">
+                        <p class="mdc-text-field-helper-text">Leave empty to get all documents</p>
+                        <button id="search-documents" class="mdc-button mdc-button--raised standard-button">
                             Get Documents
                         </button>
-                        <ul class="mdc-list mdc-list--two-line" aria-orientation="vertical" id="document-list-here">
+                        <ul class="mdc-list mdc-list--two-line" aria-orientation="vertical" id="search-document-list-here">
                         </ul>
                     </div>
                 </div>
-                <div class="mdc-layout-grid__cell">
+                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop">
                     <div class="mdc-card standard-card">
                         <h2>Upload Files</h2>
                         <div class="mdc-button mdc-button--raised choose-file-button">
@@ -52,7 +72,7 @@
                             <p id="upload-text">Select File</p>
                         </div>
                         <button id="post-document" class="mdc-button mdc-button--raised standard-button">
-                            Send Document to Server
+                            Upload PDF
                         </button>
 
                         <div id="snackbar-upload-success" class="standard-snackbar hidden">
@@ -71,30 +91,15 @@
 
                     </div>
                 </div>
-                <div class="mdc-layout-grid__cell">
-                        <div class="mdc-card standard-card">
-                            <h2>Search in Documents</h2>
-                            <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon">
-                                <input type="text" id="search" class="mdc-text-field__input">
-                                <label for="search" class="mdc-floating-label">Search query</label>
-                                <div class="material-icons mdc-text-field__icon">search</div>
-                                <div class="mdc-line-ripple"></div>
-                            </div>
-                            <button id="search-documents" class="mdc-button mdc-button--raised standard-button">
-                                Get Documents
-                            </button>
-                            <ul class="mdc-list mdc-list--two-line" aria-orientation="vertical" id="search-document-list-here">
-                            </ul>
-                        </div>
-                    </div>
-                <div class="mdc-layout-grid__cell">
+                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4-desktop">
                     <div class="mdc-card standard-card">
                         <h2>Update Document Title</h2>
                         <div class="mdc-text-field mdc-text-field--box">
-                            <input type="text" id="document-id" class="mdc-text-field__input document-id standard-mono">
+                            <input type="text" id="document-id" class="mdc-text-field__input document-id standard-mono" autocomplete="off">
                             <label for="document-id" class="mdc-floating-label">Document ID</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
+                        <p class="mdc-text-field-helper-text">Click on a document in the list to auto-fill this</p>
                         <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon">
                             <input type="text" id="document-title" class="mdc-text-field__input">
                             <label for="document-title" class="mdc-floating-label">Document Title</label>

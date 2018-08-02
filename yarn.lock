@@ -29,6 +29,17 @@
     "@material/rtl" "^0.36.0"
     "@material/theme" "^0.38.0"
 
+"@material/drawer@^0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@material/drawer/-/drawer-0.38.0.tgz#06ba72afc92215d8a743b5fe554465ae12695ca2"
+  dependencies:
+    "@material/animation" "^0.34.0"
+    "@material/base" "^0.35.0"
+    "@material/elevation" "^0.38.0"
+    "@material/rtl" "^0.36.0"
+    "@material/theme" "^0.38.0"
+    "@material/typography" "^0.38.0"
+
 "@material/elevation@^0.38.0":
   version "0.38.0"
   resolved "https://registry.yarnpkg.com/@material/elevation/-/elevation-0.38.0.tgz#c7f8d0c9a28073b0ec62cb76248b76d5ff467bf8"
