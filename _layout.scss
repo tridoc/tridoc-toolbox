@@ -13,8 +13,12 @@ body {
 }
 
 .standard-card-dense {
-    margin: 12px 0; //trbl
+    margin: $standard-margin-dense 0; //trbl
     padding: 0;
+}
+
+.standard-button {
+    margin: $standard-margin 0;
 }
 
 .standard-mono {
