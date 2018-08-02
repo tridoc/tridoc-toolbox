@@ -4,7 +4,6 @@ body {
 }
 
 .main {
-    padding-top: 56px;
 }
 
 .list-document {
@@ -49,7 +48,7 @@ body {
 }
 
 .standard-snackbar {
-    margin: $standard-margin;
+    margin: $standard-margin 0;
     background-color: $standard-dark-gray;
     border-radius: $standard-border-radius;
     color: #ffffff;

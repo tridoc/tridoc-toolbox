@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "start": "webpack-dev-server --progress"
+    "start": "webpack-dev-server --progress --host 0.0.0.0"
   },
   "license": "Apache-2.0",
   "devDependencies": {
@@ -33,6 +33,7 @@
     "@material/select": "^0.38.0",
     "@material/snackbar": "^0.38.0",
     "@material/textfield": "^0.38.0",
+    "@material/toolbar": "^0.38.0",
     "@material/top-app-bar": "^0.38.0",
     "@material/typography": "^0.38.0"
   }

@@ -137,6 +137,17 @@
   version "0.38.0"
   resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.38.0.tgz#c1a2247eba4af2ba47da4456921ab420869fda55"
 
+"@material/toolbar@^0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@material/toolbar/-/toolbar-0.38.0.tgz#38e4761a1bff5a5833493aa6bd3f3ca1cfa1ec29"
+  dependencies:
+    "@material/base" "^0.35.0"
+    "@material/elevation" "^0.38.0"
+    "@material/ripple" "^0.38.0"
+    "@material/rtl" "^0.36.0"
+    "@material/theme" "^0.38.0"
+    "@material/typography" "^0.38.0"
+
 "@material/top-app-bar@^0.38.0":
   version "0.38.0"
   resolved "https://registry.yarnpkg.com/@material/top-app-bar/-/top-app-bar-0.38.0.tgz#5b7f15885e458211dc7b52d65011914704a8ea27"

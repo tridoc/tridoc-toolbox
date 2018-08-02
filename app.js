@@ -38,10 +38,21 @@ document.getElementById("get-documents").addEventListener("click", getDocuments)
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
 document.getElementById("upload").addEventListener("input", displayFilename);
 document.getElementById("post-document").addEventListener("click", postDocument);
+document.querySelectorAll(".dismiss").forEach(e => e.addEventListener("click", dismiss));
+
+function dismiss() {
+    let successAlert = document.querySelector('#snackbar-upload-success');
+    let failAlert = document.querySelector('#snackbar-upload-fail');
+    successAlert.classList.add("hidden");
+    failAlert.classList.add("hidden");
+}
 
 function displayFilename() {
     let file = document.getElementById('upload').value;
     let filename = "";
+
+    dismiss();
+
     if (file.lastIndexOf("/") > -1) {
         filename = file.substr(file.lastIndexOf("/") + 1);
     } else {
@@ -51,21 +62,48 @@ function displayFilename() {
 }
 
 function postDocument() {
-    let filename = document.getElementById('upload').value;
-    const snackbarone = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+    let fileName = document.getElementById('upload').value;
+    let fileList = document.getElementById("upload").files;
+    let successAlert = document.querySelector('#snackbar-upload-success');
+    let failAlert = document.querySelector('#snackbar-upload-fail');
+    let failMsg = document.querySelector('#upload-fail-msg');
+    let server = document.getElementById("server-address").value;
+    dismiss();
+
+    console.log(fileList[0]);
     
-    /*
-    if (filename.endsWith(".pdf")) {
-        let server = document.getElementById("server-address").value;
+    if (fileList[0].type == "application/pdf") {
         fetch(server + "/doc", {
             method: "POST",
-            body:
-        }).then(r => r.json()).then(json => {
+            headers: {
+                "Content-Type": "application/pdf"
+            },
+            body: fileList[0]
+        }).catch(e => {
+            failMsg.innerHTML = e;
+            failAlert.classList.remove("hidden");
             getDocuments();
+        }).then(r => {
+            if (r.status >= 400) {
+                return r.json();
+            } else {
+                return {success: true};
+            }
+        }).then(json => {
+            if (json.error) {
+                failMsg.innerHTML = "Server responded with " + json.statusCode + ": " + json.error;
+                failAlert.classList.remove("hidden");
+                getDocuments();
+            } else {
+                successAlert.classList.remove("hidden");
+                getDocuments();
+            }
         });
     } else {
-
-    }*/
+        failMsg.innerHTML = "Please provide a pdf document";
+        failAlert.classList.remove("hidden");
+        getDocuments();
+    }
 }
 
 function getDocuments() {
@@ -128,3 +166,5 @@ function fillout() {
             });
     }
 }
+
+getDocuments();
