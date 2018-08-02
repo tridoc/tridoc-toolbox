@@ -27,17 +27,12 @@
     <div class="main">
         <div class="mdc-card standard-card">
             <h2>Server</h2>
-            <div class="mdc-text-field mdc-text-field--outlined">
-                <input type="text" id="server-address" class="mdc-text-field__input">
-                <label for="server-address" class="mdc-floating-label">Server Address</label>
-                <div class="mdc-notched-outline">
-                    <svg>
-                        <path class="mdc-notched-outline__path" />
-                    </svg>
-                </div>
-                <div class="mdc-notched-outline__idle"></div>
+            <div class="mdc-text-field mdc-text-field--box">
+                <input type="text" id="server-address" class="mdc-text-field__input" value="http://localhost:8000">
+                <label for="server-address" class="mdc-floating-label mdc-floating-label--float-above">Server Address</label>
+                <div class="mdc-line-ripple"></div>
             </div>
-            <button id="get-documents" class="mdc-button mdc-button--raised">
+            <button id="get-documents" class="mdc-button mdc-button--raised standard-button">
                 Get Documents
             </button>
             <div class="mdc-card standard-card-dense">
@@ -47,34 +42,25 @@
 
         </div>
 
-        <!--<div class="mdc-card standard-card">
-            <div class="mdc-text-field mdc-text-field--outlined">
-                <input type="text" id="document-id" class="mdc-text-field__input">
+        <div class="mdc-card standard-card">
+            <h2>Update Document Title</h2>
+            <div class="mdc-text-field mdc-text-field--box">
+                <input type="text" id="document-id" class="mdc-text-field__input document-id standard-mono">
                 <label for="document-id" class="mdc-floating-label">Document ID</label>
-                <div class="mdc-notched-outline">
-                    <svg>
-                        <path class="mdc-notched-outline__path" />
-                    </svg>
-                </div>
-                <div class="mdc-notched-outline__idle"></div>
+                <div class="mdc-line-ripple"></div>
             </div>
-            <div class="mdc-text-field mdc-text-field--outlined">
+            <div class="mdc-text-field mdc-text-field--box">
                 <input type="text" id="document-title" class="mdc-text-field__input">
                 <label for="document-title" class="mdc-floating-label">Document Title</label>
-                <div class="mdc-notched-outline">
-                    <svg>
-                        <path class="mdc-notched-outline__path" />
-                    </svg>
-                </div>
-                <div class="mdc-notched-outline__idle"></div>
+                <div class="mdc-line-ripple"></div>
             </div>
-            <button class="mdc-button mdc-button--raised">
-                Upload
+            <button class="mdc-button mdc-button--raised standard-button" id="set-document-title">
+                Set title
             </button>
         </div>
-    </div>-->
+    </div>
 
-        <script src="bundle.js" async></script>
+    <script src="bundle.js" async></script>
 </body>
 
 </html>
