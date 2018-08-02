@@ -15,5 +15,7 @@ $mdc-theme-secondary: $standard-secondary-color;
 @import "@material/list/mdc-list";
 @import "@material/icon-button/mdc-icon-button";
 @import "@material/elevation/mdc-elevation";
+@import "@material/layout-grid/mdc-layout-grid";
+@import "@material/snackbar/mdc-snackbar";
 
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,500,700');

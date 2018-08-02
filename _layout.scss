@@ -4,7 +4,7 @@ body {
 }
 
 .main {
-    padding-top: 64px;
+    padding-top: 56px;
 }
 
 .list-document {
@@ -18,8 +18,20 @@ body {
     border-radius: 100%;
 }
 
+.mdc-button input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0;
+}
+
 .standard-card {
-    margin: $standard-margin;
     padding: $standard-padding;
 }
 
@@ -34,4 +46,36 @@ body {
 
 .standard-mono {
     font-family: 'Roboto Mono', monospace;
+}
+
+.standard-snackbar {
+    margin: $standard-margin;
+    background-color: $standard-dark-gray;
+    border-radius: $standard-border-radius;
+    color: #ffffff;
+    padding: $standard-padding-dense;
+    display: flex;
+    justify-content: space-between; 
+
+    @include mdc-elevation(4);
+
+    .standard-snackbar-text {
+        margin: $standard-margin-dense;
+    }
+
+    .mdc-button {
+        margin: auto $standard-margin-dense;
+    }
+}
+
+.standard-bad {
+    background-color: $standard-secondary-color-dark;
+    .mdc-button {
+        background-color: #ffffff;
+        color: $standard-secondary-color-dark;
+    }
+}
+
+.hidden {
+    display: none;
 }

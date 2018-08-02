@@ -13,6 +13,10 @@ import {
 import {
     MDCNotchedOutline
 } from '@material/notched-outline';
+import {
+    MDCSnackbar,
+    MDCSnackbarFoundation
+} from '@material/snackbar';
 
 const textFieldElements = [].slice.call(document.querySelectorAll('.mdc-text-field'));
 textFieldElements.forEach((textFieldEl) => new MDCTextField(textFieldEl));
@@ -32,6 +36,37 @@ topAppBarElement.forEach((element) => new MDCTopAppBar(element));
 
 document.getElementById("get-documents").addEventListener("click", getDocuments);
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
+document.getElementById("upload").addEventListener("input", displayFilename);
+document.getElementById("post-document").addEventListener("click", postDocument);
+
+function displayFilename() {
+    let file = document.getElementById('upload').value;
+    let filename = "";
+    if (file.lastIndexOf("/") > -1) {
+        filename = file.substr(file.lastIndexOf("/") + 1);
+    } else {
+        filename = file.substr(file.lastIndexOf("\\") + 1);
+    }
+    document.getElementById('upload-text').innerHTML = filename;
+}
+
+function postDocument() {
+    let filename = document.getElementById('upload').value;
+    const snackbarone = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+    
+    /*
+    if (filename.endsWith(".pdf")) {
+        let server = document.getElementById("server-address").value;
+        fetch(server + "/doc", {
+            method: "POST",
+            body:
+        }).then(r => r.json()).then(json => {
+            getDocuments();
+        });
+    } else {
+
+    }*/
+}
 
 function getDocuments() {
     let server = document.getElementById("server-address").value;
