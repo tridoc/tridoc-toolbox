@@ -7,6 +7,17 @@ body {
     padding-top: 64px;
 }
 
+.list-document {
+    background-color: $standard-light-gray;
+    color: $standard-primary-color-light;
+}
+
+.mdc-list-item__graphic {
+    color: #ffffff;
+    margin-right: 16px;
+    border-radius: 100%;
+}
+
 .standard-card {
     margin: $standard-margin;
     padding: $standard-padding;

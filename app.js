@@ -41,10 +41,10 @@ function getDocuments() {
         let list = "";
         array.forEach(a => {
             let label = a.title ? a.title : "Untitled document";
-            list = list + "<li class='mdc-list-item'>" +
+            list = list + "<li class='mdc-list-item list-document'>" +
+                "<a href='" + server + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
                 "<span class='mdc-list-item__text'>" +
-                "<button class='mdc-list-item__graphic material-icons mdc-icon-button' aria-hidden='true'>folder</button>" +
-                "<span class='mdc-list-item__primary-text'><a href='" + server+"/doc/"+a.identifier + "'>" + label + "</a></span>" +
+                "<span class='mdc-list-item__primary-text'>" + label + "</span>" +
                 "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
                 "</span>" +
                 "</li>";
@@ -73,8 +73,7 @@ function setDocumentTitle() {
     }).then(r => getDocuments());
 }
 
-function
-fillout() {
+function fillout() {
     let title = this.getElementsByClassName("mdc-list-item__primary-text")[0].innerHTML;
     let id = this.getElementsByClassName("mdc-list-item__secondary-text")[0].innerHTML;
     let idFields = document.querySelectorAll(".document-id");
