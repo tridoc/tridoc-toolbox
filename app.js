@@ -32,21 +32,13 @@ function getDocuments() {
         let dest = document.getElementById("document-list-here");
         let list = "";
         array.forEach(a => {
-            if (a.title) {
-                list = list + "<li class='mdc-list-item'>" +
-                    "<span class='mdc-list-item__text'>" +
-                    "<span class='mdc-list-item__primary-text'>" + a.title + "</span>" +
-                    "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
-                    "</span>" +
-                    "</li>";
-            } else {
-                list = list + "<li class='mdc-list-item'>" +
-                    "<span class='mdc-list-item__text'>" +
-                    "<span class='mdc-list-item__primary-text'>Untitled Document</span>" +
-                    "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
-                    "</span>" +
-                    "</li>";
-            }
+            let label = a.title ? a.title : "untitle document";
+            list = list + "<li class='mdc-list-item'>" +
+                "<span class='mdc-list-item__text'>" +
+                "<span class='mdc-list-item__primary-text'><a href='" + server+"/doc/"+a.identifier + "'>" + label + "</a></span>" +
+                "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
+                "</span>" +
+                "</li>";
         });
         dest.innerHTML = list;
     });
