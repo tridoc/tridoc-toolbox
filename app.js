@@ -13,6 +13,10 @@ import {
 import {
     MDCNotchedOutline
 } from '@material/notched-outline';
+import {
+    MDCSnackbar,
+    MDCSnackbarFoundation
+} from '@material/snackbar';
 
 const textFieldElements = [].slice.call(document.querySelectorAll('.mdc-text-field'));
 textFieldElements.forEach((textFieldEl) => new MDCTextField(textFieldEl));
@@ -32,6 +36,37 @@ topAppBarElement.forEach((element) => new MDCTopAppBar(element));
 
 document.getElementById("get-documents").addEventListener("click", getDocuments);
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
+document.getElementById("upload").addEventListener("input", displayFilename);
+document.getElementById("post-document").addEventListener("click", postDocument);
+
+function displayFilename() {
+    let file = document.getElementById('upload').value;
+    let filename = "";
+    if (file.lastIndexOf("/") > -1) {
+        filename = file.substr(file.lastIndexOf("/") + 1);
+    } else {
+        filename = file.substr(file.lastIndexOf("\\") + 1);
+    }
+    document.getElementById('upload-text').innerHTML = filename;
+}
+
+function postDocument() {
+    let filename = document.getElementById('upload').value;
+    const snackbarone = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+    
+    /*
+    if (filename.endsWith(".pdf")) {
+        let server = document.getElementById("server-address").value;
+        fetch(server + "/doc", {
+            method: "POST",
+            body:
+        }).then(r => r.json()).then(json => {
+            getDocuments();
+        });
+    } else {
+
+    }*/
+}
 
 function getDocuments() {
     let server = document.getElementById("server-address").value;
@@ -40,22 +75,14 @@ function getDocuments() {
         let dest = document.getElementById("document-list-here");
         let list = "";
         array.forEach(a => {
-            if (a.title) {
-                list = list + "<li class='mdc-list-item list-document'>" +
-                    "<button class='mdc-list-item__graphic material-icons mdc-icon-button' aria-hidden='true'>folder</button>" +
-                    "<span class='mdc-list-item__text'>" +
-                    "<span class='mdc-list-item__primary-text'>" + a.title + "</span>" +
-                    "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
-                    "</span>" +
-                    "</li>";
-            } else {
-                list = list + "<li class='mdc-list-item list-document'>" +
-                    "<span class='mdc-list-item__text'>" +
-                    "<span class='mdc-list-item__primary-text'>Untitled Document</span>" +
-                    "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
-                    "</span>" +
-                    "</li>";
-            }
+            let label = a.title ? a.title : "Untitled document";
+            list = list + "<li class='mdc-list-item mdc-elevation--z3 list-document'>" +
+                "<a href='" + server + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
+                "<span class='mdc-list-item__text'>" +
+                "<span class='mdc-list-item__primary-text'>" + label + "</span>" +
+                "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
+                "</span>" +
+                "</li>";
         });
         dest.innerHTML = list;
         if (list != "") {
@@ -81,8 +108,7 @@ function setDocumentTitle() {
     }).then(r => getDocuments());
 }
 
-function
-fillout() {
+function fillout() {
     let title = this.getElementsByClassName("mdc-list-item__primary-text")[0].innerHTML;
     let id = this.getElementsByClassName("mdc-list-item__secondary-text")[0].innerHTML;
     let idFields = document.querySelectorAll(".document-id");

@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="theme-color" content="#37474f">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Upload File to 3DOC</title>
+    <title>3DOC Toolbox</title>
     <link rel="icon" sizes="192x192" href="https://material.io/static/images/simple-lp/favicons/components-192x192.png">
     <link rel="shortcut icon" href="https://material.io/static/images/simple-lp/favicons/components-72x72.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
@@ -13,7 +14,7 @@
     <link rel="stylesheet" href="bundle.css">
 </head>
 
-<body>
+<body class="mdc-typography">
 
     <header class="mdc-top-app-bar">
         <div class="mdc-top-app-bar__row">
@@ -25,38 +26,69 @@
     </header>
 
     <div class="main">
-        <div class="mdc-card standard-card">
-            <h2>Server</h2>
-            <div class="mdc-text-field mdc-text-field--box">
-                <input type="text" id="server-address" class="mdc-text-field__input" value="http://localhost:8000">
-                <label for="server-address" class="mdc-floating-label mdc-floating-label--float-above">Server Address</label>
-                <div class="mdc-line-ripple"></div>
-            </div>
-            <button id="get-documents" class="mdc-button mdc-button--raised standard-button">
-                Get Documents
-            </button>
-            <div class="mdc-card standard-card-dense">
-                <ul class="mdc-list mdc-list--two-line" aria-orientation="vertical" id="document-list-here">
-                </ul>
-            </div>
+        <div class="mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+                <div class="mdc-layout-grid__cell">
+                    <div class="mdc-card standard-card">
+                        <h2>Server</h2>
+                        <div class="mdc-text-field mdc-text-field--box">
+                            <input type="text" id="server-address" class="mdc-text-field__input" value="http://localhost:8000">
+                            <label for="server-address" class="mdc-floating-label mdc-floating-label--float-above">Server Address</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+                        <button id="get-documents" class="mdc-button mdc-button--raised standard-button">
+                            Get Documents
+                        </button>
+                        <ul class="mdc-list mdc-list--two-line" aria-orientation="vertical" id="document-list-here">
+                        </ul>
+                    </div>
+                </div>
+                <div class="mdc-layout-grid__cell">
+                    <div class="mdc-card standard-card">
+                        <h2>Upload Files</h2>
+                        <div class="mdc-button mdc-button--raised choose-file-button">
+                            <input type="file" id="upload">
+                            <p id="upload-text">Select File</p>
+                        </div>
+                        <button id="post-document" class="mdc-button mdc-button--raised standard-button">
+                            Send Document to Server
+                        </button>
 
-        </div>
+                        <div id="mdc-snackbar-upload-success" class="standard-snackbar hidden">
+                            <div class="standard-snackbar-text">Document was uploaded successfully</div>
+                            <button type="button" class="mdc-button mdc-button--unelevated">Ok</button>
+                        </div>
 
-        <div class="mdc-card standard-card">
-            <h2>Update Document Title</h2>
-            <div class="mdc-text-field mdc-text-field--box">
-                <input type="text" id="document-id" class="mdc-text-field__input document-id standard-mono">
-                <label for="document-id" class="mdc-floating-label">Document ID</label>
-                <div class="mdc-line-ripple"></div>
+                        <div id="mdc-snackbar-upload-fail" class="standard-snackbar hidden standard-bad">
+                            <div class="standard-snackbar-text">
+                                <div>
+                                    Document could not be uploaded:</div>
+                                <div id="upload-fail-msg"></div>
+                            </div>
+                            <button type="button" class="mdc-button mdc-button--unelevated">Ok</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="mdc-layout-grid__cell">
+                    <div class="mdc-card standard-card">
+                        <h2>Update Document Title</h2>
+                        <div class="mdc-text-field mdc-text-field--box">
+                            <input type="text" id="document-id" class="mdc-text-field__input document-id standard-mono">
+                            <label for="document-id" class="mdc-floating-label">Document ID</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+                        <div class="mdc-text-field mdc-text-field--box">
+                            <input type="text" id="document-title" class="mdc-text-field__input">
+                            <label for="document-title" class="mdc-floating-label">Document Title</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+                        <button class="mdc-button mdc-button--raised standard-button" id="set-document-title">
+                            Set title
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="mdc-text-field mdc-text-field--box">
-                <input type="text" id="document-title" class="mdc-text-field__input">
-                <label for="document-title" class="mdc-floating-label">Document Title</label>
-                <div class="mdc-line-ripple"></div>
-            </div>
-            <button class="mdc-button mdc-button--raised standard-button" id="set-document-title">
-                Set title
-            </button>
         </div>
     </div>
 
