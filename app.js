@@ -41,7 +41,7 @@ function getDocuments() {
         let list = "";
         array.forEach(a => {
             let label = a.title ? a.title : "Untitled document";
-            list = list + "<li class='mdc-list-item list-document'>" +
+            list = list + "<li class='mdc-list-item mdc-elevation--z3 list-document'>" +
                 "<a href='" + server + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
                 "<span class='mdc-list-item__text'>" +
                 "<span class='mdc-list-item__primary-text'>" + label + "</span>" +

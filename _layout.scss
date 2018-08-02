@@ -8,8 +8,8 @@ body {
 }
 
 .list-document {
-    background-color: $standard-light-gray;
     color: $standard-primary-color-light;
+    margin: $standard-margin-dense 0 0;
 }
 
 .mdc-list-item__graphic {
