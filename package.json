@@ -3,7 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "start": "webpack-dev-server --progress --host 0.0.0.0"
+    "start": "webpack-dev-server --progress --host 0.0.0.0",
+    "build": "ncp static/ output/ && webpack -p"
   },
   "license": "Apache-2.0",
   "devDependencies": {
