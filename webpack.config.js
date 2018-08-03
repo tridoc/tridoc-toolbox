@@ -1,4 +1,5 @@
 const autoprefixer = require('autoprefixer');
+const path = require('path');
 
 module.exports = [
   {
@@ -6,6 +7,7 @@ module.exports = [
     output: {
       // This is necessary for webpack to compile
       // But we never use style-bundle.js
+      path: path.resolve('generated/'),
       filename: 'style-bundle.js',
     },
     module: {
@@ -15,7 +17,8 @@ module.exports = [
           {
             loader: 'file-loader',
             options: {
-              name: 'bundle.css',
+                path: path.resolve('generated/'),
+                name: 'bundle.css',
             },
           },
           { loader: 'extract-loader' },
@@ -39,7 +42,8 @@ module.exports = [
   {
     entry: "./app.js",
     output: {
-      filename: "bundle.js"
+        path: path.resolve("generated/"),
+        filename: "bundle.js"
     },
     module: {
       loaders: [{

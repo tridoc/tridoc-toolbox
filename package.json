@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "webpack-dev-server --progress --host 0.0.0.0",
-    "build": "ncp static/ output/ && webpack -p"
+    "build": "webpack -p && ncp index.html generated/index.html"
   },
   "license": "Apache-2.0",
   "devDependencies": {
@@ -38,6 +38,7 @@
     "@material/textfield": "^0.38.0",
     "@material/toolbar": "^0.38.0",
     "@material/top-app-bar": "^0.38.0",
-    "@material/typography": "^0.38.0"
+    "@material/typography": "^0.38.0",
+    "path": "^0.12.7"
   }
 }
