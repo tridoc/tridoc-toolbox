@@ -49,24 +49,34 @@ listRipple.forEach((element) => new MDCRipple(element));
 const topAppBarElement = [].slice.call(document.querySelectorAll('.mdc-top-app-bar'));
 topAppBarElement.forEach((element) => new MDCTopAppBar(element));
 
-document.getElementById("search-documents").addEventListener("click", searchDocuments);
+// Actual code starts here.
+
+const storage = localStorage;
+
+if (storage.getItem("server")) {
+    document.getElementById("server-address").value = storage.getItem("server");
+    document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
+}
+
+
+document.querySelector("#search-documents").addEventListener("click", searchDocuments);
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
 document.getElementById("upload").addEventListener("input", displayFilename);
 document.getElementById("post-document").addEventListener("click", postDocument);
 document.querySelectorAll(".dismiss").forEach(e => e.addEventListener("click", dismiss));
 
 function dismiss() {
-    let successAlert = document.querySelector('#snackbar-upload-success');
-    let failAlert = document.querySelector('#snackbar-upload-fail');
-    successAlert.classList.add("hidden");
-    failAlert.classList.add("hidden");
+    let snackbar = this.parentNode;
+    snackbar.classList.add("hidden");
+}
+
+function dismissElement(element) {
+    element.classList.add("hidden");
 }
 
 function displayFilename() {
     let file = document.getElementById('upload').value;
     let filename = "";
-
-    dismiss();
 
     if (file.lastIndexOf("/") > -1) {
         filename = file.substr(file.lastIndexOf("/") + 1);
@@ -83,7 +93,8 @@ function postDocument() {
     let failAlert = document.querySelector('#snackbar-upload-fail');
     let failMsg = document.querySelector('#upload-fail-msg');
     let server = document.getElementById("server-address").value;
-    dismiss();
+    dismissElement(successAlert);
+    dismissElement(failAlert);
 
     console.log(fileList[0]);
 
@@ -98,6 +109,7 @@ function postDocument() {
             failMsg.innerHTML = e;
             failAlert.classList.remove("hidden");
             searchDocuments();
+            window.setTimeout
         }).then(r => {
             if (r.status >= 400) {
                 return r.json();
@@ -111,39 +123,70 @@ function postDocument() {
                 failMsg.innerHTML = "Server responded with " + json.statusCode + ": " + json.error;
                 failAlert.classList.remove("hidden");
                 searchDocuments();
+                window.setTimeout(() => {
+                    dismissElement(failAlert);
+                }, 6000);
             } else {
                 successAlert.classList.remove("hidden");
                 searchDocuments();
+                window.setTimeout(() => {
+                    dismissElement(successAlert);
+                }, 6000);
             }
         });
     } else {
         failMsg.innerHTML = "Please provide a pdf document";
         failAlert.classList.remove("hidden");
         searchDocuments();
+        window.setTimeout(() => {
+            dismissElement(failAlert);
+        }, 6000);
     }
 }
 
 function searchDocuments() {
     let server = document.getElementById("server-address").value;
     let query = document.getElementById("search").value;
+    let failAlert = document.querySelector('#snackbar-get-fail');
+    let failMsg = document.querySelector('#get-fail-msg');
+
+    try {
+        storage.setItem("server",server);
+    } catch (error) {}
 
     fetch(server + "/doc?text=" + encodeURIComponent(query)).then(r => r.json()).then(array => {
-        let dest = document.getElementById("search-document-list-here");
         let list = "";
-        array.forEach(a => {
-            let label = a.title ? a.title : "Untitled document";
-            list = list + "<li class='mdc-list-item mdc-elevation--z3 list-document'>" +
-                "<a href='" + server + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
-                "<span class='mdc-list-item__text'>" +
-                "<span class='mdc-list-item__primary-text'>" + label + "</span>" +
-                "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
-                "</span>" +
-                "</li>";
-        });
+        let dest = document.getElementById("search-document-list-here");
+        if (array.error) {
+            failMsg.innerHTML = "Server responded with " + array.statusCode + ": " + array.error;
+            failAlert.classList.remove("hidden");
+            window.setTimeout(() => {
+                dismissElement(failAlert);
+            }, 6000);
+        } else {
+            array.forEach(a => {
+                let label = a.title ? a.title : "Untitled document";
+                list = list + "<li class='mdc-list-item mdc-elevation--z3 list-document'>" +
+                    "<a href='" + server + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
+                    "<span class='mdc-list-item__text'>" +
+                    "<span class='mdc-list-item__primary-text'>" + label + "</span>" +
+                    "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
+                    "</span>" +
+                    "</li>";
+            });
+
+        }
         dest.innerHTML = list;
         if (list != "") {
             document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
         }
+    }).catch(e => {
+        console.log(e);
+        failMsg.innerHTML = e;
+        failAlert.classList.remove("hidden");
+        window.setTimeout(() => {
+            dismissElement(failAlert);
+        }, 6000);
     });
 }
 

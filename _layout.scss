@@ -3,13 +3,20 @@ body {
     background-color: $standard-secondary-color-light;
 }
 
+#search-document-list-here {
+    padding: 0;
+    .list-document:first-child {
+        margin-top: $standard-margin;
+    }
+}
+
 .mdc-text-field {
-    //margin: $standard-margin 0;
+    margin-top: $standard-margin;
 }
 
 .list-document {
-    color: $standard-primary-color-light;
-    margin: $standard-margin-dense 0 0;
+    color: $standard-primary-color-dark;
+    margin-top: $standard-margin-dense;
 }
 
 .mdc-list-item__graphic {
@@ -44,13 +51,8 @@ body {
     height: 100%;
 }
 
-.standard-card-dense {
-    margin: $standard-margin-dense 0; //trbl
-    padding: 0;
-}
-
 .standard-button {
-    margin: $standard-margin 0 0;
+    margin-top: $standard-margin;
 }
 
 .standard-mono {
@@ -58,28 +60,26 @@ body {
 }
 
 .standard-snackbar {
-    margin: $standard-margin 0;
+    margin-top: $standard-margin;
+    margin-bottom: 0;
     background-color: $standard-dark-gray;
     border-radius: $standard-border-radius;
     color: #ffffff;
     padding: $standard-padding-dense;
     display: flex;
-    justify-content: space-between; 
-
+    justify-content: space-between;
     @include mdc-elevation(4);
-
     .standard-snackbar-text {
         margin: $standard-margin-dense;
     }
-
-    .mdc-button {
+    .snackbar-button {
         margin: auto $standard-margin-dense;
     }
 }
 
 .standard-bad {
     background-color: $standard-secondary-color-dark;
-    .mdc-button {
+    .snackbar-button {
         background-color: #ffffff;
         color: $standard-secondary-color-dark;
     }
@@ -88,6 +88,7 @@ body {
 .hidden {
     display: none;
 }
+
 .no-dismiss {
     display: block !important;
     margin: 0 !important;
