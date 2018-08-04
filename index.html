@@ -40,10 +40,13 @@
 
     <div class="main mdc-top-app-bar--fixed-adjust">
         <div class="standard-snackbar standard-bad no-dismiss">
-            <h1 class="standard-snackbar-text">Warning: Site under Development</h1>
-            <div class="standard-snackbar-text">
-                Expect changes in UI and functionality. May not work all the time
+            <div>
+                <h2 class="standard-snackbar-text">Warning: Site under development</h2>
+                <div class="standard-snackbar-text">
+                    Expect changes in UI and functionality.
+                </div>
             </div>
+            <button class="snackbar-button mdc-button mdc-button--unelevated dismiss">Close this message</button>
         </div>
         <div class="mdc-layout-grid">
             <div class="mdc-layout-grid__inner">
@@ -61,8 +64,7 @@
                         </button>
                         <div id="snackbar-get-fail" class="standard-snackbar hidden standard-bad">
                             <div class="standard-snackbar-text">
-                                <div>
-                                    Could not get Documents</div>
+                                <div>Could not get Documents</div>
                                 <div id="get-fail-msg"></div>
                             </div>
                             <button type="button" class="snackbar-button mdc-button mdc-button--unelevated material-icons dismiss">close</button>

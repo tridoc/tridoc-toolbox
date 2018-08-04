@@ -58,7 +58,6 @@ if (storage.getItem("server")) {
     document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
 }
 
-
 document.querySelector("#search-documents").addEventListener("click", searchDocuments);
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
 document.getElementById("upload").addEventListener("input", displayFilename);
@@ -149,45 +148,64 @@ function searchDocuments() {
     let query = document.getElementById("search").value;
     let failAlert = document.querySelector('#snackbar-get-fail');
     let failMsg = document.querySelector('#get-fail-msg');
+    let dest = document.getElementById("search-document-list-here");
 
-    try {
-        storage.setItem("server",server);
-    } catch (error) {}
-
-    fetch(server + "/doc?text=" + encodeURIComponent(query)).then(r => r.json()).then(array => {
-        let list = "";
-        let dest = document.getElementById("search-document-list-here");
-        if (array.error) {
-            failMsg.innerHTML = "Server responded with " + array.statusCode + ": " + array.error;
-            failAlert.classList.remove("hidden");
-            window.setTimeout(() => {
-                dismissElement(failAlert);
-            }, 6000);
+    if (!server) {
+        if (storage.getItem("server")) {
+            failMsg.innerHTML = "You need to set a server first. Last server set was " + storage.getItem("server");
         } else {
-            array.forEach(a => {
-                let label = a.title ? a.title : "Untitled document";
-                list = list + "<li class='mdc-list-item mdc-elevation--z3 list-document'>" +
-                    "<a href='" + server + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
-                    "<span class='mdc-list-item__text'>" +
-                    "<span class='mdc-list-item__primary-text'>" + label + "</span>" +
-                    "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
-                    "</span>" +
-                    "</li>";
-            });
-
+            failMsg.innerHTML = "You need to set a server first.";
         }
-        dest.innerHTML = list;
-        if (list != "") {
-            document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
-        }
-    }).catch(e => {
-        console.log(e);
-        failMsg.innerHTML = e;
+        dest.innerHTML = "";
         failAlert.classList.remove("hidden");
         window.setTimeout(() => {
             dismissElement(failAlert);
         }, 6000);
-    });
+    } else {
+        if (!server.startsWith("http")) {
+            document.getElementById("server-address").value = "http://" + server;
+            server = "http://" + server;
+        }
+        try {
+            storage.setItem("server", server);
+        } catch (error) {}
+        console.log(server);
+        fetch(server + "/doc?text=" + encodeURIComponent(query)).then(r => r.json()).then(array => {
+            let list = "";
+            if (array.error) {
+                failMsg.innerHTML = "Server responded with " + array.statusCode + ": " + array.error;
+                dest.innerHTML = "";
+                failAlert.classList.remove("hidden");
+                window.setTimeout(() => {
+                    dismissElement(failAlert);
+                }, 6000);
+            } else {
+                array.forEach(a => {
+                    let label = a.title ? a.title : "Untitled document";
+                    list = list + "<li class='mdc-list-item mdc-elevation--z3 list-document'>" +
+                        "<a href='" + server + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
+                        "<span class='mdc-list-item__text'>" +
+                        "<span class='mdc-list-item__primary-text'>" + label + "</span>" +
+                        "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
+                        "</span>" +
+                        "</li>";
+                });
+
+            }
+            dest.innerHTML = list;
+            if (list != "") {
+                document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
+            }
+        }).catch(e => {
+            console.log(e);
+            failMsg.innerHTML = e;
+            dest.innerHTML = "";
+            failAlert.classList.remove("hidden");
+            window.setTimeout(() => {
+                dismissElement(failAlert);
+            }, 6000);
+        });
+    }
 }
 
 function setDocumentTitle() {
