@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta name="theme-color" content="#003d32">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>3DOC Toolbox</title>
+    <title>tridocTOOLBOX</title>
     <link rel="icon" sizes="192x192" href="https://material.io/static/images/simple-lp/favicons/components-192x192.png">
     <link rel="shortcut icon" href="https://material.io/static/images/simple-lp/favicons/components-72x72.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="bundle.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body class="mdc-typography">
@@ -19,8 +19,8 @@
     <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
         <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
-                <span class="mdc-top-app-bar__title">3DOC Toolbox</span>
+                <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">settings</a>
+                <span class="mdc-top-app-bar__title">tridoc Toolbox</span>
             </section>
         </div>
     </header>
@@ -30,8 +30,8 @@
             <div class="mdc-drawer__toolbar-spacer mdc-top-app-bar__title">Settings</div>
             <nav class="mdc-drawer__content">
                 <div class="mdc-text-field mdc-text-field--box">
-                    <input type="text" id="server-address" class="mdc-text-field__input" value="http://localhost:8000">
-                    <label for="server-address" class="mdc-floating-label mdc-floating-label--float-above">Server Address</label>
+                    <input type="text" id="server-address" class="mdc-text-field__input">
+                    <label id="server-address-label" for="server-address" class="mdc-floating-label">Server Address</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
             </nav>
@@ -40,26 +40,35 @@
 
     <div class="main mdc-top-app-bar--fixed-adjust">
         <!--<div class="standard-snackbar standard-bad no-dismiss">
-            <h1 class="standard-snackbar-text">Warning: Site under Development</h1>
-            <div class="standard-snackbar-text">
-                Expect changes in UI and functionality. May not work all the time
+            <div>
+                <h2 class="standard-snackbar-text">Warning: Site under development</h2>
+                <div class="standard-snackbar-text">
+                    Expect changes in UI and functionality.
+                </div>
             </div>
+            <button class="snackbar-button mdc-button mdc-button--unelevated dismiss">Close this message</button>
         </div>-->
         <div class="mdc-layout-grid">
             <div class="mdc-layout-grid__inner">
                 <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-5-desktop">
                     <div class="mdc-card standard-card">
                         <h2>Search in Documents</h2>
-                        <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon">
-                            <input type="text" id="search" class="mdc-text-field__input">
+                        <div class="mdc-text-field mdc-text-field--box">
+                            <input type="text" id="search" class="mdc-text-field__input" autocomplete="off">
                             <label for="search" class="mdc-floating-label">Search query</label>
-                            <div class="material-icons mdc-text-field__icon">search</div>
                             <div class="mdc-line-ripple"></div>
                         </div>
                         <p class="mdc-text-field-helper-text">Leave empty to get all documents</p>
                         <button id="search-documents" class="mdc-button mdc-button--raised standard-button">
                             Get Documents
                         </button>
+                        <div id="snackbar-get-fail" class="standard-snackbar hidden standard-bad">
+                            <div class="standard-snackbar-text">
+                                <div>Could not get Documents</div>
+                                <div id="get-fail-msg"></div>
+                            </div>
+                            <button type="button" class="snackbar-button mdc-button mdc-button--unelevated material-icons dismiss">close</button>
+                        </div>
                         <ul class="mdc-list mdc-list--two-line" aria-orientation="vertical" id="search-document-list-here">
                         </ul>
                     </div>
@@ -67,7 +76,7 @@
                 <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop">
                     <div class="mdc-card standard-card">
                         <h2>Upload Files</h2>
-                        <div class="mdc-button mdc-button--raised choose-file-button">
+                        <div class="mdc-button mdc-button--raised choose-file-button standard-button">
                             <input type="file" id="upload">
                             <p id="upload-text">Select File</p>
                         </div>
@@ -77,7 +86,7 @@
 
                         <div id="snackbar-upload-success" class="standard-snackbar hidden">
                             <div class="standard-snackbar-text">Document was uploaded successfully</div>
-                            <button type="button" class="mdc-button mdc-button--unelevated dismiss">Ok</button>
+                            <button type="button" class="snackbar-button mdc-button mdc-button--unelevated material-icons dismiss">close</button>
                         </div>
 
                         <div id="snackbar-upload-fail" class="standard-snackbar hidden standard-bad">
@@ -86,9 +95,8 @@
                                     Document could not be uploaded:</div>
                                 <div id="upload-fail-msg"></div>
                             </div>
-                            <button type="button" class="mdc-button mdc-button--unelevated dismiss">Ok</button>
+                            <button type="button" class="snackbar-button mdc-button mdc-button--unelevated material-icons dismiss">close</button>
                         </div>
-
                     </div>
                 </div>
                 <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4-desktop">
@@ -100,10 +108,9 @@
                             <div class="mdc-line-ripple"></div>
                         </div>
                         <p class="mdc-text-field-helper-text">Click on a document in the list to auto-fill this</p>
-                        <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon">
+                        <div class="mdc-text-field mdc-text-field--box">
                             <input type="text" id="document-title" class="mdc-text-field__input">
                             <label for="document-title" class="mdc-floating-label">Document Title</label>
-                            <div class="material-icons mdc-text-field__icon">title</div>
                             <div class="mdc-line-ripple"></div>
                         </div>
                         <button class="mdc-button mdc-button--raised standard-button" id="set-document-title">
