@@ -26,6 +26,7 @@ import {
     MDCPersistentDrawerFoundation,
     util
 } from '@material/drawer';
+import Dropzone from 'dropzone';
 
 const drawer = new MDCTemporaryDrawer(document.getElementById("drawer"));
 document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
@@ -85,25 +86,21 @@ function displayFilename() {
     document.getElementById('upload-text').innerHTML = filename;
 }
 
-function postDocument() {
-    let fileName = document.getElementById('upload').value;
-    let fileList = document.getElementById("upload").files;
+function uploadFile(file) {
+
     let successAlert = document.querySelector('#snackbar-upload-success');
     let failAlert = document.querySelector('#snackbar-upload-fail');
     let failMsg = document.querySelector('#upload-fail-msg');
     let server = document.getElementById("server-address").value;
-    dismissElement(successAlert);
-    dismissElement(failAlert);
-
-    console.log(fileList[0]);
-
-    if (fileList[0].type == "application/pdf") {
-        fetch(server + "/doc", {
+    if (file.type != "application/pdf") {
+        return Promise.reject("Please provide a pdf document")
+    } else {
+        return fetch(server + "/doc", {
             method: "POST",
             headers: {
                 "Content-Type": "application/pdf"
             },
-            body: fileList[0]
+            body: file
         }).catch(e => {
             failMsg.innerHTML = e;
             failAlert.classList.remove("hidden");
@@ -114,7 +111,8 @@ function postDocument() {
                 return r.json();
             } else {
                 return {
-                    success: true
+                    success: true,
+                    location: r.headers.get("Location")
                 };
             }
         }).then(json => {
@@ -131,16 +129,30 @@ function postDocument() {
                 window.setTimeout(() => {
                     dismissElement(successAlert);
                 }, 6000);
+                return json;
             }
         });
-    } else {
-        failMsg.innerHTML = "Please provide a pdf document";
+    }
+}
+
+function postDocument() {
+    let fileName = document.getElementById('upload').value;
+    let fileList = document.getElementById("upload").files;
+    let successAlert = document.querySelector('#snackbar-upload-success');
+    let failAlert = document.querySelector('#snackbar-upload-fail');
+    let failMsg = document.querySelector('#upload-fail-msg');
+    let server = document.getElementById("server-address").value;
+    dismissElement(successAlert);
+    dismissElement(failAlert);
+    console.log(fileList[0]);
+    uploadFile(fileList[0]).catch(error => 
+        {failMsg.innerHTML = error;
         failAlert.classList.remove("hidden");
         searchDocuments();
         window.setTimeout(() => {
             dismissElement(failAlert);
         }, 6000);
-    }
+    });
 }
 
 function searchDocuments() {
@@ -208,21 +220,25 @@ function searchDocuments() {
     }
 }
 
-function setDocumentTitle() {
+function setDocumentTitleForId(id, title) {
     let server = document.getElementById("server-address").value;
-    let id = document.getElementById("document-id").value;
-    let title = document.getElementById("document-title").value;
     let body = {
         'title': title
     };
-
-    fetch(server + "/doc/" + id + "/title", {
+    return fetch(server + "/doc/" + id + "/title", {
         method: "PUT",
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-    }).then(r => searchDocuments());
+    })
+}
+
+function setDocumentTitle() {
+    let server = document.getElementById("server-address").value;
+    let id = document.getElementById("document-id").value;
+    let title = document.getElementById("document-title").value;
+    setDocumentTitleForId(id, title).then(r => searchDocuments());
 }
 
 function fillout() {
@@ -247,3 +263,23 @@ function fillout() {
 }
 
 searchDocuments();
+
+var myDropzone = new Dropzone("div#uploadzone", { 
+    url: "happy/now",
+    autoProcessQueue: false
+});
+
+myDropzone.on("addedfile", function(file) {
+    uploadFile(file)
+        .catch(error => alert(error))
+        .then(json => {
+            setDocumentTitleForId(
+                json.location.substring(json.location.lastIndexOf("/")+1),
+            file.name)
+            .then(() => {
+                myDropzone.removeAllFiles();
+                searchDocuments()
+            });
+        });
+    return true;
+});
