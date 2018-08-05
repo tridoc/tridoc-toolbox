@@ -34,6 +34,7 @@
                     <label id="server-address-label" for="server-address" class="mdc-floating-label">Server Address</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
+                <button id="save-server-address" class="mdc-button mdc-button--raised standard-button">Save</button>
             </nav>
         </nav>
     </aside>
@@ -58,10 +59,11 @@
                             <label for="search" class="mdc-floating-label">Search query</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
-                        <p class="mdc-text-field-helper-text">Leave empty to get all documents</p>
+                        <!--<p class="mdc-text-field-helper-text">Leave empty to get all documents</p>-->
                         <button id="search-documents" class="mdc-button mdc-button--raised standard-button">
                             Get Documents
                         </button>
+
                         <div id="snackbar-get-fail" class="standard-snackbar hidden standard-bad">
                             <div class="standard-snackbar-text">
                                 <div>Could not get Documents</div>
@@ -69,20 +71,6 @@
                             </div>
                             <button type="button" class="snackbar-button mdc-button mdc-button--unelevated material-icons dismiss">close</button>
                         </div>
-                        <ul class="mdc-list mdc-list--two-line" aria-orientation="vertical" id="search-document-list-here">
-                        </ul>
-                    </div>
-                </div>
-                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop">
-                    <div class="mdc-card standard-card">
-                        <h2>Upload Files</h2>
-                        <div class="mdc-button mdc-button--raised choose-file-button standard-button">
-                            <input type="file" id="upload">
-                            <p id="upload-text">Select File</p>
-                        </div>
-                        <button id="post-document" class="mdc-button mdc-button--raised standard-button">
-                            Upload PDF
-                        </button>
 
                         <div id="snackbar-upload-success" class="standard-snackbar hidden">
                             <div class="standard-snackbar-text">Document was uploaded successfully</div>
@@ -97,6 +85,21 @@
                             </div>
                             <button type="button" class="snackbar-button mdc-button mdc-button--unelevated material-icons dismiss">close</button>
                         </div>
+
+                        <ul class="mdc-list mdc-list--two-line" aria-orientation="vertical" id="search-document-list-here">
+                        </ul>
+                    </div>
+                </div>
+                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop">
+                    <div class="mdc-card standard-card">
+                        <h2>Upload Files</h2>
+                        <div class="mdc-button mdc-button--raised choose-file-button standard-button">
+                            <input type="file" id="upload">
+                            <p id="upload-text">Select File</p>
+                        </div>
+                        <button id="post-document" class="mdc-button mdc-button--raised standard-button">
+                            Upload PDF
+                        </button>
                     </div>
                 </div>
                 <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4-desktop">
@@ -107,7 +110,7 @@
                             <label for="document-id" class="mdc-floating-label">Document ID</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
-                        <p class="mdc-text-field-helper-text">Click on a document in the list to auto-fill this</p>
+                        <!--<p class="mdc-text-field-helper-text">Click on a document in the list to auto-fill this</p>-->
                         <div class="mdc-text-field mdc-text-field--box">
                             <input type="text" id="document-title" class="mdc-text-field__input">
                             <label for="document-title" class="mdc-floating-label">Document Title</label>
