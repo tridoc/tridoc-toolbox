@@ -56,6 +56,16 @@
     "@material/theme" "^0.38.0"
     "@material/typography" "^0.38.0"
 
+"@material/form-field@^0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@material/form-field/-/form-field-0.38.0.tgz#3dd8e8564b9581f662185a2840f14063976bfaa4"
+  dependencies:
+    "@material/base" "^0.35.0"
+    "@material/rtl" "^0.36.0"
+    "@material/selection-control" "^0.38.0"
+    "@material/theme" "^0.38.0"
+    "@material/typography" "^0.38.0"
+
 "@material/icon-button@^0.38.0":
   version "0.38.0"
   resolved "https://registry.yarnpkg.com/@material/icon-button/-/icon-button-0.38.0.tgz#062aa03585b9a5b58523b15be67dcdddc5ba8012"
@@ -94,6 +104,16 @@
     "@material/base" "^0.35.0"
     "@material/theme" "^0.38.0"
 
+"@material/radio@^0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@material/radio/-/radio-0.38.0.tgz#2c7dab2e0e06728b9578d211327769c719179f05"
+  dependencies:
+    "@material/animation" "^0.34.0"
+    "@material/base" "^0.35.0"
+    "@material/ripple" "^0.38.0"
+    "@material/selection-control" "^0.38.0"
+    "@material/theme" "^0.38.0"
+
 "@material/ripple@^0.38.0":
   version "0.38.0"
   resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-0.38.0.tgz#c6bdd9b643cccb47e3dd6ba4572577410f241c8c"
@@ -119,6 +139,12 @@
     "@material/rtl" "^0.36.0"
     "@material/theme" "^0.38.0"
     "@material/typography" "^0.38.0"
+
+"@material/selection-control@^0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@material/selection-control/-/selection-control-0.38.0.tgz#26347e67cb61c9cf11d33feedfa10b62cc98719a"
+  dependencies:
+    "@material/ripple" "^0.38.0"
 
 "@material/snackbar@^0.38.0":
   version "0.38.0"

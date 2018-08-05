@@ -73,6 +73,7 @@ document.querySelector("#search-documents").addEventListener("click", searchDocu
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
 document.getElementById("upload").addEventListener("input", inputPostDocument);
 document.getElementById("delete").addEventListener("click", deleteDocument);
+document.getElementById("get-tags").addEventListener("click", getTags);
 
 function saveServer() {
     let serverAddress = document.querySelector("#server-address").value;
@@ -81,6 +82,60 @@ function saveServer() {
         storage.setItem("server", serverAddress);
     } catch (error) {}
     searchDocuments();
+}
+
+function getTags() {
+    let dest = document.getElementById("tag-list-here");
+    server.getTags().then(array => {
+        let list = "";
+        if (array.error) {
+            dest.innerHTML = "";
+            snackbar.show({
+                message: "Server responded with " + array.statusCode + ": " + array.error,
+                timeout: 6000
+            });
+        } else if (array.length > 0) {
+            array.forEach(a => {
+                let type = "Not parameterizable";
+                let icon = "label";
+                if (a.parameterizable) {
+                    if (a.parameterizable.type == "http://www.w3.org/2001/XMLSchema#decimal") {
+                        type = "with Decimal";
+                        icon = "dialpad";
+                    } else if (a.parameterizable.type == "http://www.w3.org/2001/XMLSchema#date") {
+                        type = "with Date";
+                        icon = "event";
+                    }
+                }
+                list = list + "<li class='mdc-list-item mdc-elevation--z3 list-tag'>" +
+                    "<button class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button important-color' aria-hidden='true' disabled>"+icon+"</button>" +
+                    "<span class='mdc-list-item__text'>" +
+                    "<span class='mdc-list-item__primary-text'>" + a.label + "</span>" +
+                    "<span class='mdc-list-item__secondary-text'>" + type + "</span>" +
+                    "</span>" +
+                    "</li>";
+            });
+            dest.innerHTML = list;
+            if (list != "") {
+                //document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
+            }
+        } else {
+            list = "<li class='mdc-list-item mdc-elevation--z3'>" +
+                "<button class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button important-color' disabled>blur_off</button>" +
+                "<span class='mdc-list-item__text'>" +
+                "<span class='mdc-list-item__primary-text'>No Labels found</span>" +
+                "<span class='mdc-list-item__secondary-text'>Create some above</span>" +
+                "</span>" +
+                "</li>";
+            dest.innerHTML = list;
+        }
+    }).catch(e => {
+        snackbar.show({
+            message: e,
+            timeout: 6000
+        });
+        dest.innerHTML = "";
+    });
 }
 
 function deleteDocument() {
@@ -114,8 +169,7 @@ function postDocument(file) {
                 .then(() => {
                     myDropzone.removeAllFiles();
                     snackbar.show({
-                        message: "Document was uploaded succesfully",
-                        multiline: true
+                        message: "Document was uploaded succesfully"
                     });
                     searchDocuments()
                 });
@@ -202,6 +256,7 @@ function fillout() {
 }
 
 searchDocuments();
+getTags();
 
 var myDropzone = new Dropzone("div#uploadzone", {
     url: "happy/now",
