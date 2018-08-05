@@ -26,7 +26,9 @@ import {
     MDCPersistentDrawerFoundation,
     util
 } from '@material/drawer';
+
 import Dropzone from 'dropzone';
+import Server from './lib/server';
 
 const drawer = new MDCTemporaryDrawer(document.getElementById("drawer"));
 document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
@@ -57,13 +59,28 @@ const storage = localStorage;
 if (storage.getItem("server")) {
     document.getElementById("server-address").value = storage.getItem("server");
     document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
+} else {
+    document.getElementById("server-address").value = "http://localhost:8000";
+    document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
 }
 
+let server = new Server(document.getElementById("server-address").value);
+
+document.querySelector("#save-server-address").addEventListener("click", saveServer);
 document.querySelector("#search-documents").addEventListener("click", searchDocuments);
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
 document.getElementById("upload").addEventListener("input", displayFilename);
 document.getElementById("post-document").addEventListener("click", postDocument);
 document.querySelectorAll(".dismiss").forEach(e => e.addEventListener("click", dismiss));
+
+function saveServer() {
+    let serverAddress = document.querySelector("#server-address").value;
+    server = new Server(serverAddress);
+    try {
+        storage.setItem("server", serverAddress);
+    } catch (error) {}
+    searchDocuments();
+}
 
 function dismiss() {
     let snackbar = this.parentNode;
@@ -86,67 +103,23 @@ function displayFilename() {
     document.getElementById('upload-text').innerHTML = filename;
 }
 
-function uploadFile(file) {
-
-    let successAlert = document.querySelector('#snackbar-upload-success');
-    let failAlert = document.querySelector('#snackbar-upload-fail');
-    let failMsg = document.querySelector('#upload-fail-msg');
-    let server = document.getElementById("server-address").value;
-    if (file.type != "application/pdf") {
-        return Promise.reject("Please provide a pdf document")
-    } else {
-        return fetch(server + "/doc", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/pdf"
-            },
-            body: file
-        }).catch(e => {
-            failMsg.innerHTML = e;
-            failAlert.classList.remove("hidden");
-            searchDocuments();
-            window.setTimeout
-        }).then(r => {
-            if (r.status >= 400) {
-                return r.json();
-            } else {
-                return {
-                    success: true,
-                    location: r.headers.get("Location")
-                };
-            }
-        }).then(json => {
-            if (json.error) {
-                failMsg.innerHTML = "Server responded with " + json.statusCode + ": " + json.error;
-                failAlert.classList.remove("hidden");
-                searchDocuments();
-                window.setTimeout(() => {
-                    dismissElement(failAlert);
-                }, 6000);
-            } else {
-                successAlert.classList.remove("hidden");
-                searchDocuments();
-                window.setTimeout(() => {
-                    dismissElement(successAlert);
-                }, 6000);
-                return json;
-            }
-        });
-    }
-}
-
 function postDocument() {
     let fileName = document.getElementById('upload').value;
     let fileList = document.getElementById("upload").files;
     let successAlert = document.querySelector('#snackbar-upload-success');
     let failAlert = document.querySelector('#snackbar-upload-fail');
     let failMsg = document.querySelector('#upload-fail-msg');
-    let server = document.getElementById("server-address").value;
     dismissElement(successAlert);
     dismissElement(failAlert);
     console.log(fileList[0]);
-    uploadFile(fileList[0]).catch(error => 
-        {failMsg.innerHTML = error;
+    server.uploadFile(fileList[0]).then(() => {
+        successAlert.classList.remove("hidden");
+        searchDocuments();
+        window.setTimeout(() => {
+            dismissElement(successAlert);
+        }, 6000);
+    }).catch(error => {
+        failMsg.innerHTML = error;
         failAlert.classList.remove("hidden");
         searchDocuments();
         window.setTimeout(() => {
@@ -156,89 +129,52 @@ function postDocument() {
 }
 
 function searchDocuments() {
-    let server = document.getElementById("server-address").value;
     let query = document.getElementById("search").value;
     let failAlert = document.querySelector('#snackbar-get-fail');
     let failMsg = document.querySelector('#get-fail-msg');
     let dest = document.getElementById("search-document-list-here");
 
-    if (!server) {
-        if (storage.getItem("server")) {
-            failMsg.innerHTML = "You need to set a server first. Last server set was " + storage.getItem("server");
-        } else {
-            failMsg.innerHTML = "You need to set a server first.";
-        }
-        dest.innerHTML = "";
-        failAlert.classList.remove("hidden");
-        window.setTimeout(() => {
-            dismissElement(failAlert);
-        }, 6000);
-    } else {
-        if (!server.startsWith("http")) {
-            document.getElementById("server-address").value = "http://" + server;
-            server = "http://" + server;
-        }
-        try {
-            storage.setItem("server", server);
-        } catch (error) {}
-        console.log(server);
-        fetch(server + "/doc?text=" + encodeURIComponent(query)).then(r => r.json()).then(array => {
-            let list = "";
-            if (array.error) {
-                failMsg.innerHTML = "Server responded with " + array.statusCode + ": " + array.error;
-                dest.innerHTML = "";
-                failAlert.classList.remove("hidden");
-                window.setTimeout(() => {
-                    dismissElement(failAlert);
-                }, 6000);
-            } else {
-                array.forEach(a => {
-                    let label = a.title ? a.title : "Untitled document";
-                    list = list + "<li class='mdc-list-item mdc-elevation--z3 list-document'>" +
-                        "<a href='" + server + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
-                        "<span class='mdc-list-item__text'>" +
-                        "<span class='mdc-list-item__primary-text'>" + label + "</span>" +
-                        "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
-                        "</span>" +
-                        "</li>";
-                });
-
-            }
-            dest.innerHTML = list;
-            if (list != "") {
-                document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
-            }
-        }).catch(e => {
-            console.log(e);
-            failMsg.innerHTML = e;
+    server.getDocuments(query).then(array => {
+        let list = "";
+        if (array.error) {
+            failMsg.innerHTML = "Server responded with " + array.statusCode + ": " + array.error;
             dest.innerHTML = "";
             failAlert.classList.remove("hidden");
             window.setTimeout(() => {
                 dismissElement(failAlert);
             }, 6000);
-        });
-    }
-}
+        } else {
+            array.forEach(a => {
+                let label = a.title ? a.title : "Untitled document";
+                list = list + "<li class='mdc-list-item mdc-elevation--z3 list-document'>" +
+                    "<a href='" + server + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
+                    "<span class='mdc-list-item__text'>" +
+                    "<span class='mdc-list-item__primary-text'>" + label + "</span>" +
+                    "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
+                    "</span>" +
+                    "</li>";
+            });
 
-function setDocumentTitleForId(id, title) {
-    let server = document.getElementById("server-address").value;
-    let body = {
-        'title': title
-    };
-    return fetch(server + "/doc/" + id + "/title", {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
+        }
+        dest.innerHTML = list;
+        if (list != "") {
+            document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
+        }
+    }).catch(e => {
+        console.log(e);
+        failMsg.innerHTML = e;
+        dest.innerHTML = "";
+        failAlert.classList.remove("hidden");
+        window.setTimeout(() => {
+            dismissElement(failAlert);
+        }, 6000);
+    });
 }
 
 function setDocumentTitle() {
-    let server = document.getElementById("server-address").value;
     let id = document.getElementById("document-id").value;
     let title = document.getElementById("document-title").value;
-    setDocumentTitleForId(id, title).then(r => searchDocuments());
+    server.setDocumentTitle(id, title).then(r => searchDocuments());
 }
 
 function fillout() {
@@ -264,22 +200,22 @@ function fillout() {
 
 searchDocuments();
 
-var myDropzone = new Dropzone("div#uploadzone", { 
+var myDropzone = new Dropzone("div#uploadzone", {
     url: "happy/now",
     autoProcessQueue: false
 });
 
-myDropzone.on("addedfile", function(file) {
-    uploadFile(file)
+myDropzone.on("addedfile", function (file) {
+    server.uploadFile(file)
         .catch(error => alert(error))
         .then(json => {
-            setDocumentTitleForId(
-                json.location.substring(json.location.lastIndexOf("/")+1),
-            file.name)
-            .then(() => {
-                myDropzone.removeAllFiles();
-                searchDocuments()
-            });
+            server.setDocumentTitle(
+                    json.location.substring(json.location.lastIndexOf("/") + 1),
+                    file.name)
+                .then(() => {
+                    myDropzone.removeAllFiles();
+                    searchDocuments()
+                });
         });
     return true;
 });

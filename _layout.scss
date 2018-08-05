@@ -10,6 +10,10 @@ body {
     }
 }
 
+.dz-preview {
+    display: none;
+}
+
 .mdc-text-field {
     margin-top: $standard-margin;
 }
@@ -60,6 +64,8 @@ body {
 }
 
 .standard-snackbar {
+    z-index: 1000;
+    min-width: 220px;
     margin-top: $standard-margin;
     margin-bottom: 0;
     background-color: $standard-dark-gray;
