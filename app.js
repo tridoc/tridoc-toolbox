@@ -88,11 +88,13 @@ function deleteDocument() {
     let id = document.getElementById("document-id").value;
     server.deleteDocument(id)
         .then(r => {
-            snackbar.show({message:"Deleted metadata"});
+            snackbar.show({
+                message: "Deleted metadata"
+            });
             form.querySelectorAll("input")
-            .forEach(element => element.value = "");
+                .forEach(element => element.value = "");
             form.querySelectorAll("label")
-            .forEach(element => element.classList.remove("mdc-floating-label--float-above"));
+                .forEach(element => element.classList.remove("mdc-floating-label--float-above"));
             searchDocuments();
         })
 }
@@ -147,21 +149,21 @@ function searchDocuments() {
                     "</span>" +
                     "</li>";
             });
-
+            dest.innerHTML = list;
+            if (list != "") {
+                document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
+            }
         } else {
             let label1 = query ? "Nothing Found" : "Documents will appear here";
             let label2 = query ? "You can try another query" : "Upload something";
             list = "<li class='mdc-list-item mdc-elevation--z3'>" +
-                    "<button class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button important-color' disabled>blur_off</button>" +
-                    "<span class='mdc-list-item__text'>" +
-                    "<span class='mdc-list-item__primary-text'>"+label1+"</span>" +
-                    "<span class='mdc-list-item__secondary-text'>"+label2+"</span>" +
-                    "</span>" +
-                    "</li>";
-        }
-        dest.innerHTML = list;
-        if (list != "") {
-            document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
+                "<button class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button important-color' disabled>blur_off</button>" +
+                "<span class='mdc-list-item__text'>" +
+                "<span class='mdc-list-item__primary-text'>" + label1 + "</span>" +
+                "<span class='mdc-list-item__secondary-text'>" + label2 + "</span>" +
+                "</span>" +
+                "</li>";
+            dest.innerHTML = list;
         }
     }).catch(e => {
         snackbar.show({
