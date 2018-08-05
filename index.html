@@ -29,17 +29,17 @@
         <nav class="mdc-drawer__drawer">
             <div class="mdc-drawer__toolbar-spacer mdc-top-app-bar__title">Settings</div>
             <nav class="mdc-drawer__content">
-                <div class="mdc-text-field mdc-text-field--box">
+                <div class="mdc-text-field mdc-text-field--box standard">
                     <input type="text" id="server-address" class="mdc-text-field__input">
                     <label id="server-address-label" for="server-address" class="mdc-floating-label">Server Address</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
-                <button id="save-server-address" class="mdc-button mdc-button--raised standard-button">Save</button>
+                <button id="save-server-address" class="mdc-button mdc-button--raised standard">Save</button>
             </nav>
         </nav>
     </aside>
 
-    <div class="main mdc-top-app-bar--fixed-adjust">
+    <div class="main mdc-top-app-bar--fixed-adjust" id="uploadzone">
         <!--<div class="standard-snackbar standard-bad no-dismiss">
             <div>
                 <h2 class="standard-snackbar-text">Warning: Site under development</h2>
@@ -51,77 +51,57 @@
         </div>-->
         <div class="mdc-layout-grid">
             <div class="mdc-layout-grid__inner">
-                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-5-desktop" id="uploadzone">
+                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-5-desktop">
                     <div class="mdc-card standard-card">
-                        <h2>Search in Documents</h2>
-                        <div class="mdc-text-field mdc-text-field--box">
+                        <h2>Manage Documents</h2>
+                        <div class="mdc-text-field mdc-text-field--box standard">
                             <input type="text" id="search" class="mdc-text-field__input" autocomplete="off">
                             <label for="search" class="mdc-floating-label">Search query</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
                         <!--<p class="mdc-text-field-helper-text">Leave empty to get all documents</p>-->
-                        <button id="search-documents" class="mdc-button mdc-button--raised standard-button">
+                        <button id="search-documents" class="mdc-button mdc-button--raised standard">
                             Get Documents
                         </button>
-
-                        <div id="snackbar-get-fail" class="standard-snackbar hidden standard-bad">
-                            <div class="standard-snackbar-text">
-                                <div>Could not get Documents</div>
-                                <div id="get-fail-msg"></div>
-                            </div>
-                            <button type="button" class="snackbar-button mdc-button mdc-button--unelevated material-icons dismiss">close</button>
-                        </div>
-
-                        <div id="snackbar-upload-success" class="standard-snackbar hidden">
-                            <div class="standard-snackbar-text">Document was uploaded successfully</div>
-                            <button type="button" class="snackbar-button mdc-button mdc-button--unelevated material-icons dismiss">close</button>
-                        </div>
-
-                        <div id="snackbar-upload-fail" class="standard-snackbar hidden standard-bad">
-                            <div class="standard-snackbar-text">
-                                <div>
-                                    Document could not be uploaded:</div>
-                                <div id="upload-fail-msg"></div>
-                            </div>
-                            <button type="button" class="snackbar-button mdc-button mdc-button--unelevated material-icons dismiss">close</button>
+                        <p class="mdc-typography--overline standard">Drop file for upload or</p>
+                        <div class="mdc-button mdc-button--raised choose-file-button">
+                            <input type="file" id="upload" accept="application/pdf,.pdf">
+                            <p id="upload-text">Select File</p>
                         </div>
 
                         <ul class="mdc-list mdc-list--two-line" aria-orientation="vertical" id="search-document-list-here">
                         </ul>
                     </div>
                 </div>
-                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop">
-                    <div class="mdc-card standard-card">
-                        <h2>Upload Files</h2>
-                        <div class="mdc-button mdc-button--raised choose-file-button standard-button">
-                            <input type="file" id="upload">
-                            <p id="upload-text">Select File</p>
-                        </div>
-                        <button id="post-document" class="mdc-button mdc-button--raised standard-button">
-                            Upload PDF
-                        </button>
-                    </div>
-                </div>
-                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4-desktop">
-                    <div class="mdc-card standard-card">
-                        <h2>Update Document Title</h2>
-                        <div class="mdc-text-field mdc-text-field--box">
+                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-7-desktop">
+                    <div class="mdc-card standard-card" id="manage-metadata">
+                        <h2>Manage Metadata</h2>
+                        <div class="mdc-text-field mdc-text-field--box standard">
                             <input type="text" id="document-id" class="mdc-text-field__input document-id standard-mono" autocomplete="off">
                             <label for="document-id" class="mdc-floating-label">Document ID</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
-                        <!--<p class="mdc-text-field-helper-text">Click on a document in the list to auto-fill this</p>-->
-                        <div class="mdc-text-field mdc-text-field--box">
+                        <button class="mdc-button mdc-button--raised standard" id="delete">
+                            Delete
+                        </button>
+                        <div class="mdc-text-field mdc-text-field--box standard">
                             <input type="text" id="document-title" class="mdc-text-field__input">
                             <label for="document-title" class="mdc-floating-label">Document Title</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
-                        <button class="mdc-button mdc-button--raised standard-button" id="set-document-title">
+                        <button class="mdc-button mdc-button--raised standard" id="set-document-title">
                             Set title
                         </button>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="mdc-snackbar mdc-snackbar--align-start" aria-live="assertive" aria-atomic="true" aria-hidden="true">
+        <div class="mdc-snackbar__text"></div>
+        <div class="mdc-snackbar__action-wrapper">
+            <button type="button" class="mdc-snackbar__action-button">Dismiss</button>
         </div>
     </div>
 

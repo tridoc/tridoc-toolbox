@@ -54,6 +54,8 @@ topAppBarElement.forEach((element) => new MDCTopAppBar(element));
 
 // Actual code starts here.
 
+const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+
 const storage = localStorage;
 
 if (storage.getItem("server")) {
@@ -69,9 +71,8 @@ let server = new Server(document.getElementById("server-address").value);
 document.querySelector("#save-server-address").addEventListener("click", saveServer);
 document.querySelector("#search-documents").addEventListener("click", searchDocuments);
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
-document.getElementById("upload").addEventListener("input", displayFilename);
-document.getElementById("post-document").addEventListener("click", postDocument);
-document.querySelectorAll(".dismiss").forEach(e => e.addEventListener("click", dismiss));
+document.getElementById("upload").addEventListener("input", inputPostDocument);
+document.getElementById("delete").addEventListener("click", deleteDocument);
 
 function saveServer() {
     let serverAddress = document.querySelector("#server-address").value;
@@ -82,72 +83,64 @@ function saveServer() {
     searchDocuments();
 }
 
-function dismiss() {
-    let snackbar = this.parentNode;
-    snackbar.classList.add("hidden");
+function deleteDocument() {
+    let form = document.getElementById("manage-metadata");
+    let id = document.getElementById("document-id").value;
+    server.deleteDocument(id)
+        .then(r => {
+            snackbar.show({message:"Deleted metadata"});
+            form.querySelectorAll("input")
+            .forEach(element => element.value = "");
+            form.querySelectorAll("label")
+            .forEach(element => element.classList.remove("mdc-floating-label--float-above"));
+            searchDocuments();
+        })
 }
 
-function dismissElement(element) {
-    element.classList.add("hidden");
+function postDocument(file) {
+    server.uploadFile(file)
+        .catch(error => {
+            snackbar.show({
+                message: error,
+                timeout: 6000
+            });
+        })
+        .then(json => {
+            server.setDocumentTitle(
+                    json.location.substring(json.location.lastIndexOf("/") + 1),
+                    file.name)
+                .then(() => {
+                    myDropzone.removeAllFiles();
+                    snackbar.show({
+                        message: "Document was uploaded succesfully",
+                        multiline: true
+                    });
+                    searchDocuments()
+                });
+        });
 }
 
-function displayFilename() {
-    let file = document.getElementById('upload').value;
-    let filename = "";
-
-    if (file.lastIndexOf("/") > -1) {
-        filename = file.substr(file.lastIndexOf("/") + 1);
-    } else {
-        filename = file.substr(file.lastIndexOf("\\") + 1);
-    }
-    document.getElementById('upload-text').innerHTML = filename;
-}
-
-function postDocument() {
-    let fileName = document.getElementById('upload').value;
-    let fileList = document.getElementById("upload").files;
-    let successAlert = document.querySelector('#snackbar-upload-success');
-    let failAlert = document.querySelector('#snackbar-upload-fail');
-    let failMsg = document.querySelector('#upload-fail-msg');
-    dismissElement(successAlert);
-    dismissElement(failAlert);
-    console.log(fileList[0]);
-    server.uploadFile(fileList[0]).then(() => {
-        successAlert.classList.remove("hidden");
-        searchDocuments();
-        window.setTimeout(() => {
-            dismissElement(successAlert);
-        }, 6000);
-    }).catch(error => {
-        failMsg.innerHTML = error;
-        failAlert.classList.remove("hidden");
-        searchDocuments();
-        window.setTimeout(() => {
-            dismissElement(failAlert);
-        }, 6000);
-    });
+function inputPostDocument() {
+    postDocument(document.getElementById("upload").files[0]);
 }
 
 function searchDocuments() {
     let query = document.getElementById("search").value;
-    let failAlert = document.querySelector('#snackbar-get-fail');
-    let failMsg = document.querySelector('#get-fail-msg');
     let dest = document.getElementById("search-document-list-here");
 
     server.getDocuments(query).then(array => {
         let list = "";
         if (array.error) {
-            failMsg.innerHTML = "Server responded with " + array.statusCode + ": " + array.error;
             dest.innerHTML = "";
-            failAlert.classList.remove("hidden");
-            window.setTimeout(() => {
-                dismissElement(failAlert);
-            }, 6000);
-        } else {
+            snackbar.show({
+                message: "Server responded with " + array.statusCode + ": " + array.error,
+                timeout: 6000
+            });
+        } else if (array.length > 0) {
             array.forEach(a => {
                 let label = a.title ? a.title : "Untitled document";
                 list = list + "<li class='mdc-list-item mdc-elevation--z3 list-document'>" +
-                    "<a href='" + server + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
+                    "<a href='" + server.url + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
                     "<span class='mdc-list-item__text'>" +
                     "<span class='mdc-list-item__primary-text'>" + label + "</span>" +
                     "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
@@ -155,19 +148,27 @@ function searchDocuments() {
                     "</li>";
             });
 
+        } else {
+            let label1 = query ? "Nothing Found" : "Documents will appear here";
+            let label2 = query ? "You can try another query" : "Upload something";
+            list = "<li class='mdc-list-item mdc-elevation--z3'>" +
+                    "<button class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button important-color' disabled>blur_off</button>" +
+                    "<span class='mdc-list-item__text'>" +
+                    "<span class='mdc-list-item__primary-text'>"+label1+"</span>" +
+                    "<span class='mdc-list-item__secondary-text'>"+label2+"</span>" +
+                    "</span>" +
+                    "</li>";
         }
         dest.innerHTML = list;
         if (list != "") {
             document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
         }
     }).catch(e => {
-        console.log(e);
-        failMsg.innerHTML = e;
+        snackbar.show({
+            message: e,
+            timeout: 6000
+        });
         dest.innerHTML = "";
-        failAlert.classList.remove("hidden");
-        window.setTimeout(() => {
-            dismissElement(failAlert);
-        }, 6000);
     });
 }
 
@@ -206,16 +207,6 @@ var myDropzone = new Dropzone("div#uploadzone", {
 });
 
 myDropzone.on("addedfile", function (file) {
-    server.uploadFile(file)
-        .catch(error => alert(error))
-        .then(json => {
-            server.setDocumentTitle(
-                    json.location.substring(json.location.lastIndexOf("/") + 1),
-                    file.name)
-                .then(() => {
-                    myDropzone.removeAllFiles();
-                    searchDocuments()
-                });
-        });
+    postDocument(file);;
     return true;
 });
