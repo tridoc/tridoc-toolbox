@@ -40,18 +40,9 @@
     </aside>
 
     <div class="main mdc-top-app-bar--fixed-adjust" id="uploadzone">
-        <!--<div class="standard-snackbar standard-bad no-dismiss">
-            <div>
-                <h2 class="standard-snackbar-text">Warning: Site under development</h2>
-                <div class="standard-snackbar-text">
-                    Expect changes in UI and functionality.
-                </div>
-            </div>
-            <button class="snackbar-button mdc-button mdc-button--unelevated dismiss">Close this message</button>
-        </div>-->
         <div class="mdc-layout-grid">
             <div class="mdc-layout-grid__inner">
-                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-5-desktop">
+                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4-desktop">
                     <div class="mdc-card standard-card">
                         <h2>Manage Documents</h2>
                         <div class="mdc-text-field mdc-text-field--box standard">
@@ -73,7 +64,56 @@
                         </ul>
                     </div>
                 </div>
-                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-7-desktop">
+                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4-desktop">
+                    <div class="mdc-card standard-card" id="manage-metadata">
+                        <h2>Manage Tags</h2>
+                        <div class="mdc-text-field mdc-text-field--box standard">
+                            <input type="text" id="tag-label" class="mdc-text-field__input standard-mono" autocomplete="off">
+                            <label for="tag-label" class="mdc-floating-label">Label</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+                        <div class="standard">
+                            <div class="mdc-form-field">
+                                <div class="mdc-radio">
+                                    <input class="mdc-radio__native-control" type="radio" id="radio-1" name="radios" checked>
+                                    <div class="mdc-radio__background">
+                                        <div class="mdc-radio__outer-circle"></div>
+                                        <div class="mdc-radio__inner-circle"></div>
+                                    </div>
+                                </div>
+                                <label for="radio-1">Not parameterizable</label>
+                            </div>
+                            <div class="mdc-form-field">
+                                <div class="mdc-radio">
+                                    <input class="mdc-radio__native-control" type="radio" id="radio-2" name="radios">
+                                    <div class="mdc-radio__background">
+                                        <div class="mdc-radio__outer-circle"></div>
+                                        <div class="mdc-radio__inner-circle"></div>
+                                    </div>
+                                </div>
+                                <label for="radio-2">Parameterizable with Decimal</label>
+                            </div>
+                            <div class="mdc-form-field">
+                                <div class="mdc-radio">
+                                    <input class="mdc-radio__native-control" type="radio" id="radio-3" name="radios">
+                                    <div class="mdc-radio__background">
+                                        <div class="mdc-radio__outer-circle"></div>
+                                        <div class="mdc-radio__inner-circle"></div>
+                                    </div>
+                                </div>
+                                <label for="radio-3">Parameterizable with Date</label>
+                            </div>
+                        </div>
+                        <button disabled class="mdc-button mdc-button--raised standard" id="create-tag">
+                            Create Tag
+                        </button>
+                        <button class="mdc-button mdc-button--raised standard" id="get-tags">
+                            Get Tags
+                        </button>
+                        <ul class="mdc-list mdc-list--two-line" aria-orientation="vertical" id="tag-list-here"></ul>
+                    </div>
+                </div>
+                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-8-tablet">
                     <div class="mdc-card standard-card" id="manage-metadata">
                         <h2>Manage Metadata</h2>
                         <div class="mdc-text-field mdc-text-field--box standard">
