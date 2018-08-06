@@ -89,16 +89,27 @@ function saveServer() {
 function createTag() {
     let label = document.getElementById("tag-label").value;
     if (document.getElementById("radio-1").checked) {
-        server.createTag(label).then(then);
+        server.createTag(label).then(r => then(r));
     } else if (document.getElementById("radio-2").checked) {
-        server.createTag(label,"decimal").then(then);
+        server.createTag(label, "decimal").then(then);
     } else if (document.getElementById("radio-3").checked) {
-        server.createTag(label,"date").then(then);
+        server.createTag(label, "date").then(then);
     }
-    function then() {
-        document.getElementById("tag-label").value = "";
-        document.getElementById("tag-label-label").classList.remove("mdc-floating-label--float-above");
-        getTags();
+
+    function then(r) {
+        console.log(r);
+        if (r.error) {
+            snackbar.show({
+                message: "Couldn't create Tag: " + r.error
+             });
+        } else {
+            document.getElementById("tag-label").value = "";
+            document.getElementById("tag-label-label").classList.remove("mdc-floating-label--float-above");
+            snackbar.show({
+                message: "Tag created successfully"
+            });
+            getTags();
+        }
     }
 }
 
