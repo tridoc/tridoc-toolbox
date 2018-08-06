@@ -73,6 +73,7 @@ document.querySelector("#search-documents").addEventListener("click", searchDocu
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
 document.getElementById("upload").addEventListener("input", inputPostDocument);
 document.getElementById("delete").addEventListener("click", deleteDocument);
+document.getElementById("create-tag").addEventListener("click", createTag);
 document.getElementById("get-tags").addEventListener("click", getTags);
 
 function saveServer() {
@@ -82,6 +83,18 @@ function saveServer() {
         storage.setItem("server", serverAddress);
     } catch (error) {}
     searchDocuments();
+}
+
+
+function createTag() {
+    let label = document.getElementById("tag-label").value;
+    if (document.getElementById("radio-1").checked) {
+        server.createTag(label);
+    } else if (document.getElementById("radio-2").checked) {
+        server.createTag(label,"decimal");
+    } else if (document.getElementById("radio-3").checked) {
+        server.createTag(label,"date");
+    }
 }
 
 function getTags() {
@@ -100,10 +113,10 @@ function getTags() {
                 let icon = "label";
                 if (a.parameterizable) {
                     if (a.parameterizable.type == "http://www.w3.org/2001/XMLSchema#decimal") {
-                        type = "with Decimal";
+                        type = "with number / decimal";
                         icon = "dialpad";
                     } else if (a.parameterizable.type == "http://www.w3.org/2001/XMLSchema#date") {
-                        type = "with Date";
+                        type = "with date";
                         icon = "event";
                     }
                 }
