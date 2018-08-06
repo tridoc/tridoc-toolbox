@@ -89,11 +89,16 @@ function saveServer() {
 function createTag() {
     let label = document.getElementById("tag-label").value;
     if (document.getElementById("radio-1").checked) {
-        server.createTag(label);
+        server.createTag(label).then(then);
     } else if (document.getElementById("radio-2").checked) {
-        server.createTag(label,"decimal");
+        server.createTag(label,"decimal").then(then);
     } else if (document.getElementById("radio-3").checked) {
-        server.createTag(label,"date");
+        server.createTag(label,"date").then(then);
+    }
+    function then() {
+        document.getElementById("tag-label").value = "";
+        document.getElementById("tag-label-label").classList.remove("mdc-floating-label--float-above");
+        getTags();
     }
 }
 
@@ -108,6 +113,9 @@ function getTags() {
                 timeout: 6000
             });
         } else if (array.length > 0) {
+            array.sort(function(a,b){
+                return a.label.localeCompare(b.label);
+            })
             array.forEach(a => {
                 let type = "Not parameterizable";
                 let icon = "label";
