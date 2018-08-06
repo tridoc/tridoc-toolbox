@@ -33,9 +33,6 @@ import Server from './lib/server';
 const drawer = new MDCTemporaryDrawer(document.getElementById("drawer"));
 document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
 
-const textFieldIcons = [].slice.call(document.querySelectorAll('.mdc-text-field'));
-textFieldIcons.forEach((element) => new MDCTextFieldIcon(element));
-
 const textFieldElements = [].slice.call(document.querySelectorAll('.mdc-text-field'));
 textFieldElements.forEach((element) => new MDCTextField(element));
 
@@ -46,7 +43,7 @@ const iconButton = [].slice.call(document.querySelectorAll('button'));
 const iconButtonRipple = iconButton.forEach((element) => new MDCRipple(element));
 //iconButtonRipple.unbounded = true;
 
-const listRipple = [].slice.call(document.querySelectorAll('.mdc-list-item'));
+const listRipple = [].slice.call(document.querySelectorAll('.list'));
 listRipple.forEach((element) => new MDCRipple(element));
 
 const topAppBarElement = [].slice.call(document.querySelectorAll('.mdc-top-app-bar'));
@@ -83,6 +80,7 @@ function saveServer() {
         storage.setItem("server", serverAddress);
     } catch (error) {}
     searchDocuments();
+    getTags();
 }
 
 
@@ -139,7 +137,7 @@ function getTags() {
                         icon = "event";
                     }
                 }
-                list = list + "<li class='mdc-list-item mdc-elevation--z3 list-tag'>" +
+                list = list + "<li class='mdc-list-item mdc-card--outlined list list-tag'>" +
                     "<button class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button important-color' aria-hidden='true' disabled>"+icon+"</button>" +
                     "<span class='mdc-list-item__text'>" +
                     "<span class='mdc-list-item__primary-text'>" + a.label + "</span>" +
@@ -152,7 +150,7 @@ function getTags() {
                 //document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
             }
         } else {
-            list = "<li class='mdc-list-item mdc-elevation--z3'>" +
+            list = "<li class='mdc-list-item list list-tag mdc-elevation--z3'>" +
                 "<button class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button important-color' disabled>blur_off</button>" +
                 "<span class='mdc-list-item__text'>" +
                 "<span class='mdc-list-item__primary-text'>No Labels found</span>" +
@@ -197,7 +195,7 @@ function postDocument(file) {
         .then(json => {
             server.setDocumentTitle(
                     json.location.substring(json.location.lastIndexOf("/") + 1),
-                    file.name)
+                    file.name.replace(/\.pdf$/,""))
                 .then(() => {
                     myDropzone.removeAllFiles();
                     snackbar.show({
@@ -227,17 +225,21 @@ function searchDocuments() {
         } else if (array.length > 0) {
             array.forEach(a => {
                 let label = a.title ? a.title : "Untitled document";
-                list = list + "<li class='mdc-list-item mdc-elevation--z3 list-document'>" +
-                    "<a href='" + server.url + "/doc/" + a.identifier + "' target='_blank' class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button' aria-hidden='true'>open_in_new</a>" +
-                    "<span class='mdc-list-item__text'>" +
-                    "<span class='mdc-list-item__primary-text'>" + label + "</span>" +
-                    "<span class='standard-mono mdc-list-item__secondary-text'>" + a.identifier + "</span>" +
-                    "</span>" +
-                    "</li>";
+                list = list + "<div class='mdc-card mdc-card--outlined list list-document'>" +
+                    "  <div class='list-content'>" +
+                    "    <h3 class='mdc-typography--headline5'>" + label + "</h3>" +
+                    "    <span class='standard-mono mdc-typography--subtitle1'>" + a.identifier + "</span>" +
+                    "  </div>" +
+                    "  <div class='mdc-card__actions'>" +
+                    "    " +
+                    "    <button class='mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button document-edit'>Edit</button>" +
+                    "    <a class='mdc-button mdc-card__action mdc-card__action--button' href='" + server.url + "/doc/" + a.identifier + "' target='_blank'>Open</a>" +
+                    "  </div>" +
+                    "</div>";
             });
             dest.innerHTML = list;
             if (list != "") {
-                document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
+                document.querySelectorAll(".document-edit").forEach(element => element.addEventListener("click", fillout));
             }
         } else {
             let label1 = query ? "Nothing Found" : "Documents will appear here";
@@ -267,8 +269,8 @@ function setDocumentTitle() {
 }
 
 function fillout() {
-    let title = this.getElementsByClassName("mdc-list-item__primary-text")[0].innerHTML;
-    let id = this.getElementsByClassName("mdc-list-item__secondary-text")[0].innerHTML;
+    let title = this.parentNode.parentNode.getElementsByClassName("mdc-typography--headline5")[0].innerHTML;
+    let id = this.parentNode.parentNode.getElementsByClassName("mdc-typography--subtitle1")[0].innerHTML;
     let idFields = document.querySelectorAll(".document-id");
     idFields.forEach(element => {
         element.value = id;
@@ -296,6 +298,6 @@ var myDropzone = new Dropzone("div#uploadzone", {
 });
 
 myDropzone.on("addedfile", function (file) {
-    postDocument(file);;
+    postDocument(file);
     return true;
 });
