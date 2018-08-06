@@ -66,10 +66,10 @@
                 </div>
                 <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4-desktop">
                     <div class="mdc-card standard-card" id="manage-metadata">
-                        <h2>Manage Tags [In construction]</h2>
+                        <h2>Manage Tags</h2>
                         <div class="mdc-text-field mdc-text-field--box standard">
-                            <input type="text" id="tag-label" class="mdc-text-field__input standard-mono" autocomplete="off">
-                            <label for="tag-label" class="mdc-floating-label">Label</label>
+                            <input type="text" id="tag-label" class="mdc-text-field__input" autocomplete="off">
+                            <label for="tag-label" class="mdc-floating-label" id="tag-label-label">Label</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
                         <div class="standard">
@@ -91,7 +91,7 @@
                                         <div class="mdc-radio__inner-circle"></div>
                                     </div>
                                 </div>
-                                <label for="radio-2">Parameterizable with Decimal</label>
+                                <label for="radio-2">Parameterizable with number / decimal</label>
                             </div>
                             <div class="mdc-form-field">
                                 <div class="mdc-radio">
@@ -101,10 +101,10 @@
                                         <div class="mdc-radio__inner-circle"></div>
                                     </div>
                                 </div>
-                                <label for="radio-3">Parameterizable with Date</label>
+                                <label for="radio-3">Parameterizable with date</label>
                             </div>
                         </div>
-                        <button disabled class="mdc-button mdc-button--raised standard" id="create-tag">
+                        <button class="mdc-button mdc-button--raised standard" id="create-tag">
                             Create Tag
                         </button>
                         <button class="mdc-button mdc-button--raised standard" id="get-tags">
