@@ -72,6 +72,8 @@ document.getElementById("upload").addEventListener("input", inputPostDocument);
 document.getElementById("delete").addEventListener("click", deleteDocument);
 document.getElementById("create-tag").addEventListener("click", createTag);
 document.getElementById("get-tags").addEventListener("click", getTags);
+document.getElementById("delete-tag").addEventListener("click", deleteTag);
+
 
 function saveServer() {
     let serverAddress = document.querySelector("#server-address").value;
@@ -109,6 +111,24 @@ function createTag() {
             getTags();
         }
     }
+}
+
+function deleteTag() {
+    let label = document.getElementById("tag-label").value;
+    server.deleteTag(label).then(r => {
+        if (r.error) {
+            snackbar.show({
+                message: "Couldn't delete Tag: " + r.error
+            });
+        } else {
+            document.getElementById("tag-label").value = "";
+            document.getElementById("tag-label-label").classList.remove("mdc-floating-label--float-above");
+            snackbar.show({
+                message: "Tag deleted successfully"
+            });
+            getTags();
+        }
+    });
 }
 
 function getTags() {
@@ -150,10 +170,10 @@ function getTags() {
                 //document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
             }
         } else {
-            list = "<li class='mdc-list-item list list-tag mdc-elevation--z3'>" +
+            list = "<li class='mdc-list-item list list-tag mdc-card--outlined'>" +
                 "<button class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button important-color' disabled>blur_off</button>" +
                 "<span class='mdc-list-item__text'>" +
-                "<span class='mdc-list-item__primary-text'>No Labels found</span>" +
+                "<span class='mdc-list-item__primary-text'>No Tags Found</span>" +
                 "<span class='mdc-list-item__secondary-text'>Create some above</span>" +
                 "</span>" +
                 "</li>";
@@ -242,15 +262,15 @@ function searchDocuments() {
                 document.querySelectorAll(".document-edit").forEach(element => element.addEventListener("click", fillout));
             }
         } else {
-            let label1 = query ? "Nothing Found" : "Documents will appear here";
+            let label1 = query ? " Nothing Found" : " Documents will appear here";
             let label2 = query ? "You can try another query" : "Upload something";
-            list = "<li class='mdc-list-item mdc-elevation--z3'>" +
-                "<button class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button important-color' disabled>blur_off</button>" +
-                "<span class='mdc-list-item__text'>" +
-                "<span class='mdc-list-item__primary-text'>" + label1 + "</span>" +
-                "<span class='mdc-list-item__secondary-text'>" + label2 + "</span>" +
-                "</span>" +
-                "</li>";
+            list = "<div class='mdc-card--outlined list list-document'>" +
+                "" +
+                "<div class='list-content'>" +
+                "<h3 class='mdc-typography--headline5'><span class='material-icons'>blur_off</span>" + label1 + "</h3>" +
+                "<span class='mdc-typography--subtitle1'>" + label2 + "</span>" +
+                "</div>" +
+                "</div>";
             dest.innerHTML = list;
         }
     }).catch(e => {

@@ -11,6 +11,10 @@ body {
     .list-document:first-child {
         margin-top: $standard-margin;
     }
+    .mdc-list-item__graphic {
+        margin: 16px;
+        border-radius: 100%;
+    }
 }
 
 #tag-list-here {
