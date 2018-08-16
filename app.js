@@ -67,6 +67,9 @@ let server = new Server(document.getElementById("server-address").value);
 
 document.querySelector("#save-server-address").addEventListener("click", saveServer);
 document.querySelector("#search-documents").addEventListener("click", searchDocuments);
+document.querySelector("#search").addEventListener("keypress", e => {
+    if (e.key === "Enter") searchDocuments()
+});
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
 document.getElementById("upload").addEventListener("input", inputPostDocument);
 document.getElementById("delete").addEventListener("click", deleteDocument);
