@@ -7,6 +7,15 @@ body {
     margin: 0;
 }
 
+.mdc-chip {
+    .mdc-chip {
+        border-radius: 0;
+        margin-right: 12px;
+        border-right: #ffffff 1px solid;
+        border-left: #ffffff 1px solid;
+    }
+}
+
 #search-document-list-here {
     .list-document:first-child {
         margin-top: $standard-margin;
