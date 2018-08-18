@@ -8,12 +8,17 @@ body {
 }
 
 .mdc-chip {
+    margin-top: $standard-padding-dense;
+    margin-left: $standard-padding-dense;
     .mdc-chip {
         border-radius: 0;
-        margin-right: 12px;
+        margin: 0 12px 0 0;
         border-right: #ffffff 1px solid;
         border-left: #ffffff 1px solid;
     }
+}
+.mdc-chip:first-child {
+    margin-left: 0;
 }
 
 #search-document-list-here {

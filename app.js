@@ -77,6 +77,79 @@ document.getElementById("create-tag").addEventListener("click", createTag);
 document.getElementById("get-tags").addEventListener("click", getTags);
 document.getElementById("delete-tag").addEventListener("click", deleteTag);
 document.getElementById("add-tag").addEventListener("click", addTag);
+document.getElementById("reload-document-tags").addEventListener("click", getDocumentTags);
+
+function getDocumentTags() {
+    let id = document.getElementById("document-id").value;
+    let dest = document.getElementById("document-tags-here");
+    server.getTags(id).then(array => {
+        let list = "";
+        if (array.error) {
+            dest.innerHTML = "";
+            snackbar.show({
+                message: "Server responded with " + array.statusCode + ": " + array.error,
+                timeout: 6000
+            });
+        } else if (array.length > 0) {
+            array.sort(function (a, b) {
+                return a.label.localeCompare(b.label);
+            })
+            array.forEach(a => {
+                let type = "Not parameterizable";
+                let icon;
+                if (a.parameter) {
+                    let icon;
+                    let value;
+                    value = a.parameter.value;
+                    if (a.parameter.type == "http://www.w3.org/2001/XMLSchema#decimal") {
+                        type = "with number / decimal";
+                        icon = "dialpad";
+                    } else if (a.parameter.type == "http://www.w3.org/2001/XMLSchema#date") {
+                        type = "with date";
+                        icon = "event";
+                    }
+                    list = list + "<div class='mdc-chip'>" +
+                        "  <i class='material-icons mdc-chip__icon mdc-chip__icon--leading'>" + icon + "</i>" +
+                        "  <div class='mdc-chip'>" +
+                        "    <div class='mdc-chip__text'>" +
+                        a.label +
+                        "    </div>" +
+                        "  </div>" +
+                        "  <div class='mdc-chip__text'>" +
+                        value +
+                        "  </div>" +
+                        "</div>";
+                } else {
+                    list = list + "<div class='mdc-chip'>" +
+                        "  <i class='material-icons mdc-chip__icon mdc-chip__icon--leading'>label</i>" +
+                        "  <div class='mdc-chip__text'>" +
+                        a.label +
+                        "  </div>" +
+                        "</div>";
+                }
+            });
+            dest.innerHTML = list;
+            if (list != "") {
+                //document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
+            }
+        } else {
+            list = "<li class='mdc-list-item list list-tag mdc-card--outlined'>" +
+                "<button class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button important-color' disabled>blur_off</button>" +
+                "<span class='mdc-list-item__text'>" +
+                "<span class='mdc-list-item__primary-text'>No Tags Found</span>" +
+                "<span class='mdc-list-item__secondary-text'>Create some above</span>" +
+                "</span>" +
+                "</li>";
+            dest.innerHTML = list;
+        }
+    }).catch(e => {
+        snackbar.show({
+            message: e,
+            timeout: 6000
+        });
+        dest.innerHTML = "";
+    });
+}
 
 function addTag() {
     let id = document.getElementById("document-id").value;
