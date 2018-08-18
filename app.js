@@ -182,11 +182,11 @@ function getTags() {
             array.forEach(a => {
                 let type = "Not parameterizable";
                 let icon = "label";
-                if (a.parameterizable) {
-                    if (a.parameterizable.type == "http://www.w3.org/2001/XMLSchema#decimal") {
+                if (a.parameter) {
+                    if (a.parameter.type == "http://www.w3.org/2001/XMLSchema#decimal") {
                         type = "with number / decimal";
                         icon = "dialpad";
-                    } else if (a.parameterizable.type == "http://www.w3.org/2001/XMLSchema#date") {
+                    } else if (a.parameter.type == "http://www.w3.org/2001/XMLSchema#date") {
                         type = "with date";
                         icon = "event";
                     }
