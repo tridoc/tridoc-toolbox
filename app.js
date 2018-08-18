@@ -76,7 +76,38 @@ document.getElementById("delete").addEventListener("click", deleteDocument);
 document.getElementById("create-tag").addEventListener("click", createTag);
 document.getElementById("get-tags").addEventListener("click", getTags);
 document.getElementById("delete-tag").addEventListener("click", deleteTag);
+document.getElementById("add-tag").addEventListener("click", addTag);
 
+function addTag() {
+    let id = document.getElementById("document-id").value;
+    let label = document.getElementById("add-tag-label").value;
+    let value = document.getElementById("add-tag-value").value;
+    if (document.getElementById("radio-11").checked) {
+        server.addTag(id,label).then(r => then(r));
+    } else if (document.getElementById("radio-12").checked) {
+        server.addTag(id,label,"decimal",value).then(then);
+    } else if (document.getElementById("radio-13").checked) {
+        server.addTag(id,label,"date",value).then(then);
+    }
+
+    function then(r) {
+        console.log(r);
+        if (r.error) {
+            snackbar.show({
+                message: "Couldn't add Tag: " + r.error
+             });
+        } else {
+            document.getElementById("add-tag-label").value = "";
+            document.getElementById("add-tag-label-label").classList.remove("mdc-floating-label--float-above");
+            document.getElementById("add-tag-value").value = "";
+            document.getElementById("add-tag-value-label").classList.remove("mdc-floating-label--float-above");
+            snackbar.show({
+                message: "Tag added successfully"
+            });
+            getTags();
+        }
+    }
+}
 
 function saveServer() {
     let serverAddress = document.querySelector("#server-address").value;
