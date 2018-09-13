@@ -8,11 +8,19 @@ body {
 }
 
 .mdc-chip {
+    padding-right: 0;
     .mdc-chip {
+        padding-left: 0;
         border-radius: 0;
-        margin-right: 12px;
         border-right: #ffffff 1px solid;
         border-left: #ffffff 1px solid;
+    }
+    .mdc-chip__text {
+        margin-right: 12px;
+        margin-left: 12px;
+    }
+    .mdc-chip__icon--trailing{
+        margin-right: 8px;
     }
 }
 

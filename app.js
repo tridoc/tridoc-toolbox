@@ -161,11 +161,15 @@ function getTags() {
                     }
                 }
                 list = list + "<li class='mdc-list-item mdc-card--outlined list list-tag'>" +
-                    "  <button class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button important-color' aria-hidden='true' disabled>"+icon+"</button>" +
-                    "  <span class='mdc-list-item__text'>" +
-                    "    <span class='mdc-list-item__primary-text'>" + a.label + "</span>" +
-                    "    <span class='mdc-list-item__secondary-text'>" + type + "</span>" +
-                    "  </span>" +
+                    "  <div class='standard'>" +
+                    "    <div class='mdc-chip' tabindex='0'>" +
+                    "      <i class='material-icons mdc-chip__icon mdc-chip__icon--leading'>"+ icon +"</i>" +
+                    "      <div class='mdc-chip__text'>" +
+                    a.label +
+                    "      </div>" +
+                    //"      <i class='material-icons mdc-chip__icon mdc-chip__icon--trailing'>edit</i>" +
+                    "    </div>" +
+                    "  </div>" +
                     "</li>";
             });
             dest.innerHTML = list;
