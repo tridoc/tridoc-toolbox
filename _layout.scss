@@ -8,10 +8,19 @@ body {
 }
 
 .mdc-chip {
+<<<<<<< HEAD
     padding-right: 0;
+=======
+    margin-top: $standard-padding-dense;
+    margin-left: $standard-padding-dense;
+>>>>>>> fe219030f1c6d13a887c877b2a4c90098cf8a1d7
     .mdc-chip {
         padding-left: 0;
         border-radius: 0;
+<<<<<<< HEAD
+=======
+        margin: 0 12px 0 0;
+>>>>>>> fe219030f1c6d13a887c877b2a4c90098cf8a1d7
         border-right: #ffffff 1px solid;
         border-left: #ffffff 1px solid;
     }
@@ -22,6 +31,9 @@ body {
     .mdc-chip__icon--trailing{
         margin-right: 8px;
     }
+}
+.mdc-chip:first-child {
+    margin-left: 0;
 }
 
 #search-document-list-here {

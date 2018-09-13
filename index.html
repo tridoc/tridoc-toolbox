@@ -72,7 +72,7 @@
                             <label for="tag-label" class="mdc-floating-label" id="tag-label-label">Label</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
-                        <div class="standard">
+                        <form class="standard">
                             <div class="mdc-form-field">
                                 <div class="mdc-radio">
                                     <input class="mdc-radio__native-control" type="radio" id="radio-1" name="radios" checked>
@@ -103,7 +103,7 @@
                                 </div>
                                 <label for="radio-3">Parameterizable with date</label>
                             </div>
-                        </div>
+                        </form>
                         <button class="mdc-button mdc-button--raised standard" id="create-tag">
                             Create Tag
                         </button>
@@ -136,29 +136,30 @@
                             Set title
                         </button>
                         <div class="standard">
-                            <div class="mdc-chip" tabindex="0">
-                                <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">event</i>
+                            <h3 class="mdc-typography--headline5">Tags</h3>
+                            <div id="document-tags-here">
                                 <div class="mdc-chip" tabindex="0">
+                                    <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">blur_off</i>
                                     <div class="mdc-chip__text">
-                                        Beispiel
+                                        Document has no tags.
                                     </div>
                                 </div>
-                                <div class="mdc-chip__text">
-                                    2018-08-12
-                                </div>
                             </div>
+                            <button class="mdc-button mdc-button--raised standard" id="reload-document-tags">
+                                Reload tags
+                            </button>
                         </div>
                         <div class="mdc-text-field mdc-text-field--box standard">
                             <input type="text" id="add-tag-label" class="mdc-text-field__input" autocomplete="off">
-                            <label for="add-tag-label" class="mdc-floating-label" id="tag-label-label">Tag label</label>
+                            <label for="add-tag-label" class="mdc-floating-label" id="add-tag-label-label">Tag label</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
                         <div class="mdc-text-field mdc-text-field--box standard">
                             <input type="text" id="add-tag-value" class="mdc-text-field__input" autocomplete="off">
-                            <label for="add-tag-value" class="mdc-floating-label" id="tag-label-label">Tag value</label>
+                            <label for="add-tag-value" class="mdc-floating-label" id="add-tag-value-label">Tag value</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
-                        <div class="standard">
+                        <form class="standard">
                             <div class="mdc-form-field">
                                 <div class="mdc-radio">
                                     <input class="mdc-radio__native-control" type="radio" id="radio-11" name="radios" checked>
@@ -167,7 +168,7 @@
                                         <div class="mdc-radio__inner-circle"></div>
                                     </div>
                                 </div>
-                                <label for="radio-1">Not parameterizable</label>
+                                <label for="radio-11">Not parameterizable</label>
                             </div>
                             <div class="mdc-form-field">
                                 <div class="mdc-radio">
@@ -177,7 +178,7 @@
                                         <div class="mdc-radio__inner-circle"></div>
                                     </div>
                                 </div>
-                                <label for="radio-2">Parameterizable with number / decimal</label>
+                                <label for="radio-12">Parameterizable with number / decimal</label>
                             </div>
                             <div class="mdc-form-field">
                                 <div class="mdc-radio">
@@ -187,9 +188,9 @@
                                         <div class="mdc-radio__inner-circle"></div>
                                     </div>
                                 </div>
-                                <label for="radio-3">Parameterizable with date</label>
+                                <label for="radio-13">Parameterizable with date</label>
                             </div>
-                        </div>
+                        </form>
                         <button class="mdc-button mdc-button--raised standard" id="add-tag">
                             Add Tag to Document
                         </button>
