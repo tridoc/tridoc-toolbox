@@ -351,14 +351,31 @@ function inputPostDocument() {
     postDocument(document.getElementById("upload").files[0]);
 }
 
+function countDocuments(to) {
+    let query = document.getElementById("search").value;
+    let counters = document.querySelectorAll(".document-count");
+    let next = document.querySelector(".page-next");
+
+    server.countDocuments(query)
+    .then(count => {
+        counters.forEach(element => {
+            element.innerHTML = count;
+        })
+        if (to >= count) {
+            next.setAttribute("disabled", "true");
+        } else {
+            next.removeAttribute("disabled");
+        }
+    });
+}
+
 function searchDocuments(page) {
-    console.log(page);
     let query = document.getElementById("search").value;
     let dest = document.getElementById("search-document-list-here");
     if (isNaN(page)) { page = 0 }
     let limit = ((storage.getItem("limit") > 0) ? storage.getItem("limit") : '');
     let offset = page*limit;
-    console.log(page);
+    let to = 0;
 
     server.getDocuments(query,limit,offset).then(array => {
         let list = '';
@@ -369,12 +386,14 @@ function searchDocuments(page) {
                 timeout: 6000
             });
         } else if (array.length > 0) {
+            to = offset+array.length;
             list = '<p class="mdc-typography--overline standard">'+
-            '  Displaying documents <b>'+ (offset+1) +'</b> to <b>' + (offset+array.length) +'</b>'+
+            '  Displaying documents <b>'+ (offset+1) +'</b> to <b>' + to +'</b>/'+
+            (limit ? '<span class="document-count">?</span>' : '<span class="document-count">' + to + '</span>')+
             '</p>'+
             (limit ? '<div class="pagination">' +
-            '<button id="'+ (Math.floor(page)+1) +'" class="mdc-button mdc-button--raised page-switch">Next</button>'+
-            (Math.floor(page) > 0 ? '<button id="'+ (Math.floor(page)-1) +'" class="mdc-button mdc-button--raised page-switch">Previous</button>' : '')+
+            (Math.floor(page) > 0 ? '<button id="'+ (Math.floor(page)-1) +'" class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>' : '<button disabled class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>')+
+            '<button id="'+ (Math.floor(page)+1) +'" class="mdc-button mdc-button--raised page-switch page-next">Next</button>'+
             '</div>' : '' );
             array.forEach(a => {
                 let label = a.title ? a.title : "Untitled document";
@@ -391,6 +410,7 @@ function searchDocuments(page) {
                     "</div>";
             });
             dest.innerHTML = list;
+            countDocuments(to);
             if (list != "") {
                 document.querySelectorAll(".document-edit").forEach(element => element.addEventListener("click", fillout));
             }
@@ -407,7 +427,6 @@ function searchDocuments(page) {
             dest.innerHTML = list;
         }
         document.querySelectorAll(".page-switch").forEach(element => element.addEventListener("click", () => {
-            console.log(element);
             searchDocuments(element.id);
         } ));
     }).catch(e => {
