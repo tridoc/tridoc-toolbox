@@ -392,9 +392,13 @@ function searchDocuments(page) {
             (limit ? '<span class="document-count">?</span>' : '<span class="document-count">' + to + '</span>')+
             '</p>'+
             (limit ? '<div class="pagination">' +
-            (Math.floor(page) > 0 ? '<button id="'+ (Math.floor(page)-1) +'" class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>' : '<button disabled class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>')+
-            '<button id="'+ (Math.floor(page)+1) +'" class="mdc-button mdc-button--raised page-switch page-next">Next</button>'+
-            '</div>' : '' );
+                (Math.floor(page) > 0
+                    ? '<button id="'+ (Math.floor(page)-1) +'" class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>'
+                    : '<button disabled class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>'
+                ) +
+                '<button id="'+ (Math.floor(page)+1) +'" class="mdc-button mdc-button--raised page-switch page-next">Next</button>'+
+                '</div>' : ''
+            );
             array.forEach(a => {
                 let label = a.title ? a.title : "Untitled document";
                 list = list + "<div class='mdc-card mdc-card--outlined list list-document'>" +
