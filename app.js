@@ -63,6 +63,14 @@ if (storage.getItem("server")) {
     document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
 }
 
+if (storage.getItem("limit")) {
+    document.getElementById("result-limit").value = storage.getItem("limit");
+    document.getElementById("result-limit-label").classList.add("mdc-floating-label--float-above");
+} else {
+    document.getElementById("result-limit").value = "10";
+    document.getElementById("result-limit-label").classList.add("mdc-floating-label--float-above");
+}
+
 let server = new Server(document.getElementById("server-address").value);
 
 document.querySelector("#save-server-address").addEventListener("click", saveServer);
@@ -184,9 +192,11 @@ function addTag() {
 
 function saveServer() {
     let serverAddress = document.querySelector("#server-address").value;
+    let resultLimit = document.querySelector("#result-limit").value;
     server = new Server(serverAddress);
     try {
         storage.setItem("server", serverAddress);
+        storage.setItem("limit", resultLimit);
     } catch (error) {}
     searchDocuments();
     getTags();
@@ -341,12 +351,17 @@ function inputPostDocument() {
     postDocument(document.getElementById("upload").files[0]);
 }
 
-function searchDocuments() {
+function searchDocuments(page) {
+    console.log(page);
     let query = document.getElementById("search").value;
     let dest = document.getElementById("search-document-list-here");
+    if (isNaN(page)) { page = 0 }
+    let limit = ((storage.getItem("limit") > 0) ? storage.getItem("limit") : '');
+    let offset = page*limit;
+    console.log(page);
 
-    server.getDocuments(query).then(array => {
-        let list = "";
+    server.getDocuments(query,limit,offset).then(array => {
+        let list = '';
         if (array.error) {
             dest.innerHTML = "";
             snackbar.show({
@@ -354,6 +369,13 @@ function searchDocuments() {
                 timeout: 6000
             });
         } else if (array.length > 0) {
+            list = '<p class="mdc-typography--overline standard">'+
+            '  Displaying documents <b>'+ (offset+1) +'</b> to <b>' + (offset+array.length) +'</b>'+
+            '</p>'+
+            (limit ? '<div class="pagination">' +
+            '<button id="'+ (Math.floor(page)+1) +'" class="mdc-button mdc-button--raised page-switch">Next</button>'+
+            (Math.floor(page) > 0 ? '<button id="'+ (Math.floor(page)-1) +'" class="mdc-button mdc-button--raised page-switch">Previous</button>' : '')+
+            '</div>' : '' );
             array.forEach(a => {
                 let label = a.title ? a.title : "Untitled document";
                 list = list + "<div class='mdc-card mdc-card--outlined list list-document'>" +
@@ -384,6 +406,10 @@ function searchDocuments() {
                 "</div>";
             dest.innerHTML = list;
         }
+        document.querySelectorAll(".page-switch").forEach(element => element.addEventListener("click", () => {
+            console.log(element);
+            searchDocuments(element.id);
+        } ));
     }).catch(e => {
         snackbar.show({
             message: e,
