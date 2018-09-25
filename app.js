@@ -393,10 +393,10 @@ function searchDocuments(page) {
             '</p>'+
             (limit ? '<div class="pagination">' +
                 (Math.floor(page) > 0
-                    ? '<button id="'+ (Math.floor(page)-1) +'" class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>'
+                    ? '<button value="'+ (Math.floor(page)-1) +'" class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>'
                     : '<button disabled class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>'
                 ) +
-                '<button id="'+ (Math.floor(page)+1) +'" class="mdc-button mdc-button--raised page-switch page-next">Next</button>'+
+                '<button value="'+ (Math.floor(page)+1) +'" class="mdc-button mdc-button--raised page-switch page-next">Next</button>'+
                 '</div>' : ''
             );
             array.forEach(a => {
@@ -431,7 +431,7 @@ function searchDocuments(page) {
             dest.innerHTML = list;
         }
         document.querySelectorAll(".page-switch").forEach(element => element.addEventListener("click", () => {
-            searchDocuments(element.id);
+            searchDocuments(element.value);
         } ));
     }).catch(e => {
         snackbar.show({
