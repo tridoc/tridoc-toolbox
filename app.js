@@ -63,6 +63,14 @@ if (storage.getItem("server")) {
     document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
 }
 
+if (storage.getItem("limit")) {
+    document.getElementById("result-limit").value = storage.getItem("limit");
+    document.getElementById("result-limit-label").classList.add("mdc-floating-label--float-above");
+} else {
+    document.getElementById("result-limit").value = "10";
+    document.getElementById("result-limit-label").classList.add("mdc-floating-label--float-above");
+}
+
 let server = new Server(document.getElementById("server-address").value);
 
 document.querySelector("#save-server-address").addEventListener("click", saveServer);
@@ -184,9 +192,11 @@ function addTag() {
 
 function saveServer() {
     let serverAddress = document.querySelector("#server-address").value;
+    let resultLimit = document.querySelector("#result-limit").value;
     server = new Server(serverAddress);
     try {
         storage.setItem("server", serverAddress);
+        storage.setItem("limit", resultLimit);
     } catch (error) {}
     searchDocuments();
     getTags();
@@ -341,12 +351,34 @@ function inputPostDocument() {
     postDocument(document.getElementById("upload").files[0]);
 }
 
-function searchDocuments() {
+function countDocuments(to) {
+    let query = document.getElementById("search").value;
+    let counters = document.querySelectorAll(".document-count");
+    let next = document.querySelector(".page-next");
+
+    server.countDocuments(query)
+    .then(count => {
+        counters.forEach(element => {
+            element.innerHTML = count;
+        })
+        if (to >= count) {
+            next.setAttribute("disabled", "true");
+        } else {
+            next.removeAttribute("disabled");
+        }
+    });
+}
+
+function searchDocuments(page) {
     let query = document.getElementById("search").value;
     let dest = document.getElementById("search-document-list-here");
+    if (isNaN(page)) { page = 0 }
+    let limit = ((storage.getItem("limit") > 0) ? storage.getItem("limit") : '');
+    let offset = page*limit;
+    let to = 0;
 
-    server.getDocuments(query).then(array => {
-        let list = "";
+    server.getDocuments(query,limit,offset).then(array => {
+        let list = '';
         if (array.error) {
             dest.innerHTML = "";
             snackbar.show({
@@ -354,6 +386,19 @@ function searchDocuments() {
                 timeout: 6000
             });
         } else if (array.length > 0) {
+            to = offset+array.length;
+            list = '<p class="mdc-typography--overline standard">'+
+            '  Displaying documents <b>'+ (offset+1) +'</b> to <b>' + to +'</b>/'+
+            (limit ? '<span class="document-count">?</span>' : '<span class="document-count">' + to + '</span>')+
+            '</p>'+
+            (limit ? '<div class="pagination">' +
+                (Math.floor(page) > 0
+                    ? '<button value="'+ (Math.floor(page)-1) +'" class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>'
+                    : '<button disabled class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>'
+                ) +
+                '<button value="'+ (Math.floor(page)+1) +'" class="mdc-button mdc-button--raised page-switch page-next">Next</button>'+
+                '</div>' : ''
+            );
             array.forEach(a => {
                 let label = a.title ? a.title : "Untitled document";
                 list = list + "<div class='mdc-card mdc-card--outlined list list-document'>" +
@@ -369,6 +414,7 @@ function searchDocuments() {
                     "</div>";
             });
             dest.innerHTML = list;
+            countDocuments(to);
             if (list != "") {
                 document.querySelectorAll(".document-edit").forEach(element => element.addEventListener("click", fillout));
             }
@@ -384,6 +430,9 @@ function searchDocuments() {
                 "</div>";
             dest.innerHTML = list;
         }
+        document.querySelectorAll(".page-switch").forEach(element => element.addEventListener("click", () => {
+            searchDocuments(element.value);
+        } ));
     }).catch(e => {
         snackbar.show({
             message: e,

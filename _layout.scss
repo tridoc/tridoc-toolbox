@@ -7,6 +7,11 @@ body {
     margin: 0;
 }
 
+.pagination {
+    display: flex;
+    justify-content: space-between;
+}
+
 .mdc-chip {
     padding-right: 0;
     .mdc-chip {
@@ -70,6 +75,10 @@ body {
 .mdc-typography--overline {
     margin-bottom: 0;
     text-align: center;
+    
+    b {
+        font-size: 1.5em;
+    }
 }
 
 .mdc-list-item__graphic {

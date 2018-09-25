@@ -34,6 +34,12 @@
                     <label id="server-address-label" for="server-address" class="mdc-floating-label">Server Address</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
+                <div class="mdc-text-field mdc-text-field--box standard">
+                    <input type="text" id="result-limit" class="mdc-text-field__input">
+                    <label id="result-limit-label" for="result-limit" class="mdc-floating-label">Max. number of results shown</label>
+                    <div class="mdc-line-ripple"></div>
+                </div>
+                <p class="mdc-text-field-helper-text">Set to 0 to show all results</p>
                 <button id="save-server-address" class="mdc-button mdc-button--raised standard">Save</button>
             </nav>
         </nav>
@@ -59,7 +65,6 @@
                             <input type="file" id="upload" accept="application/pdf,.pdf">
                             <p id="upload-text">Select File</p>
                         </div>
-
                         <div id="search-document-list-here">
                         </div>
                     </div>
@@ -145,10 +150,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="mdc-button mdc-button--raised standard" id="reload-document-tags">
-                                Reload tags
-                            </button>
                         </div>
+                        <button class="mdc-button mdc-button--raised standard" id="reload-document-tags">
+                            Reload tags
+                        </button>
                         <div class="mdc-text-field mdc-text-field--box standard">
                             <input type="text" id="add-tag-label" class="mdc-text-field__input" autocomplete="off">
                             <label for="add-tag-label" class="mdc-floating-label" id="add-tag-label-label">Tag label</label>
