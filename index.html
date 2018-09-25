@@ -53,10 +53,15 @@
                         <h2 class="mdc-typography--headline4">Manage Documents</h2>
                         <div class="mdc-text-field mdc-text-field--box standard">
                             <input type="text" id="search" class="mdc-text-field__input" autocomplete="off">
-                            <label for="search" class="mdc-floating-label">Search query</label>
+                            <label for="search" class="mdc-floating-label">Text</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
-                        <!--<p class="mdc-text-field-helper-text">Leave empty to get all documents</p>-->
+                        <div class=" mdc-text-field mdc-text-field--box standard">
+                            <input id="search-tags" type="text" class="mdc-text-field__input" autocomplete="off">
+                            <label for="search-tags" class="mdc-floating-label">Tags</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+                        <p class="mdc-text-field-helper-text">Comma separated</p>
                         <button id="search-documents" class="mdc-button mdc-button--raised standard">
                             Get Documents
                         </button>

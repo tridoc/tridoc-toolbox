@@ -78,6 +78,9 @@ document.querySelector("#search-documents").addEventListener("click", searchDocu
 document.querySelector("#search").addEventListener("keypress", e => {
     if (e.key === "Enter") searchDocuments()
 });
+document.querySelector("#search-tags").addEventListener("keypress", e => {
+    if (e.key === "Enter" ) searchDocuments()
+});
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
 document.getElementById("upload").addEventListener("input", inputPostDocument);
 document.getElementById("delete").addEventListener("click", deleteDocument);
@@ -355,8 +358,14 @@ function countDocuments(to) {
     let query = document.getElementById("search").value;
     let counters = document.querySelectorAll(".document-count");
     let next = document.querySelector(".page-next");
-
-    server.countDocuments(query)
+    let tags = document.getElementById("search-tags").value;
+    let tagsquery = "";
+    if (tags.length > 0) {
+        encodeURIComponent(tags);
+        tagsquery = "&tag=" + tags.replace(/\s?,\s?/,"&tag=");
+        console.log(tagsquery);
+    }
+    server.countDocuments(query,tagsquery)
     .then(count => {
         counters.forEach(element => {
             element.innerHTML = count;
@@ -372,12 +381,19 @@ function countDocuments(to) {
 function searchDocuments(page) {
     let query = document.getElementById("search").value;
     let dest = document.getElementById("search-document-list-here");
+    let tags = document.getElementById("search-tags").value;
+    let tagsquery = "";
+    if (tags.length > 0) {
+        encodeURIComponent(tags);
+        tagsquery = "&tag=" + tags.replace(/\s?,\s?/,"&tag=");
+        console.log(tagsquery);
+    }
     if (isNaN(page)) { page = 0 }
     let limit = ((storage.getItem("limit") > 0) ? storage.getItem("limit") : '');
     let offset = page*limit;
     let to = 0;
 
-    server.getDocuments(query,limit,offset).then(array => {
+    server.getDocuments(query,tagsquery,limit,offset).then(array => {
         let list = '';
         if (array.error) {
             dest.innerHTML = "";
