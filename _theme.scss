@@ -2,7 +2,7 @@
 
 // Set the primary theme color *before* importing any MDC components.
 $mdc-theme-primary: $standard-primary-color;
-$mdc-theme-secondary: $standard-secondary-color;
+$mdc-theme-secondary: $standard-primary-color;
 
 @import "@material/button/mdc-button";
 @import "@material/select/mdc-select";

@@ -29,6 +29,7 @@ import {
 
 import Dropzone from 'dropzone';
 import Server from './lib/server';
+import { isNull } from 'util';
 
 const drawer = new MDCTemporaryDrawer(document.getElementById("drawer"));
 document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
@@ -89,77 +90,65 @@ document.getElementById("get-tags").addEventListener("click", getTags);
 document.getElementById("delete-tag").addEventListener("click", deleteTag);
 document.getElementById("add-tag").addEventListener("click", addTag);
 document.getElementById("remove-tag").addEventListener("click", removeTag);
-document.getElementById("reload-document-tags").addEventListener("click", getDocumentTags);
 
-function getDocumentTags() {
-    let id = document.getElementById("document-id").value;
-    let dest = document.getElementById("document-tags-here");
-    server.getTags(id).then(array => {
-        let list = "";
-        if (array.error) {
-            dest.innerHTML = "";
+function getTags() {
+    document.querySelectorAll(".tags-here").forEach((dest) => {
+        let id= dest.closest(".mdc-card").getAttribute("data-document-id");
+        server.getTags(id).then(array => {
+            let list = "";
+            if (array.error) {
+                dest.innerHTML = "Error: " + array.error;
+                snackbar.show({
+                    message: "Server responded with " + array.statusCode + ": " + array.error,
+                    timeout: 6000
+                });
+            } else if (array.length > 0) {
+                array.sort(function (a, b) {
+                    return a.label.localeCompare(b.label);
+                })
+                array.forEach(a => {
+                    let type = "simple";
+                    let icon = "label";
+                    let value;
+                    if (a.parameter) {
+                        value = a.parameter.value;
+                        if (a.parameter.type == "http://www.w3.org/2001/XMLSchema#decimal") {
+                            type = "decimal";
+                            icon = "dialpad";
+                        } else if (a.parameter.type == "http://www.w3.org/2001/XMLSchema#date") {
+                            type = "date";
+                            icon = "event";
+                        }
+                    }
+                    list = list + "<div class='mdc-chip tag 'data-tag-type='" + type + "' data-tag-label='" + a.label + "'>" +
+                        "<i class='material-icons mdc-chip__icon mdc-chip__icon--leading'>" + icon + "</i>" +
+                        (value ? "<div class='mdc-chip'>" : "") +
+                        "<div class='mdc-chip__text'>" +
+                        a.label +
+                        "</div>" +
+                        (value ? "</div><div class='mdc-chip__text'>" + value + "</div>" : "") +
+                        "</div>";
+                });
+                dest.innerHTML = list;
+                if (list != "") {
+                    document.querySelectorAll(".tag").forEach(element => element.addEventListener("click", tagFillout));
+                }
+            } else {
+                list = "<div class='mdc-chip'>" +
+                    "  <i class='material-icons mdc-chip__icon mdc-chip__icon--leading'>blur_off</i>" +
+                    "  <div class='mdc-chip__text'>" +
+                    "    Document has no tags." +
+                    "  </div>" +
+                    "</div>";
+                dest.innerHTML = list;
+            }
+        }).catch(e => {
             snackbar.show({
-                message: "Server responded with " + array.statusCode + ": " + array.error,
+                message: e,
                 timeout: 6000
             });
-        } else if (array.length > 0) {
-            array.sort(function (a, b) {
-                return a.label.localeCompare(b.label);
-            })
-            array.forEach(a => {
-                let type = "Not parameterizable";
-                let icon;
-                if (a.parameter) {
-                    let icon;
-                    let value;
-                    value = a.parameter.value;
-                    if (a.parameter.type == "http://www.w3.org/2001/XMLSchema#decimal") {
-                        type = "with number / decimal";
-                        icon = "dialpad";
-                    } else if (a.parameter.type == "http://www.w3.org/2001/XMLSchema#date") {
-                        type = "with date";
-                        icon = "event";
-                    }
-                    list = list + "<div class='mdc-chip'>" +
-                        "  <i class='material-icons mdc-chip__icon mdc-chip__icon--leading'>" + icon + "</i>" +
-                        "  <div class='mdc-chip'>" +
-                        "    <div class='mdc-chip__text'>" +
-                        a.label +
-                        "    </div>" +
-                        "  </div>" +
-                        "  <div class='mdc-chip__text'>" +
-                        value +
-                        "  </div>" +
-                        "</div>";
-                } else {
-                    list = list + "<div class='mdc-chip'>" +
-                        "  <i class='material-icons mdc-chip__icon mdc-chip__icon--leading'>label</i>" +
-                        "  <div class='mdc-chip__text'>" +
-                        a.label +
-                        "  </div>" +
-                        "</div>";
-                }
-            });
-            dest.innerHTML = list;
-            if (list != "") {
-                //document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
-            }
-        } else {
-            list = "<li class='mdc-list-item list list-tag mdc-card--outlined'>" +
-                "<button class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button important-color' disabled>blur_off</button>" +
-                "<span class='mdc-list-item__text'>" +
-                "<span class='mdc-list-item__primary-text'>No Tags Found</span>" +
-                "<span class='mdc-list-item__secondary-text'>Create some above</span>" +
-                "</span>" +
-                "</li>";
-            dest.innerHTML = list;
-        }
-    }).catch(e => {
-        snackbar.show({
-            message: e,
-            timeout: 6000
+            dest.innerHTML = "Error: " + e;
         });
-        dest.innerHTML = "";
     });
 }
 
@@ -189,7 +178,7 @@ function addTag() {
             snackbar.show({
                 message: "Tag added successfully"
             });
-            getDocumentTags();
+            getTags();
         }
     }
 }
@@ -211,7 +200,7 @@ function removeTag() {
             snackbar.show({
                 message: "Tag removed successfully"
             });
-            getDocumentTags();
+            getTags();
         }
     })
 }
@@ -271,67 +260,6 @@ function deleteTag() {
             });
             getTags();
         }
-    });
-}
-
-function getTags() {
-    let dest = document.getElementById("tag-list-here");
-    server.getTags().then(array => {
-        let list = "";
-        if (array.error) {
-            dest.innerHTML = "";
-            snackbar.show({
-                message: "Server responded with " + array.statusCode + ": " + array.error,
-                timeout: 6000
-            });
-        } else if (array.length > 0) {
-            array.sort(function(a,b){
-                return a.label.localeCompare(b.label);
-            })
-            array.forEach(a => {
-                let type = "Not parameterizable";
-                let icon = "label";
-                if (a.parameter) {
-                    if (a.parameter.type == "http://www.w3.org/2001/XMLSchema#decimal") {
-                        type = "with number / decimal";
-                        icon = "dialpad";
-                    } else if (a.parameter.type == "http://www.w3.org/2001/XMLSchema#date") {
-                        type = "with date";
-                        icon = "event";
-                    }
-                }
-                list = list + "<li class='mdc-list-item mdc-card--outlined list list-tag'>" +
-                    "  <div class='standard'>" +
-                    "    <div class='mdc-chip' tabindex='0'>" +
-                    "      <i class='material-icons mdc-chip__icon mdc-chip__icon--leading'>"+ icon +"</i>" +
-                    "      <div class='mdc-chip__text'>" +
-                    a.label +
-                    "      </div>" +
-                    //"      <i class='material-icons mdc-chip__icon mdc-chip__icon--trailing'>edit</i>" +
-                    "    </div>" +
-                    "  </div>" +
-                    "</li>";
-            });
-            dest.innerHTML = list;
-            if (list != "") {
-                //document.querySelectorAll(".list-document").forEach(element => element.addEventListener("click", fillout));
-            }
-        } else {
-            list = "<li class='mdc-list-item list list-tag mdc-card--outlined'>" +
-                "<button class='mdc-list-item__graphic material-icons mdc-button--raised mdc-icon-button important-color' disabled>blur_off</button>" +
-                "<span class='mdc-list-item__text'>" +
-                "<span class='mdc-list-item__primary-text'>No Tags Found</span>" +
-                "<span class='mdc-list-item__secondary-text'>Create some above</span>" +
-                "</span>" +
-                "</li>";
-            dest.innerHTML = list;
-        }
-    }).catch(e => {
-        snackbar.show({
-            message: e,
-            timeout: 6000
-        });
-        dest.innerHTML = "";
     });
 }
 
@@ -432,17 +360,18 @@ function searchDocuments(page) {
             '</p>'+
             (limit ? '<div class="pagination">' +
                 (Math.floor(page) > 0
-                    ? '<button value="'+ (Math.floor(page)-1) +'" class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>'
+                    ? '<button data-page-target="'+ (Math.floor(page)-1) +'" class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>'
                     : '<button disabled class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>'
                 ) +
-                '<button value="'+ (Math.floor(page)+1) +'" class="mdc-button mdc-button--raised page-switch page-next">Next</button>'+
+                '<button data-pagination-target="'+ (Math.floor(page)+1) +'" class="mdc-button mdc-button--raised page-switch page-next">Next</button>'+
                 '</div>' : ''
             );
             array.forEach(a => {
                 let label = a.title ? a.title : "Untitled document";
-                list = list + "<div class='mdc-card mdc-card--outlined list list-document'>" +
+                list = list + "<div class='mdc-card mdc-card--outlined list list-document' data-document-id=\"" + a.identifier + "\">" +
+                "    <h3 class='mdc-typography--headline5'>" + label + "</h3>" +
                     "  <div class='list-content'>" +
-                    "    <h3 class='mdc-typography--headline5'>" + label + "</h3>" +
+                    "    <div class='tags-here'></div>" +
                     "    <span class='standard-mono mdc-typography--subtitle1'>" + a.identifier + "</span>" +
                     "  </div>" +
                     "  <div class='mdc-card__actions'>" +
@@ -470,8 +399,9 @@ function searchDocuments(page) {
             dest.innerHTML = list;
         }
         document.querySelectorAll(".page-switch").forEach(element => element.addEventListener("click", () => {
-            searchDocuments(element.value);
+            searchDocuments(element.getAttribute("data-pagination-target"));
         } ));
+        getTags();
     }).catch(e => {
         snackbar.show({
             message: e,
@@ -491,6 +421,7 @@ function fillout() {
     let title = this.parentNode.parentNode.getElementsByClassName("mdc-typography--headline5")[0].innerHTML;
     let id = this.parentNode.parentNode.getElementsByClassName("mdc-typography--subtitle1")[0].innerHTML;
     let idFields = document.querySelectorAll(".document-id");
+    document.getElementById("manage-metadata").setAttribute("data-document-id",id);
     idFields.forEach(element => {
         element.value = id;
         element.parentNode.querySelectorAll("label")
@@ -506,11 +437,35 @@ function fillout() {
                 element.classList.add("mdc-floating-label--float-above");
             });
     }
-    getDocumentTags();
+    getTags();
+}
+
+function tagFillout() {
+    let label = this.getAttribute("data-tag-label");
+    let type = this.getAttribute("data-tag-type");
+    let labelFields = document.querySelectorAll(".tag-label");
+    labelFields.forEach(element => {
+        element.value = label;
+        element.parentNode.classList.add("mdc-text-field--upgraded");
+        element.parentNode.querySelectorAll("label")
+            .forEach(element => element.classList.add("mdc-floating-label--float-above"));
+    });
+    if (type == "simple") {
+        document.getElementById("radio-1").checked = true;
+        document.getElementById("radio-11").checked = true;
+    } else if ( type == "decimal") {
+        document.getElementById("radio-2").checked = true;
+        document.getElementById("radio-12").checked = true;
+    } else if ( type == "date") {
+        document.getElementById("radio-3").checked = true;
+        document.getElementById("radio-13").checked = true;
+    } else {
+        console.log(type)
+    }
+    getTags();
 }
 
 searchDocuments();
-getTags();
 
 var myDropzone = new Dropzone("div#uploadzone", {
     url: "happy/now",

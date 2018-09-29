@@ -12,29 +12,48 @@ body {
     justify-content: space-between;
 }
 
+
 .mdc-chip {
-    padding-right: 0;
+    background-color: #ffffff;
+    border: $border;
+    border-radius: $standard-border-radius;
+    padding: 0 6px 0 0;
+    margin-right: $standard-very-dense;
+    margin-bottom: $standard-very-dense;
+
     .mdc-chip {
-        padding-left: 0;
-        border-radius: 0;
-        border-right: #ffffff 1px solid;
-        border-left: #ffffff 1px solid;
+        margin: 0;
+        padding: 0;
+        border: none;
     }
+
     .mdc-chip__text {
-        margin-right: 12px;
-        margin-left: 12px;
+        height: 20px ;
+        line-height: 20px;
+        margin: 6px 6px 6px 0;
+        padding: 0 0 0 6px;
+        border-left: $border;
     }
-    .mdc-chip__icon--trailing{
+
+    .mdc-chip__icon,
+    .mdc-chip__icon.mdc-chip__icon--leading,
+    .mdc-chip__icon.mdc-chip__icon--trailing {
+        color: $standard-primary-color-light;
+        margin: 6px;
+    }
+
+    .mdc-chip__icon--trailing {
         margin-right: 8px;
     }
 }
+
 .mdc-chip:first-child {
     margin-left: 0;
 }
 
 #search-document-list-here {
     .list-document:first-child {
-        margin-top: $standard-margin;
+        margin-top: $standard-big;
     }
     .mdc-list-item__graphic {
         margin: 16px;
@@ -45,23 +64,27 @@ body {
 #tag-list-here {
     padding: 0;
     .list-tag:first-child {
-        margin-top: $standard-margin;
+        margin-top: $standard-big;
     }
 }
 
 .list {
-    color: $standard-primary-color-dark;
-    margin-top: $standard-margin-dense;
+    margin-top: $standard-dense;
     word-wrap: break-word;
     border-radius: $standard-border-radius;
     h3 {
         margin: 0;
+        padding: $standard-very-dense;
+        border-bottom: $border;
     }
 }
 
+.mdc-card__actions {
+    border-top: $border;
+}
+
 .list-content {
-    color: $standard-primary-color-dark;
-    padding: $standard-padding-dense;
+    padding: $standard-very-dense;
 }
 
 .important-color {
@@ -87,6 +110,15 @@ body {
     border-radius: 100%;
 }
 
+.mdc-button {
+
+    border-radius: $standard-border-radius;
+}
+
+.mdc-text-field {
+    border-radius: $standard-border-radius;
+}
+
 .mdc-button input[type=file] {
     position: absolute;
     top: 0;
@@ -104,7 +136,7 @@ body {
     * {
         width: 100%;
         border-radius: 0;
-        margin-top: $standard-margin-dense !important;
+        margin-top: $standard-dense !important;
     }
 }
 
@@ -120,14 +152,24 @@ body {
 }
 
 .standard-card {
-    padding: $standard-padding;
+    padding: $standard-big;
     height: 100%;
+    border-radius: $standard-border-radius;
 }
 
 .standard {
-    margin-top: $standard-margin;
+    margin-top: $standard-big;
+}
+
+.standard-dense {
+    margin-top: $standard-dense;
+}
+
+.standard-very-dense {
+    margin-top: $standard-very-dense;
 }
 
 .standard-mono {
     font-family: 'Roboto Mono', monospace;
+    color: $standard-primary-color-light;
 }
