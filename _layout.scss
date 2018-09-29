@@ -108,6 +108,17 @@ body {
     }
 }
 
+.mdc-top-app-bar__logo {
+    height: 48px;
+    svg {
+        height: 32px;
+        margin: 8px;
+    }
+    path {
+        fill: #ffffff;
+    }
+}
+
 .standard-card {
     padding: $standard-padding;
     height: 100%;
