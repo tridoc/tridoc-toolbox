@@ -88,6 +88,7 @@ document.getElementById("create-tag").addEventListener("click", createTag);
 document.getElementById("get-tags").addEventListener("click", getTags);
 document.getElementById("delete-tag").addEventListener("click", deleteTag);
 document.getElementById("add-tag").addEventListener("click", addTag);
+document.getElementById("remove-tag").addEventListener("click", removeTag);
 document.getElementById("reload-document-tags").addEventListener("click", getDocumentTags);
 
 function getDocumentTags() {
@@ -188,9 +189,31 @@ function addTag() {
             snackbar.show({
                 message: "Tag added successfully"
             });
-            getTags();
+            getDocumentTags();
         }
     }
+}
+
+function removeTag() {
+    let id = document.getElementById("document-id").value;
+    let label = document.getElementById("add-tag-label").value;
+    server.removeTag(id, label).then(r => {
+        console.log(r);
+        if (r.error) {
+            snackbar.show({
+                message: "Couldn't add Tag: " + r.error
+            });
+        } else {
+            document.getElementById("add-tag-label").value = "";
+            document.getElementById("add-tag-label-label").classList.remove("mdc-floating-label--float-above");
+            document.getElementById("add-tag-value").value = "";
+            document.getElementById("add-tag-value-label").classList.remove("mdc-floating-label--float-above");
+            snackbar.show({
+                message: "Tag removed successfully"
+            });
+            getDocumentTags();
+        }
+    })
 }
 
 function saveServer() {
@@ -483,6 +506,7 @@ function fillout() {
                 element.classList.add("mdc-floating-label--float-above");
             });
     }
+    getDocumentTags();
 }
 
 searchDocuments();
