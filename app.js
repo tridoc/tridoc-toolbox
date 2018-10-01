@@ -82,6 +82,9 @@ document.querySelector("#search").addEventListener("keypress", e => {
 document.querySelector("#search-tags").addEventListener("keypress", e => {
     if (e.key === "Enter" ) searchDocuments()
 });
+document.querySelector("#search-not-tags").addEventListener("keypress", e => {
+    if (e.key === "Enter" ) searchDocuments()
+});
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
 document.getElementById("upload").addEventListener("input", inputPostDocument);
 document.getElementById("delete").addEventListener("click", deleteDocument);
@@ -333,18 +336,24 @@ function searchDocuments(page) {
     let query = document.getElementById("search").value;
     let dest = document.getElementById("search-document-list-here");
     let tags = document.getElementById("search-tags").value;
-    let tagsquery = "";
+    let notTags = document.getElementById("search-not-tags").value;
+    let tagsQuery = "";
     if (tags.length > 0) {
         encodeURIComponent(tags);
-        tagsquery = "&tag=" + tags.replace(/\s?,\s?/,"&tag=");
-        console.log(tagsquery);
+        tagsQuery = "&tag=" + tags.replace(/\s?,\s?/,"&tag=");
     }
+    let notTagsQuery = "";
+    if (notTags.length > 0) {
+        encodeURIComponent(notTags);
+        notTagsQuery = "&nottag=" + notTags.replace(/\s?,\s?/,"&nottag=");
+    }
+    console.log(tagsQuery + notTagsQuery);
     if (isNaN(page)) { page = 0 }
     let limit = ((storage.getItem("limit") > 0) ? storage.getItem("limit") : '');
     let offset = page*limit;
     let to = 0;
 
-    server.getDocuments(query,tagsquery,limit,offset).then(array => {
+    server.getDocuments(query,tagsQuery,notTagsQuery,limit,offset).then(array => {
         let list = '';
         if (array.error) {
             dest.innerHTML = "";
@@ -377,7 +386,7 @@ function searchDocuments(page) {
                     "  <div class='mdc-card__actions'>" +
                     "    " +
                     "    <button class='mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button document-edit'>Edit</button>" +
-                    "    <a class='mdc-button mdc-card__action mdc-card__action--button' href='" + server.url + "/doc/" + a.identifier + "' target='_blank'>Open</a>" +
+                    "    <a class='mdc-button mdc-card__action mdc-card__action--button' href='" + server.url + "/doc/" + a.identifier + "' target='_blank'><i class='material-icons mdc-button__icon' aria-hidden='true'>open_in_new</i>Open</a>" +
                     "  </div>" +
                     "</div>";
             });

@@ -51,7 +51,7 @@ body {
     margin-left: 0;
 }
 
-#search-document-list-here {
+#-document-list-here {
     .list-document:first-child {
         margin-top: $standard-big;
     }
@@ -155,6 +155,10 @@ body {
     padding: $standard-big;
     height: 100%;
     border-radius: $standard-border-radius;
+}
+
+.mdc-text-field-helper-text + .standard {
+    margin-top: ($standard-big - 25px);
 }
 
 .standard {
