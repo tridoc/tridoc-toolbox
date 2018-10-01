@@ -313,13 +313,18 @@ function countDocuments(to) {
     let counters = document.querySelectorAll(".document-count");
     let next = document.querySelector(".page-next");
     let tags = document.getElementById("search-tags").value;
-    let tagsquery = "";
+    let notTags = document.getElementById("search-not-tags").value;
+    let tagsQuery = "";
     if (tags.length > 0) {
         encodeURIComponent(tags);
-        tagsquery = "&tag=" + tags.replace(/\s?,\s?/,"&tag=");
-        console.log(tagsquery);
+        tagsQuery = "&tag=" + tags.replace(/\s?,\s?/,"&tag=");
     }
-    server.countDocuments(query,tagsquery)
+    let notTagsQuery = "";
+    if (notTags.length > 0) {
+        encodeURIComponent(notTags);
+        notTagsQuery = "&nottag=" + notTags.replace(/\s?,\s?/,"&nottag=");
+    }
+    server.countDocuments(query,tagsQuery,notTagsQuery)
     .then(count => {
         counters.forEach(element => {
             element.innerHTML = count;
