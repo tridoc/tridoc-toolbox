@@ -69,7 +69,13 @@
                         </div>
                         <div class=" mdc-text-field mdc-text-field--box standard">
                             <input id="search-tags" type="text" class="mdc-text-field__input" autocomplete="off">
-                            <label for="search-tags" class="mdc-floating-label">Tags</label>
+                            <label for="search-tags" class="mdc-floating-label">Required Tags</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+                        <p class="mdc-text-field-helper-text">Comma separated</p>
+                        <div class=" mdc-text-field mdc-text-field--box standard">
+                            <input id="search-not-tags" type="text" class="mdc-text-field__input" autocomplete="off">
+                            <label for="search-not-tags" class="mdc-floating-label">Exclude Tags</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
                         <p class="mdc-text-field-helper-text">Comma separated</p>
@@ -96,6 +102,7 @@
                             <label for="tag-label" class="mdc-floating-label" id="tag-label-label">Label</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
+                        <p class="mdc-text-field-helper-text">Must not contain: <code>,</code> <code>;</code> <code>:</code> <code>#</code> <code>"</code> <code>'</code> or spaces</p>
                         <form class="standard">
                             <div class="mdc-form-field">
                                 <div class="mdc-radio">
