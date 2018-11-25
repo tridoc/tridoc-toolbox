@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "webpack-dev-server --progress --host 0.0.0.0",
-    "build": "webpack -p && ncp index.html generated/index.html"
+    "build": "webpack --mode production && ncp index.html generated/index.html"
   },
   "license": "Apache-2.0",
   "devDependencies": {
@@ -20,6 +20,7 @@
     "postcss-loader": "^2.1.3",
     "sass-loader": "^6.0.4",
     "webpack": "^3.0.0",
+    "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^2.11.3"
   },
   "dependencies": {
