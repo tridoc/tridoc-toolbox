@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "webpack-dev-server --progress --host 0.0.0.0",
-    "build": "webpack --mode production && ncp index.html generated/index.html"
+    "build": "webpack && ncp index.html generated/index.html"
   },
   "license": "Apache-2.0",
   "devDependencies": {
