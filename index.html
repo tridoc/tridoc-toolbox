@@ -37,18 +37,29 @@
             <div class="mdc-drawer__toolbar-spacer mdc-top-app-bar__title">Settings</div>
             <nav class="mdc-drawer__content">
                 <div class="mdc-text-field mdc-text-field--box standard">
-                    <input type="text" id="server-address" class="mdc-text-field__input">
-                    <label id="server-address-label" for="server-address" class="mdc-floating-label">Server Address</label>
-                    <div class="mdc-line-ripple"></div>
-                </div>
-                <div class="mdc-text-field mdc-text-field--box standard">
                     <input type="text" id="result-limit" class="mdc-text-field__input">
                     <label id="result-limit-label" for="result-limit" class="mdc-floating-label">Max. number of results
                         shown</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
                 <p class="mdc-text-field-helper-text">Set to 0 to show all results</p>
-                <button id="save-server-address" class="mdc-button mdc-button--raised standard">Save</button>
+                <h2 class="mdc-typography--headline5">Server</h2>
+                <div class="mdc-text-field mdc-text-field--box standard">
+                    <input type="text" id="server-address" class="mdc-text-field__input">
+                    <label id="server-address-label" for="server-address" class="mdc-floating-label">Server Address</label>
+                    <div class="mdc-line-ripple"></div>
+                </div>
+                <div class="mdc-text-field mdc-text-field--box standard">
+                    <input type="text" id="server-username" class="mdc-text-field__input">
+                    <label id="server-username-label" for="server-username" class="mdc-floating-label">Username</label>
+                    <div class="mdc-line-ripple"></div>
+                </div>
+                <div class="mdc-text-field mdc-text-field--box standard">
+                    <input type="password" id="server-password" class="mdc-text-field__input">
+                    <label id="server-password-label" for="server-password" class="mdc-floating-label">Password</label>
+                    <div class="mdc-line-ripple"></div>
+                </div>
+                <button id="save-server" class="mdc-button mdc-button--raised standard">Save</button>
             </nav>
         </nav>
     </aside>
@@ -56,6 +67,20 @@
     <div class="main mdc-top-app-bar--fixed-adjust" id="uploadzone">
         <div class="mdc-layout-grid">
             <div class="mdc-layout-grid__inner">
+        
+                <div hidden class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6-desktop mdc-layout-grid__cell--span-4">
+                    <div class="mdc-card standard-card">
+                        <span class="mdc-typography--headline6">Information:</span>
+                        <span>Support for basic-authentification added.</span>
+                    </div>
+                </div>
+
+                <div hidden class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6-desktop mdc-layout-grid__cell--span-4">
+                    <div class="mdc-card standard-card warning">
+                        <span class="mdc-typography--headline6">Warning:</span>
+                        <span>Behaviour of date-tags expected to change soon.</span>
+                    </div>
+                </div>
 
                 <!--Manage Documents-->
 

@@ -54,14 +54,27 @@ topAppBarElement.forEach((element) => new MDCTopAppBar(element));
 
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 
+const serverAddressElement = document.getElementById("server-address");
+const serverUsernameElement = document.getElementById("server-username");
+const serverPasswordElement = document.getElementById("server-password");
 const storage = localStorage;
 
 if (storage.getItem("server")) {
-    document.getElementById("server-address").value = storage.getItem("server");
+    serverAddressElement.value = storage.getItem("server");
     document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
 } else {
-    document.getElementById("server-address").value = "http://localhost:8000";
+    serverAddressElement.value = "http://localhost:8000";
     document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
+}
+
+if (storage.getItem("username")) {
+    serverUsernameElement.value = storage.getItem("username");
+    document.getElementById("server-username-label").classList.add("mdc-floating-label--float-above");
+}
+
+if (storage.getItem("password")) {
+    serverPasswordElement.value = storage.getItem("password");
+    document.getElementById("server-password-label").classList.add("mdc-floating-label--float-above");
 }
 
 if (storage.getItem("limit")) {
@@ -72,9 +85,9 @@ if (storage.getItem("limit")) {
     document.getElementById("result-limit-label").classList.add("mdc-floating-label--float-above");
 }
 
-let server = new Server(document.getElementById("server-address").value);
+let server = new Server(serverAddressElement.value,serverUsernameElement.value,serverPasswordElement.value);
 
-document.querySelector("#save-server-address").addEventListener("click", saveServer);
+document.querySelector("#save-server").addEventListener("click", saveServer);
 document.querySelector("#search-documents").addEventListener("click", searchDocuments);
 document.querySelector("#search").addEventListener("keypress", e => {
     if (e.key === "Enter") searchDocuments()
@@ -209,12 +222,14 @@ function removeTag() {
 }
 
 function saveServer() {
-    let serverAddress = document.querySelector("#server-address").value;
+    let serverAddress = serverAddressElement.value;
     let resultLimit = document.querySelector("#result-limit").value;
-    server = new Server(serverAddress);
+    server = new Server(serverAddress, serverUsernameElement.value, serverPasswordElement.value);
     try {
         storage.setItem("server", serverAddress);
         storage.setItem("limit", resultLimit);
+        storage.setItem("username", serverUsernameElement.value);
+        storage.setItem("password", serverPasswordElement.value);
     } catch (error) {}
     searchDocuments();
     getTags();
