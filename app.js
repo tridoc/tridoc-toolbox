@@ -321,6 +321,7 @@ function postDocument(file) {
 
 function inputPostDocument() {
     postDocument(document.getElementById("upload").files[0]);
+    document.getElementById("upload").value = '';
 }
 
 function countDocuments(to) {
