@@ -1,4 +1,5 @@
 @import "./variables";
+
 body {
     background-color: $standard-secondary-color-light;
 }
@@ -10,6 +11,7 @@ body {
 .warning {
     background-color: $standard-secondary-color-dark;
     color: #ffffff;
+
     .warning-title {
         font-size: 20px
     }
@@ -36,7 +38,7 @@ body {
     }
 
     .mdc-chip__text {
-        height: 20px ;
+        height: 20px;
         line-height: 20px;
         margin: 6px 6px 6px 0;
         padding: 0 0 0 6px;
@@ -63,6 +65,7 @@ body {
     .list-document:first-child {
         margin-top: $standard-big;
     }
+
     .mdc-list-item__graphic {
         margin: 16px;
         border-radius: 100%;
@@ -71,6 +74,7 @@ body {
 
 #tag-list-here {
     padding: 0;
+
     .list-tag:first-child {
         margin-top: $standard-big;
     }
@@ -80,6 +84,7 @@ body {
     margin-top: $standard-dense;
     word-wrap: break-word;
     border-radius: $standard-border-radius;
+
     h3 {
         margin: 0;
         padding: $standard-very-dense;
@@ -106,7 +111,7 @@ body {
 .mdc-typography--overline {
     margin-bottom: 0;
     text-align: center;
-    
+
     b {
         font-size: 1.5em;
     }
@@ -150,10 +155,12 @@ body {
 
 .mdc-top-app-bar__logo {
     height: 48px;
+
     svg {
         height: 32px;
         margin: 8px;
     }
+
     path {
         fill: #ffffff;
     }
@@ -165,23 +172,40 @@ body {
     border-radius: $standard-border-radius;
 }
 
-.mdc-text-field-helper-text + .standard {
+.mdc-text-field-helper-text+.standard {
     margin-top: ($standard-big - 25px);
 }
 
 .standard {
     margin-top: $standard-big;
+
+    &-dense {
+        margin-top: $standard-dense;
+    }
+
+    &-very-dense {
+        margin-top: $standard-very-dense;
+    }
+
+    & *:first-child,
+    &-dense *:first-child,
+    &-very-dense *:first-child {
+        margin-top: 0;
+    }
+
+    &-mono {
+        font-family: 'Roboto Mono', monospace;
+        color: $standard-primary-color-light;
+    }
 }
 
-.standard-dense {
-    margin-top: $standard-dense;
-}
+.error {
+    &.mdc-card--outlined {
+        border-color: $standard-secondary-color-light;
+    }
 
-.standard-very-dense {
-    margin-top: $standard-very-dense;
-}
-
-.standard-mono {
-    font-family: 'Roboto Mono', monospace;
-    color: $standard-primary-color-light;
+    &,
+    & * {
+        color: $standard-secondary-color-dark;
+    }
 }

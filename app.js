@@ -113,10 +113,7 @@ function getTags() {
         server.getTags(id).then(array => {
             let list = "";
             if (array.error) {
-                dest.innerHTML = "Error: " + array.error;
-                snackbar.show({
-                    message: "Server responded with " + array.statusCode + ": " + array.error
-                });
+                dest.innerHTML = '<div class="mdc-card mdc-card--outlined error"><div class="list-content"><span class="mdc-typography--subtitle1">Server responded with <span class="standard-mono">' + array.statusCode + ": " + array.error + '</span></span></div></div>';
             } else if (array.length > 0) {
                 array.sort(function (a, b) {
                     return a.label.localeCompare(b.label);
@@ -374,13 +371,10 @@ function searchDocuments(page) {
     server.getDocuments(query,tagsQuery,notTagsQuery,limit,offset).then(array => {
         let list = '';
         if (array.error) {
-            dest.innerHTML = "";
-            snackbar.show({
-                message: "Server responded with " + array.statusCode + ": " + array.error
-            });
+            dest.innerHTML = '<div class="mdc-card mdc-card--outlined list error"><div class="list-content"><span class="mdc-typography--subtitle1">Server responded with <span class="standard-mono">' + array.statusCode + ": " + array.error + '</span></span></div></div>';
         } else if (array.length > 0) {
             to = offset+array.length;
-            list = '<p class="mdc-typography--overline standard">'+
+            list = '<p class="mdc-typography--overline">'+
             '  Displaying documents <b>'+ (offset+1) +'</b> to <b>' + to +'</b>/'+
             (limit ? '<span class="document-count">?</span>' : '<span class="document-count">' + to + '</span>')+
             '</p>'+
@@ -417,8 +411,8 @@ function searchDocuments(page) {
             let label2 = query ? "You can try another query" : "Upload something";
             list = "<div class='mdc-card--outlined list list-document'>" +
                 "" +
+                "<h3 class='mdc-typography--headline5'>" + label1 + "</h3>" +
                 "<div class='list-content'>" +
-                "<h3 class='mdc-typography--headline5'><span class='material-icons'>blur_off</span>" + label1 + "</h3>" +
                 "<span class='mdc-typography--subtitle1'>" + label2 + "</span>" +
                 "</div>" +
                 "</div>";
