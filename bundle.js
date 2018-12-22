@@ -3986,6 +3986,7 @@ function countDocuments(to) {
 function searchDocuments(page) {
     var query = document.getElementById("search").value;
     var dest = document.getElementById("search-document-list-here");
+    var now = new Date();
     var tags = document.getElementById("search-tags").value;
     var notTags = document.getElementById("search-not-tags").value;
     var tagsQuery = "";
@@ -4015,7 +4016,8 @@ function searchDocuments(page) {
             list = '<p class="mdc-typography--overline">' + '  Displaying documents <b>' + (offset + 1) + '</b> to <b>' + to + '</b>/' + (limit ? '<span class="document-count">?</span>' : '<span class="document-count">' + to + '</span>') + '</p>' + (limit ? '<div class="pagination">' + (Math.floor(page) > 0 ? '<button data-page-target="' + (Math.floor(page) - 1) + '" class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>' : '<button disabled class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>') + '<button data-pagination-target="' + (Math.floor(page) + 1) + '" class="mdc-button mdc-button--raised page-switch page-next">Next</button>' + '</div>' : '');
             array.forEach(function (a) {
                 var label = a.title ? a.title : "Untitled document";
-                list = list + "<div class='mdc-card mdc-card--outlined list list-document' data-document-id=\"" + a.identifier + "\">" + "    <h3 class='mdc-typography--headline5'>" + label + "</h3>" + "  <div class='list-content'>" + "    <div class='tags-here'></div>" + "    <span class='standard-mono mdc-typography--subtitle1'>" + a.identifier + "</span>" + "  </div>" + "  <div class='mdc-card__actions'>" + "    " + "    <button class='mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button document-edit'>Edit</button>" + "    <a class='mdc-button mdc-card__action mdc-card__action--button' href='" + server.url + "/doc/" + a.identifier + "' target='_blank'><i class='material-icons mdc-button__icon' aria-hidden='true'>open_in_new</i>Open</a>" + "  </div>" + "</div>";
+                var created = a.created ? new Date(a.created).toLocaleString() : "Date of creation unknown"; // To suppoert older versions of the backend
+                list = list + "<div class='mdc-card mdc-card--outlined list list-document' data-document-id=\"" + a.identifier + "\">" + "    <h3 class='mdc-typography--headline5'>" + label + "</h3>" + "  <div class='list-content'>" + "    <div class='tags-here'></div>" + "    <div class='standard-mono info-green mdc-typography--subtitle1'>" + a.identifier + "    </div>" + "    <div class='standard-mono info mdc-typography--subtitle1'>" + created + "    </div>" + "  </div>" + "  <div class='mdc-card__actions'>" + "    " + "    <button class='mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button document-edit'>Edit</button>" + "    <a class='mdc-button mdc-card__action mdc-card__action--button' href='" + server.url + "/doc/" + a.identifier + "' target='_blank'><i class='material-icons mdc-button__icon' aria-hidden='true'>open_in_new</i>Open</a>" + "  </div>" + "</div>";
             });
             dest.innerHTML = list;
             countDocuments(to);
@@ -4054,7 +4056,7 @@ function setDocumentTitle() {
 
 function fillout() {
     var title = this.parentNode.parentNode.getElementsByClassName("mdc-typography--headline5")[0].innerHTML;
-    var id = this.parentNode.parentNode.getElementsByClassName("mdc-typography--subtitle1")[0].innerHTML;
+    var id = this.parentNode.parentNode.getAttribute("data-document-id");
     var idFields = document.querySelectorAll(".document-id");
     document.getElementById("manage-metadata").setAttribute("data-document-id", id);
     idFields.forEach(function (element) {

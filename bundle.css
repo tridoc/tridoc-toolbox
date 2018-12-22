@@ -4617,11 +4617,15 @@ body {
   .standard-very-dense *:first-child {
     margin-top: 0; }
   .standard-mono {
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Roboto Mono', monospace; }
+
+.info {
+  color: #afafaf; }
+  .info-green {
     color: #439688; }
 
 .error.mdc-card--outlined {
-  border-color: #ffa4a2; }
+  border-color: #af4448; }
 
 .error,
 .error * {
