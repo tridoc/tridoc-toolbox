@@ -115,8 +115,7 @@ function getTags() {
             if (array.error) {
                 dest.innerHTML = "Error: " + array.error;
                 snackbar.show({
-                    message: "Server responded with " + array.statusCode + ": " + array.error,
-                    timeout: 6000
+                    message: "Server responded with " + array.statusCode + ": " + array.error
                 });
             } else if (array.length > 0) {
                 array.sort(function (a, b) {
@@ -160,8 +159,7 @@ function getTags() {
             }
         }).catch(e => {
             snackbar.show({
-                message: e,
-                timeout: 6000
+                message: e
             });
             dest.innerHTML = "Error: " + e;
         });
@@ -301,8 +299,7 @@ function postDocument(file) {
     server.uploadFile(file)
         .catch(error => {
             snackbar.show({
-                message: error,
-                timeout: 6000
+                message: error
             });
         })
         .then(json => {
@@ -379,8 +376,7 @@ function searchDocuments(page) {
         if (array.error) {
             dest.innerHTML = "";
             snackbar.show({
-                message: "Server responded with " + array.statusCode + ": " + array.error,
-                timeout: 6000
+                message: "Server responded with " + array.statusCode + ": " + array.error
             });
         } else if (array.length > 0) {
             to = offset+array.length;
@@ -434,8 +430,7 @@ function searchDocuments(page) {
         getTags();
     }).catch(e => {
         snackbar.show({
-            message: e,
-            timeout: 6000
+            message: e
         });
         dest.innerHTML = "";
     });
