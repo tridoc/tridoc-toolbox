@@ -350,6 +350,7 @@ function countDocuments(to) {
 function searchDocuments(page) {
     let query = document.getElementById("search").value;
     let dest = document.getElementById("search-document-list-here");
+    let now = new Date();
     let tags = document.getElementById("search-tags").value;
     let notTags = document.getElementById("search-not-tags").value;
     let tagsQuery = "";
@@ -388,11 +389,17 @@ function searchDocuments(page) {
             );
             array.forEach(a => {
                 let label = a.title ? a.title : "Untitled document";
+                let created = a.created ? new Date(a.created).toLocaleString() : "Date of creation unknown"; // To suppoert older versions of the backend
                 list = list + "<div class='mdc-card mdc-card--outlined list list-document' data-document-id=\"" + a.identifier + "\">" +
                 "    <h3 class='mdc-typography--headline5'>" + label + "</h3>" +
                     "  <div class='list-content'>" +
                     "    <div class='tags-here'></div>" +
-                    "    <span class='standard-mono mdc-typography--subtitle1'>" + a.identifier + "</span>" +
+                    "    <div class='standard-mono info-green mdc-typography--subtitle1'>" +
+                    a.identifier +
+                    "    </div>" +
+                    "    <div class='standard-mono info mdc-typography--subtitle1'>" +
+                    created +
+                    "    </div>" +
                     "  </div>" +
                     "  <div class='mdc-card__actions'>" +
                     "    " +
@@ -438,7 +445,7 @@ function setDocumentTitle() {
 
 function fillout() {
     let title = this.parentNode.parentNode.getElementsByClassName("mdc-typography--headline5")[0].innerHTML;
-    let id = this.parentNode.parentNode.getElementsByClassName("mdc-typography--subtitle1")[0].innerHTML;
+    let id = this.parentNode.parentNode.getAttribute("data-document-id");
     let idFields = document.querySelectorAll(".document-id");
     document.getElementById("manage-metadata").setAttribute("data-document-id",id);
     idFields.forEach(element => {

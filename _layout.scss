@@ -195,13 +195,21 @@ body {
 
     &-mono {
         font-family: 'Roboto Mono', monospace;
+
+    }
+}
+
+.info {
+    color: $standard-light-gray;
+
+    &-green {
         color: $standard-primary-color-light;
     }
 }
 
 .error {
     &.mdc-card--outlined {
-        border-color: $standard-secondary-color-light;
+        border-color: $standard-secondary-color-dark;
     }
 
     &,
