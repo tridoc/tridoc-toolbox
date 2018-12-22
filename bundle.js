@@ -3761,10 +3761,7 @@ function getTags() {
         server.getTags(id).then(function (array) {
             var list = "";
             if (array.error) {
-                dest.innerHTML = "Error: " + array.error;
-                snackbar.show({
-                    message: "Server responded with " + array.statusCode + ": " + array.error
-                });
+                dest.innerHTML = '<div class="mdc-card mdc-card--outlined error"><div class="list-content"><span class="mdc-typography--subtitle1">Server responded with <span class="standard-mono">' + array.statusCode + ": " + array.error + '</span></span></div></div>';
             } else if (array.length > 0) {
                 array.sort(function (a, b) {
                     return a.label.localeCompare(b.label);
@@ -4012,13 +4009,10 @@ function searchDocuments(page) {
     server.getDocuments(query, tagsQuery, notTagsQuery, limit, offset).then(function (array) {
         var list = '';
         if (array.error) {
-            dest.innerHTML = "";
-            snackbar.show({
-                message: "Server responded with " + array.statusCode + ": " + array.error
-            });
+            dest.innerHTML = '<div class="mdc-card mdc-card--outlined list error"><div class="list-content"><span class="mdc-typography--subtitle1">Server responded with <span class="standard-mono">' + array.statusCode + ": " + array.error + '</span></span></div></div>';
         } else if (array.length > 0) {
             to = offset + array.length;
-            list = '<p class="mdc-typography--overline standard">' + '  Displaying documents <b>' + (offset + 1) + '</b> to <b>' + to + '</b>/' + (limit ? '<span class="document-count">?</span>' : '<span class="document-count">' + to + '</span>') + '</p>' + (limit ? '<div class="pagination">' + (Math.floor(page) > 0 ? '<button data-page-target="' + (Math.floor(page) - 1) + '" class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>' : '<button disabled class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>') + '<button data-pagination-target="' + (Math.floor(page) + 1) + '" class="mdc-button mdc-button--raised page-switch page-next">Next</button>' + '</div>' : '');
+            list = '<p class="mdc-typography--overline">' + '  Displaying documents <b>' + (offset + 1) + '</b> to <b>' + to + '</b>/' + (limit ? '<span class="document-count">?</span>' : '<span class="document-count">' + to + '</span>') + '</p>' + (limit ? '<div class="pagination">' + (Math.floor(page) > 0 ? '<button data-page-target="' + (Math.floor(page) - 1) + '" class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>' : '<button disabled class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>') + '<button data-pagination-target="' + (Math.floor(page) + 1) + '" class="mdc-button mdc-button--raised page-switch page-next">Next</button>' + '</div>' : '');
             array.forEach(function (a) {
                 var label = a.title ? a.title : "Untitled document";
                 list = list + "<div class='mdc-card mdc-card--outlined list list-document' data-document-id=\"" + a.identifier + "\">" + "    <h3 class='mdc-typography--headline5'>" + label + "</h3>" + "  <div class='list-content'>" + "    <div class='tags-here'></div>" + "    <span class='standard-mono mdc-typography--subtitle1'>" + a.identifier + "</span>" + "  </div>" + "  <div class='mdc-card__actions'>" + "    " + "    <button class='mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button document-edit'>Edit</button>" + "    <a class='mdc-button mdc-card__action mdc-card__action--button' href='" + server.url + "/doc/" + a.identifier + "' target='_blank'><i class='material-icons mdc-button__icon' aria-hidden='true'>open_in_new</i>Open</a>" + "  </div>" + "</div>";
@@ -4033,7 +4027,7 @@ function searchDocuments(page) {
         } else {
             var label1 = query ? " Nothing Found" : " Documents will appear here";
             var label2 = query ? "You can try another query" : "Upload something";
-            list = "<div class='mdc-card--outlined list list-document'>" + "" + "<div class='list-content'>" + "<h3 class='mdc-typography--headline5'><span class='material-icons'>blur_off</span>" + label1 + "</h3>" + "<span class='mdc-typography--subtitle1'>" + label2 + "</span>" + "</div>" + "</div>";
+            list = "<div class='mdc-card--outlined list list-document'>" + "" + "<h3 class='mdc-typography--headline5'>" + label1 + "</h3>" + "<div class='list-content'>" + "<span class='mdc-typography--subtitle1'>" + label2 + "</span>" + "</div>" + "</div>";
             dest.innerHTML = list;
         }
         document.querySelectorAll(".page-switch").forEach(function (element) {

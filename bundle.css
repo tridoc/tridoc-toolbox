@@ -4608,13 +4608,21 @@ body {
 
 .standard {
   margin-top: 32px; }
+  .standard-dense {
+    margin-top: 16px; }
+  .standard-very-dense {
+    margin-top: 8px; }
+  .standard *:first-child,
+  .standard-dense *:first-child,
+  .standard-very-dense *:first-child {
+    margin-top: 0; }
+  .standard-mono {
+    font-family: 'Roboto Mono', monospace;
+    color: #439688; }
 
-.standard-dense {
-  margin-top: 16px; }
+.error.mdc-card--outlined {
+  border-color: #ffa4a2; }
 
-.standard-very-dense {
-  margin-top: 8px; }
-
-.standard-mono {
-  font-family: 'Roboto Mono', monospace;
-  color: #439688; }
+.error,
+.error * {
+  color: #af4448; }
