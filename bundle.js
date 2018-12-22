@@ -3763,8 +3763,7 @@ function getTags() {
             if (array.error) {
                 dest.innerHTML = "Error: " + array.error;
                 snackbar.show({
-                    message: "Server responded with " + array.statusCode + ": " + array.error,
-                    timeout: 6000
+                    message: "Server responded with " + array.statusCode + ": " + array.error
                 });
             } else if (array.length > 0) {
                 array.sort(function (a, b) {
@@ -3798,8 +3797,7 @@ function getTags() {
             }
         }).catch(function (e) {
             snackbar.show({
-                message: e,
-                timeout: 6000
+                message: e
             });
             dest.innerHTML = "Error: " + e;
         });
@@ -3942,8 +3940,7 @@ function deleteDocument() {
 function postDocument(file) {
     server.uploadFile(file).catch(function (error) {
         snackbar.show({
-            message: error,
-            timeout: 6000
+            message: error
         });
     }).then(function (json) {
         server.setDocumentTitle(json.location.substring(json.location.lastIndexOf("/") + 1), file.name.replace(/\.pdf$/, "")).then(function () {
@@ -4017,8 +4014,7 @@ function searchDocuments(page) {
         if (array.error) {
             dest.innerHTML = "";
             snackbar.show({
-                message: "Server responded with " + array.statusCode + ": " + array.error,
-                timeout: 6000
+                message: "Server responded with " + array.statusCode + ": " + array.error
             });
         } else if (array.length > 0) {
             to = offset + array.length;
@@ -4048,8 +4044,7 @@ function searchDocuments(page) {
         getTags();
     }).catch(function (e) {
         snackbar.show({
-            message: e,
-            timeout: 6000
+            message: e
         });
         dest.innerHTML = "";
     });
