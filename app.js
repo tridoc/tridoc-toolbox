@@ -72,11 +72,14 @@ try {
 } catch (error) {
     console.error(error);
 }
+try {
+    const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+} catch (error) {
+    console.error(error);
+}
 console.groupEnd();
 
 // Actual code starts here.
-
-const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 
 const serverAddressElement = document.getElementById("server-address");
 const serverAddressLabel = document.getElementById("server-address-label");
