@@ -3649,7 +3649,7 @@ var _index = __webpack_require__(42);
 
 var _notchedOutline = __webpack_require__(9);
 
-var _snackbar = __webpack_require__(46);
+var _snackbar2 = __webpack_require__(46);
 
 var _icon = __webpack_require__(26);
 
@@ -3718,11 +3718,14 @@ try {
 } catch (error) {
     console.error(error);
 }
+try {
+    var _snackbar = new _snackbar2.MDCSnackbar(document.querySelector('.mdc-snackbar'));
+} catch (error) {
+    console.error(error);
+}
 console.groupEnd();
 
 // Actual code starts here.
-
-var snackbar = new _snackbar.MDCSnackbar(document.querySelector('.mdc-snackbar'));
 
 var serverAddressElement = document.getElementById("server-address");
 var serverAddressLabel = document.getElementById("server-address-label");
