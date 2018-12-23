@@ -85,30 +85,32 @@ const serverAddressElement = document.getElementById("server-address");
 const serverAddressLabel = document.getElementById("server-address-label");
 const serverUsernameElement = document.getElementById("server-username");
 const serverPasswordElement = document.getElementById("server-password");
+const resultLimitElement = document.getElementById("result-limit");
+
 const storage = localStorage;
 
 if (storage.getItem("server")) {
-    serverAddressElement.value = storage.getItem("server");
-    serverAddressLabel ? serverAddressLabel.classList.add("mdc-floating-label--float-above") : console.log("serverAddressLabel: " + serverAddressLabel);
+    serverAddressElement ? serverAddressElement.value = storage.getItem("server") : null ;
+    serverAddressLabel ? serverAddressLabel.classList.add("mdc-floating-label--float-above") : null ;
 } else {
-    serverAddressElement.value = "http://localhost:8000";
+    serverAddressElement ? serverAddressElement.value = "http://localhost:8000" : null ;
     serverAddressLabel ? serverAddressLabel.classList.add("mdc-floating-label--float-above") : console.log("serverAddressLabel: " + serverAddressLabel);
 }
 
-if (storage.getItem("username")) {
+if (storage.getItem("username") && serverUsernameElement) {
     serverUsernameElement.value = storage.getItem("username");
     document.getElementById("server-username-label").classList.add("mdc-floating-label--float-above");
 }
 
-if (storage.getItem("password")) {
+if (storage.getItem("password") && serverPasswordElement) {
     serverPasswordElement.value = storage.getItem("password");
     document.getElementById("server-password-label").classList.add("mdc-floating-label--float-above");
 }
 
-if (storage.getItem("limit")) {
-    document.getElementById("result-limit").value = storage.getItem("limit");
+if (storage.getItem("limit") && resultLimitElement) {
+    resultLimitElement.value = storage.getItem("limit");
     document.getElementById("result-limit-label").classList.add("mdc-floating-label--float-above");
-} else {
+} else if (resultLimitElement) {
     document.getElementById("result-limit").value = "10";
     document.getElementById("result-limit-label").classList.add("mdc-floating-label--float-above");
 }
