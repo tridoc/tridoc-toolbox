@@ -114,8 +114,11 @@ if (storage.getItem("limit") && resultLimitElement) {
     document.getElementById("result-limit").value = "10";
     document.getElementById("result-limit-label").classList.add("mdc-floating-label--float-above");
 }
-
+try {
 let server = new Server(serverAddressElement.value, serverUsernameElement.value, serverPasswordElement.value);
+} catch (error) {
+    console.error("could not add server: " + error)
+}
 
 document.querySelector("#save-server").addEventListener("click", saveServer);
 document.querySelector("#search-documents").addEventListener("click", searchDocuments);
