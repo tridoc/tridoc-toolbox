@@ -3668,6 +3668,7 @@ var _util = __webpack_require__(62);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Adding Material Stuff
+console.group("MDC");
 try {
     var drawer = new _drawer.MDCTemporaryDrawer(document.getElementById("drawer"));
     document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', function () {
@@ -3717,6 +3718,8 @@ try {
 } catch (error) {
     console.error(error);
 }
+console.groupEnd();
+
 // Actual code starts here.
 
 var snackbar = new _snackbar.MDCSnackbar(document.querySelector('.mdc-snackbar'));
