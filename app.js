@@ -31,6 +31,9 @@ import Dropzone from 'dropzone';
 import Server from './lib/server';
 import { isNull } from 'util';
 
+try {
+    
+
 const drawer = new MDCTemporaryDrawer(document.getElementById("drawer"));
 document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
 
@@ -49,22 +52,25 @@ listRipple.forEach((element) => new MDCRipple(element));
 
 const topAppBarElement = [].slice.call(document.querySelectorAll('.mdc-top-app-bar'));
 topAppBarElement.forEach((element) => new MDCTopAppBar(element));
-
+} catch (error) {
+    console.error(error);
+} {
 // Actual code starts here.
 
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 
 const serverAddressElement = document.getElementById("server-address");
+const serverAddressLabel = document.getElementById("server-address-label");
 const serverUsernameElement = document.getElementById("server-username");
 const serverPasswordElement = document.getElementById("server-password");
 const storage = localStorage;
 
 if (storage.getItem("server")) {
     serverAddressElement.value = storage.getItem("server");
-    document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
+    serverAddressLabel ? serverAddressLabel.classList.add("mdc-floating-label--float-above") : console.log("serverAddressLabel: "+serverAddressLabel);
 } else {
     serverAddressElement.value = "http://localhost:8000";
-    document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
+    serverAddressLabel ? serverAddressLabel.classList.add("mdc-floating-label--float-above") : console.log("serverAddressLabel: "+serverAddressLabel);
 }
 
 if (storage.getItem("username")) {
