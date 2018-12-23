@@ -3649,7 +3649,7 @@ var _index = __webpack_require__(42);
 
 var _notchedOutline = __webpack_require__(9);
 
-var _snackbar2 = __webpack_require__(46);
+var _snackbar = __webpack_require__(46);
 
 var _icon = __webpack_require__(26);
 
@@ -3659,112 +3659,81 @@ var _dropzone = __webpack_require__(59);
 
 var _dropzone2 = _interopRequireDefault(_dropzone);
 
-var _server2 = __webpack_require__(61);
+var _server = __webpack_require__(61);
 
-var _server3 = _interopRequireDefault(_server2);
+var _server2 = _interopRequireDefault(_server);
 
 var _util = __webpack_require__(62);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// Adding Material Stuff
-console.group("MDC");
-try {
-    var drawer = new _drawer.MDCTemporaryDrawer(document.getElementById("drawer"));
-    document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', function () {
-        return drawer.open = true;
-    });
-} catch (error) {
-    console.error(error);
-}
-try {
-    var textFieldElements = [].slice.call(document.querySelectorAll('.mdc-text-field'));
-    textFieldElements.forEach(function (element) {
-        return new _textfield.MDCTextField(element);
-    });
-} catch (error) {
-    console.error(error);
-}
-try {
-    var buttonRipple = [].slice.call(document.querySelectorAll('button'));
-    buttonRipple.forEach(function (element) {
-        return new _ripple.MDCRipple(element);
-    });
-} catch (error) {
-    console.error(error);
-}
-try {
-    var iconButton = [].slice.call(document.querySelectorAll('button'));
-    var iconButtonRipple = iconButton.forEach(function (element) {
-        return new _ripple.MDCRipple(element);
-    });
-    iconButtonRipple.unbounded = true;
-} catch (error) {
-    console.error(error);
-}
-try {
-    var listRipple = [].slice.call(document.querySelectorAll('.list'));
-    listRipple.forEach(function (element) {
-        return new _ripple.MDCRipple(element);
-    });
-} catch (error) {
-    console.error(error);
-}
-try {
-    var topAppBarElement = [].slice.call(document.querySelectorAll('.mdc-top-app-bar'));
-    topAppBarElement.forEach(function (element) {
-        return new _index.MDCTopAppBar(element);
-    });
-} catch (error) {
-    console.error(error);
-}
-try {
-    var _snackbar = new _snackbar2.MDCSnackbar(document.querySelector('.mdc-snackbar'));
-} catch (error) {
-    console.error(error);
-}
-console.groupEnd();
+var drawer = new _drawer.MDCTemporaryDrawer(document.getElementById("drawer"));
+document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', function () {
+    return drawer.open = true;
+});
+
+var textFieldElements = [].slice.call(document.querySelectorAll('.mdc-text-field'));
+textFieldElements.forEach(function (element) {
+    return new _textfield.MDCTextField(element);
+});
+
+var buttonRipple = [].slice.call(document.querySelectorAll('button'));
+buttonRipple.forEach(function (element) {
+    return new _ripple.MDCRipple(element);
+});
+
+var iconButton = [].slice.call(document.querySelectorAll('button'));
+var iconButtonRipple = iconButton.forEach(function (element) {
+    return new _ripple.MDCRipple(element);
+});
+//iconButtonRipple.unbounded = true;
+
+var listRipple = [].slice.call(document.querySelectorAll('.list'));
+listRipple.forEach(function (element) {
+    return new _ripple.MDCRipple(element);
+});
+
+var topAppBarElement = [].slice.call(document.querySelectorAll('.mdc-top-app-bar'));
+topAppBarElement.forEach(function (element) {
+    return new _index.MDCTopAppBar(element);
+});
 
 // Actual code starts here.
 
+var snackbar = new _snackbar.MDCSnackbar(document.querySelector('.mdc-snackbar'));
+
 var serverAddressElement = document.getElementById("server-address");
-var serverAddressLabel = document.getElementById("server-address-label");
 var serverUsernameElement = document.getElementById("server-username");
 var serverPasswordElement = document.getElementById("server-password");
-var resultLimitElement = document.getElementById("result-limit");
-
 var storage = localStorage;
 
 if (storage.getItem("server")) {
-    serverAddressElement ? serverAddressElement.value = storage.getItem("server") : null;
-    serverAddressLabel ? serverAddressLabel.classList.add("mdc-floating-label--float-above") : null;
+    serverAddressElement.value = storage.getItem("server");
+    document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
 } else {
-    serverAddressElement ? serverAddressElement.value = "http://localhost:8000" : null;
-    serverAddressLabel ? serverAddressLabel.classList.add("mdc-floating-label--float-above") : console.log("serverAddressLabel: " + serverAddressLabel);
+    serverAddressElement.value = "http://localhost:8000";
+    document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
 }
 
-if (storage.getItem("username") && serverUsernameElement) {
+if (storage.getItem("username")) {
     serverUsernameElement.value = storage.getItem("username");
     document.getElementById("server-username-label").classList.add("mdc-floating-label--float-above");
 }
 
-if (storage.getItem("password") && serverPasswordElement) {
+if (storage.getItem("password")) {
     serverPasswordElement.value = storage.getItem("password");
     document.getElementById("server-password-label").classList.add("mdc-floating-label--float-above");
 }
 
-if (storage.getItem("limit") && resultLimitElement) {
-    resultLimitElement.value = storage.getItem("limit");
+if (storage.getItem("limit")) {
+    document.getElementById("result-limit").value = storage.getItem("limit");
     document.getElementById("result-limit-label").classList.add("mdc-floating-label--float-above");
-} else if (resultLimitElement) {
+} else {
     document.getElementById("result-limit").value = "10";
     document.getElementById("result-limit-label").classList.add("mdc-floating-label--float-above");
 }
-try {
-    var _server = new _server3.default(serverAddressElement.value, serverUsernameElement.value, serverPasswordElement.value);
-} catch (error) {
-    console.error("could not add server: " + error);
-}
+
+var server = new _server2.default(serverAddressElement.value, serverUsernameElement.value, serverPasswordElement.value);
 
 document.querySelector("#save-server").addEventListener("click", saveServer);
 document.querySelector("#search-documents").addEventListener("click", searchDocuments);
@@ -3890,7 +3859,7 @@ function removeTag() {
 function saveServer() {
     var serverAddress = serverAddressElement.value;
     var resultLimit = document.querySelector("#result-limit").value;
-    server = new _server3.default(serverAddress, serverUsernameElement.value, serverPasswordElement.value);
+    server = new _server2.default(serverAddress, serverUsernameElement.value, serverPasswordElement.value);
     try {
         storage.setItem("server", serverAddress);
         storage.setItem("limit", resultLimit);
