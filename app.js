@@ -34,6 +34,7 @@ import {
 } from 'util';
 
 // Adding Material Stuff
+console.group("MDC");
 try {
     const drawer = new MDCTemporaryDrawer(document.getElementById("drawer"));
     document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
@@ -71,6 +72,8 @@ try {
 } catch (error) {
     console.error(error);
 }
+console.groupEnd();
+
 // Actual code starts here.
 
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
