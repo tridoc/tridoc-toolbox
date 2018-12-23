@@ -3667,52 +3667,72 @@ var _util = __webpack_require__(62);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var drawer = new _drawer.MDCTemporaryDrawer(document.getElementById("drawer"));
-document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', function () {
-    return drawer.open = true;
-});
-
-var textFieldElements = [].slice.call(document.querySelectorAll('.mdc-text-field'));
-textFieldElements.forEach(function (element) {
-    return new _textfield.MDCTextField(element);
-});
-
-var buttonRipple = [].slice.call(document.querySelectorAll('button'));
-buttonRipple.forEach(function (element) {
-    return new _ripple.MDCRipple(element);
-});
-
-var iconButton = [].slice.call(document.querySelectorAll('button'));
-var iconButtonRipple = iconButton.forEach(function (element) {
-    return new _ripple.MDCRipple(element);
-});
-//iconButtonRipple.unbounded = true;
-
-var listRipple = [].slice.call(document.querySelectorAll('.list'));
-listRipple.forEach(function (element) {
-    return new _ripple.MDCRipple(element);
-});
-
-var topAppBarElement = [].slice.call(document.querySelectorAll('.mdc-top-app-bar'));
-topAppBarElement.forEach(function (element) {
-    return new _index.MDCTopAppBar(element);
-});
-
+// Adding Material Stuff
+try {
+    var drawer = new _drawer.MDCTemporaryDrawer(document.getElementById("drawer"));
+    document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', function () {
+        return drawer.open = true;
+    });
+} catch (error) {
+    console.error(error);
+}
+try {
+    var textFieldElements = [].slice.call(document.querySelectorAll('.mdc-text-field'));
+    textFieldElements.forEach(function (element) {
+        return new _textfield.MDCTextField(element);
+    });
+} catch (error) {
+    console.error(error);
+}
+try {
+    var buttonRipple = [].slice.call(document.querySelectorAll('button'));
+    buttonRipple.forEach(function (element) {
+        return new _ripple.MDCRipple(element);
+    });
+} catch (error) {
+    console.error(error);
+}
+try {
+    var iconButton = [].slice.call(document.querySelectorAll('button'));
+    var iconButtonRipple = iconButton.forEach(function (element) {
+        return new _ripple.MDCRipple(element);
+    });
+    iconButtonRipple.unbounded = true;
+} catch (error) {
+    console.error(error);
+}
+try {
+    var listRipple = [].slice.call(document.querySelectorAll('.list'));
+    listRipple.forEach(function (element) {
+        return new _ripple.MDCRipple(element);
+    });
+} catch (error) {
+    console.error(error);
+}
+try {
+    var topAppBarElement = [].slice.call(document.querySelectorAll('.mdc-top-app-bar'));
+    topAppBarElement.forEach(function (element) {
+        return new _index.MDCTopAppBar(element);
+    });
+} catch (error) {
+    console.error(error);
+}
 // Actual code starts here.
 
 var snackbar = new _snackbar.MDCSnackbar(document.querySelector('.mdc-snackbar'));
 
 var serverAddressElement = document.getElementById("server-address");
+var serverAddressLabel = document.getElementById("server-address-label");
 var serverUsernameElement = document.getElementById("server-username");
 var serverPasswordElement = document.getElementById("server-password");
 var storage = localStorage;
 
 if (storage.getItem("server")) {
     serverAddressElement.value = storage.getItem("server");
-    document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
+    serverAddressLabel ? serverAddressLabel.classList.add("mdc-floating-label--float-above") : console.log("serverAddressLabel: " + serverAddressLabel);
 } else {
     serverAddressElement.value = "http://localhost:8000";
-    document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
+    serverAddressLabel ? serverAddressLabel.classList.add("mdc-floating-label--float-above") : console.log("serverAddressLabel: " + serverAddressLabel);
 }
 
 if (storage.getItem("username")) {
