@@ -29,42 +29,64 @@ import {
 
 import Dropzone from 'dropzone';
 import Server from './lib/server';
-import { isNull } from 'util';
+import {
+    isNull
+} from 'util';
 
-const drawer = new MDCTemporaryDrawer(document.getElementById("drawer"));
-document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
-
-const textFieldElements = [].slice.call(document.querySelectorAll('.mdc-text-field'));
-textFieldElements.forEach((element) => new MDCTextField(element));
-
-const buttonRipple = [].slice.call(document.querySelectorAll('button'));
-buttonRipple.forEach((element) => new MDCRipple(element));
-
-const iconButton = [].slice.call(document.querySelectorAll('button'));
-const iconButtonRipple = iconButton.forEach((element) => new MDCRipple(element));
-//iconButtonRipple.unbounded = true;
-
-const listRipple = [].slice.call(document.querySelectorAll('.list'));
-listRipple.forEach((element) => new MDCRipple(element));
-
-const topAppBarElement = [].slice.call(document.querySelectorAll('.mdc-top-app-bar'));
-topAppBarElement.forEach((element) => new MDCTopAppBar(element));
-
+// Adding Material Stuff
+try {
+    const drawer = new MDCTemporaryDrawer(document.getElementById("drawer"));
+    document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
+} catch (error) {
+    console.error(error);
+}
+try {
+    const textFieldElements = [].slice.call(document.querySelectorAll('.mdc-text-field'));
+    textFieldElements.forEach((element) => new MDCTextField(element));
+} catch (error) {
+    console.error(error);
+}
+try {
+    const buttonRipple = [].slice.call(document.querySelectorAll('button'));
+    buttonRipple.forEach((element) => new MDCRipple(element));
+} catch (error) {
+    console.error(error);
+}
+try {
+    const iconButton = [].slice.call(document.querySelectorAll('button'));
+    const iconButtonRipple = iconButton.forEach((element) => new MDCRipple(element));
+    iconButtonRipple.unbounded = true;
+} catch (error) {
+    console.error(error);
+}
+try {
+    const listRipple = [].slice.call(document.querySelectorAll('.list'));
+    listRipple.forEach((element) => new MDCRipple(element));
+} catch (error) {
+    console.error(error);
+}
+try {
+    const topAppBarElement = [].slice.call(document.querySelectorAll('.mdc-top-app-bar'));
+    topAppBarElement.forEach((element) => new MDCTopAppBar(element));
+} catch (error) {
+    console.error(error);
+}
 // Actual code starts here.
 
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 
 const serverAddressElement = document.getElementById("server-address");
+const serverAddressLabel = document.getElementById("server-address-label");
 const serverUsernameElement = document.getElementById("server-username");
 const serverPasswordElement = document.getElementById("server-password");
 const storage = localStorage;
 
 if (storage.getItem("server")) {
     serverAddressElement.value = storage.getItem("server");
-    document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
+    serverAddressLabel ? serverAddressLabel.classList.add("mdc-floating-label--float-above") : console.log("serverAddressLabel: " + serverAddressLabel);
 } else {
     serverAddressElement.value = "http://localhost:8000";
-    document.getElementById("server-address-label").classList.add("mdc-floating-label--float-above");
+    serverAddressLabel ? serverAddressLabel.classList.add("mdc-floating-label--float-above") : console.log("serverAddressLabel: " + serverAddressLabel);
 }
 
 if (storage.getItem("username")) {
@@ -85,7 +107,7 @@ if (storage.getItem("limit")) {
     document.getElementById("result-limit-label").classList.add("mdc-floating-label--float-above");
 }
 
-let server = new Server(serverAddressElement.value,serverUsernameElement.value,serverPasswordElement.value);
+let server = new Server(serverAddressElement.value, serverUsernameElement.value, serverPasswordElement.value);
 
 document.querySelector("#save-server").addEventListener("click", saveServer);
 document.querySelector("#search-documents").addEventListener("click", searchDocuments);
@@ -93,10 +115,10 @@ document.querySelector("#search").addEventListener("keypress", e => {
     if (e.key === "Enter") searchDocuments()
 });
 document.querySelector("#search-tags").addEventListener("keypress", e => {
-    if (e.key === "Enter" ) searchDocuments()
+    if (e.key === "Enter") searchDocuments()
 });
 document.querySelector("#search-not-tags").addEventListener("keypress", e => {
-    if (e.key === "Enter" ) searchDocuments()
+    if (e.key === "Enter") searchDocuments()
 });
 document.getElementById("set-document-title").addEventListener("click", setDocumentTitle);
 document.getElementById("upload").addEventListener("input", inputPostDocument);
@@ -109,7 +131,7 @@ document.getElementById("remove-tag").addEventListener("click", removeTag);
 
 function getTags() {
     document.querySelectorAll(".tags-here").forEach((dest) => {
-        let id= dest.closest(".mdc-card").getAttribute("data-document-id");
+        let id = dest.closest(".mdc-card").getAttribute("data-document-id");
         server.getTags(id).then(array => {
             let list = "";
             if (array.error) {
@@ -168,11 +190,11 @@ function addTag() {
     let label = document.getElementById("add-tag-label").value;
     let value = document.getElementById("add-tag-value").value;
     if (document.getElementById("radio-11").checked) {
-        server.addTag(id,label).then(r => then(r));
+        server.addTag(id, label).then(r => then(r));
     } else if (document.getElementById("radio-12").checked) {
-        server.addTag(id,label,"decimal",value).then(then);
+        server.addTag(id, label, "decimal", value).then(then);
     } else if (document.getElementById("radio-13").checked) {
-        server.addTag(id,label,"date",value).then(then);
+        server.addTag(id, label, "date", value).then(then);
     }
 
     function then(r) {
@@ -180,7 +202,7 @@ function addTag() {
         if (r.error) {
             snackbar.show({
                 message: "Couldn't add Tag: " + r.error
-             });
+            });
         } else {
             document.getElementById("add-tag-label").value = "";
             document.getElementById("add-tag-label-label").classList.remove("mdc-floating-label--float-above");
@@ -246,7 +268,7 @@ function createTag() {
         if (r.error) {
             snackbar.show({
                 message: "Couldn't create Tag: " + r.error
-             });
+            });
         } else {
             document.getElementById("tag-label").value = "";
             document.getElementById("tag-label-label").classList.remove("mdc-floating-label--float-above");
@@ -302,7 +324,7 @@ function postDocument(file) {
         .then(json => {
             server.setDocumentTitle(
                     json.location.substring(json.location.lastIndexOf("/") + 1),
-                    file.name.replace(/\.pdf$/,""))
+                    file.name.replace(/\.pdf$/, ""))
                 .then(() => {
                     myDropzone.removeAllFiles();
                     snackbar.show({
@@ -327,24 +349,24 @@ function countDocuments(to) {
     let tagsQuery = "";
     if (tags.length > 0) {
         encodeURIComponent(tags);
-        tagsQuery = "&tag=" + tags.replace(/\s?,\s?/,"&tag=");
+        tagsQuery = "&tag=" + tags.replace(/\s?,\s?/, "&tag=");
     }
     let notTagsQuery = "";
     if (notTags.length > 0) {
         encodeURIComponent(notTags);
-        notTagsQuery = "&nottag=" + notTags.replace(/\s?,\s?/,"&nottag=");
+        notTagsQuery = "&nottag=" + notTags.replace(/\s?,\s?/, "&nottag=");
     }
-    server.countDocuments(query,tagsQuery,notTagsQuery)
-    .then(count => {
-        counters.forEach(element => {
-            element.innerHTML = count;
-        })
-        if (to >= count) {
-            next.setAttribute("disabled", "true");
-        } else {
-            next.removeAttribute("disabled");
-        }
-    });
+    server.countDocuments(query, tagsQuery, notTagsQuery)
+        .then(count => {
+            counters.forEach(element => {
+                element.innerHTML = count;
+            })
+            if (to >= count) {
+                next.setAttribute("disabled", "true");
+            } else {
+                next.removeAttribute("disabled");
+            }
+        });
 }
 
 function searchDocuments(page) {
@@ -356,42 +378,44 @@ function searchDocuments(page) {
     let tagsQuery = "";
     if (tags.length > 0) {
         encodeURIComponent(tags);
-        tagsQuery = "&tag=" + tags.replace(/\s?,\s?/,"&tag=");
+        tagsQuery = "&tag=" + tags.replace(/\s?,\s?/, "&tag=");
     }
     let notTagsQuery = "";
     if (notTags.length > 0) {
         encodeURIComponent(notTags);
-        notTagsQuery = "&nottag=" + notTags.replace(/\s?,\s?/,"&nottag=");
+        notTagsQuery = "&nottag=" + notTags.replace(/\s?,\s?/, "&nottag=");
     }
     console.log(tagsQuery + notTagsQuery);
-    if (isNaN(page)) { page = 0 }
+    if (isNaN(page)) {
+        page = 0
+    }
     let limit = ((storage.getItem("limit") > 0) ? storage.getItem("limit") : '');
-    let offset = page*limit;
+    let offset = page * limit;
     let to = 0;
 
-    server.getDocuments(query,tagsQuery,notTagsQuery,limit,offset).then(array => {
+    server.getDocuments(query, tagsQuery, notTagsQuery, limit, offset).then(array => {
         let list = '';
         if (array.error) {
             dest.innerHTML = '<div class="mdc-card mdc-card--outlined list error"><div class="list-content"><span class="mdc-typography--subtitle1">Server responded with <span class="standard-mono">' + array.statusCode + ": " + array.error + '</span></span></div></div>';
         } else if (array.length > 0) {
-            to = offset+array.length;
-            list = '<p class="mdc-typography--overline">'+
-            '  Displaying documents <b>'+ (offset+1) +'</b> to <b>' + to +'</b>/'+
-            (limit ? '<span class="document-count">?</span>' : '<span class="document-count">' + to + '</span>')+
-            '</p>'+
-            (limit ? '<div class="pagination">' +
-                (Math.floor(page) > 0
-                    ? '<button data-page-target="'+ (Math.floor(page)-1) +'" class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>'
-                    : '<button disabled class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>'
-                ) +
-                '<button data-pagination-target="'+ (Math.floor(page)+1) +'" class="mdc-button mdc-button--raised page-switch page-next">Next</button>'+
-                '</div>' : ''
-            );
+            to = offset + array.length;
+            list = '<p class="mdc-typography--overline">' +
+                '  Displaying documents <b>' + (offset + 1) + '</b> to <b>' + to + '</b>/' +
+                (limit ? '<span class="document-count">?</span>' : '<span class="document-count">' + to + '</span>') +
+                '</p>' +
+                (limit ? '<div class="pagination">' +
+                    (Math.floor(page) > 0 ?
+                        '<button data-page-target="' + (Math.floor(page) - 1) + '" class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>' :
+                        '<button disabled class="mdc-button mdc-button--raised page-switch page-previous">Previous</button>'
+                    ) +
+                    '<button data-pagination-target="' + (Math.floor(page) + 1) + '" class="mdc-button mdc-button--raised page-switch page-next">Next</button>' +
+                    '</div>' : ''
+                );
             array.forEach(a => {
                 let label = a.title ? a.title : "Untitled document";
                 let created = a.created ? new Date(a.created).toLocaleString() : "Date of creation unknown"; // To suppoert older versions of the backend
                 list = list + "<div class='mdc-card mdc-card--outlined list list-document' data-document-id=\"" + a.identifier + "\">" +
-                "    <h3 class='mdc-typography--headline5'>" + label + "</h3>" +
+                    "    <h3 class='mdc-typography--headline5'>" + label + "</h3>" +
                     "  <div class='list-content'>" +
                     "    <div class='tags-here'></div>" +
                     "    <div class='standard-mono info-green mdc-typography--subtitle1'>" +
@@ -427,7 +451,7 @@ function searchDocuments(page) {
         }
         document.querySelectorAll(".page-switch").forEach(element => element.addEventListener("click", () => {
             searchDocuments(element.getAttribute("data-pagination-target"));
-        } ));
+        }));
         getTags();
     }).catch(e => {
         snackbar.show({
@@ -447,7 +471,7 @@ function fillout() {
     let title = this.parentNode.parentNode.getElementsByClassName("mdc-typography--headline5")[0].innerHTML;
     let id = this.parentNode.parentNode.getAttribute("data-document-id");
     let idFields = document.querySelectorAll(".document-id");
-    document.getElementById("manage-metadata").setAttribute("data-document-id",id);
+    document.getElementById("manage-metadata").setAttribute("data-document-id", id);
     idFields.forEach(element => {
         element.value = id;
         element.parentNode.querySelectorAll("label")
@@ -479,10 +503,10 @@ function tagFillout() {
     if (type == "simple") {
         document.getElementById("radio-1").checked = true;
         document.getElementById("radio-11").checked = true;
-    } else if ( type == "decimal") {
+    } else if (type == "decimal") {
         document.getElementById("radio-2").checked = true;
         document.getElementById("radio-12").checked = true;
-    } else if ( type == "date") {
+    } else if (type == "date") {
         document.getElementById("radio-3").checked = true;
         document.getElementById("radio-13").checked = true;
     } else {
