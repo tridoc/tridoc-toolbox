@@ -3659,9 +3659,9 @@ var _dropzone = __webpack_require__(59);
 
 var _dropzone2 = _interopRequireDefault(_dropzone);
 
-var _server = __webpack_require__(61);
+var _frontend = __webpack_require__(61);
 
-var _server2 = _interopRequireDefault(_server);
+var _frontend2 = _interopRequireDefault(_frontend);
 
 var _util = __webpack_require__(62);
 
@@ -3733,7 +3733,7 @@ if (storage.getItem("limit")) {
     document.getElementById("result-limit-label").classList.add("mdc-floating-label--float-above");
 }
 
-var server = new _server2.default(serverAddressElement.value, serverUsernameElement.value, serverPasswordElement.value);
+var server = new _frontend2.default(serverAddressElement.value, serverUsernameElement.value, serverPasswordElement.value);
 
 document.querySelector("#save-server").addEventListener("click", saveServer);
 document.querySelector("#search-documents").addEventListener("click", searchDocuments);
@@ -3859,7 +3859,7 @@ function removeTag() {
 function saveServer() {
     var serverAddress = serverAddressElement.value;
     var resultLimit = document.querySelector("#result-limit").value;
-    server = new _server2.default(serverAddress, serverUsernameElement.value, serverPasswordElement.value);
+    server = new _frontend2.default(serverAddress, serverUsernameElement.value, serverPasswordElement.value);
     try {
         storage.setItem("server", serverAddress);
         storage.setItem("limit", resultLimit);
