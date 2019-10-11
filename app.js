@@ -28,7 +28,7 @@ import {
 } from '@material/drawer';
 
 import Dropzone from 'dropzone';
-import Server from './lib/server';
+import Server from '@tridoc/frontend';
 import { isNull } from 'util';
 
 const drawer = new MDCTemporaryDrawer(document.getElementById("drawer"));

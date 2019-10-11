@@ -43,6 +43,7 @@
     "@material/toolbar": "^0.38.0",
     "@material/top-app-bar": "^0.38.0",
     "@material/typography": "^0.38.0",
+    "@tridoc/frontend": "^1.0.0",
     "dropzone": "^5.5.1",
     "path": "^0.12.7"
   }
